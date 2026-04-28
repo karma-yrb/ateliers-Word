@@ -1,0 +1,217 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier Word</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data/exercises.js"></script>
+  <script defer src="js/model.js"></script>
+  <script defer src="js/view.js"></script>
+  <script defer src="js/storage.js"></script>
+  <script defer src="js/controller.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-top">
+      <div>
+        <div class="title-row">
+          <h1>Atelier Word</h1>
+          <span class="app-version" aria-label="Version de l'application">v1.0.0</span>
+        </div>
+        <p class="subtitle">Je choisis un thème, je lance un exercice, je suis les étapes.</p>
+      </div>
+      <button id="header-user-badge" class="header-user-badge header-user-badge-btn" type="button" aria-live="polite" aria-label="Ouvrir le profil utilisateur" title="Ouvrir le profil utilisateur">
+        <span class="header-user-label">Utilisateur</span>
+        <strong class="header-user-name">Non connecté</strong>
+      </button>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Navigation principale">
+    <button class="nav-btn" data-nav="home">Accueil</button>
+    <button class="nav-btn" data-nav="themes">Thèmes</button>
+    <button class="nav-btn" data-nav="progress">Progression</button>
+  </nav>
+
+  <main class="container">
+    <section id="page-home" class="page" aria-labelledby="home-title">
+      <article class="card home-resume-card">
+        <h2 id="home-title">Reprendre mon atelier</h2>
+        <div class="home-resume-grid">
+          <div class="home-resume-main">
+            <div id="home-last-exercise" class="last-exercise"></div>
+            <div class="home-progress-wrap">
+              <h3 class="home-progress-title">Progression générale</h3>
+              <p id="home-progress-text" class="muted">0 / 0 exercices terminés</p>
+              <div class="progress-track" aria-hidden="true">
+                <div id="home-progress-bar" class="progress-fill" style="width:0%"></div>
+              </div>
+              <p id="home-level" class="muted level-line"></p>
+            </div>
+          </div>
+          <aside class="home-resume-action" aria-label="Action principale">
+            <p class="home-action-label">Accès rapide</p>
+            <button id="home-start-btn" class="btn btn-large home-start-btn has-icon" data-icon="▶">Commencer maintenant</button>
+            <div class="home-quick-details" aria-live="polite">
+              <p class="home-quick-line home-quick-theme-line">
+                <span class="home-quick-kicker">Thème</span>
+                <strong id="home-quick-theme">—</strong>
+              </p>
+              <p class="home-quick-line home-quick-exercise-line">
+                <span class="home-quick-kicker">Exercice</span>
+                <strong id="home-quick-exercise">—</strong>
+              </p>
+            </div>
+            <p id="home-start-help" class="muted home-start-help">Lance automatiquement le prochain exercice conseillé.</p>
+          </aside>
+        </div>
+      </article>
+    </section>
+
+    <section id="page-themes" class="page" aria-labelledby="themes-title">
+      <article class="card themes-hero-card">
+        <h2 id="themes-title">Explorer les thèmes</h2>
+        <p class="muted">Choisissez une catégorie pour voir les séries d'exercices. Chaque catégorie regroupe des compétences proches.</p>
+        <div class="themes-legend">
+          <span class="themes-legend-item"><strong>1.</strong> Ouvrir une catégorie</span>
+          <span class="themes-legend-item"><strong>2.</strong> Choisir une série</span>
+          <span class="themes-legend-item"><strong>3.</strong> Lancer un exercice</span>
+        </div>
+      </article>
+
+      <article class="card themes-list-card">
+        <h3>Catégories d'affinité</h3>
+        <div id="themes-affinity-list" class="affinity-grid"></div>
+      </article>
+    </section>
+
+    <section id="page-affinity" class="page" aria-labelledby="affinity-title">
+      <article class="card">
+        <div class="exercise-top-row">
+          <button id="affinity-back-btn" class="btn btn-soft has-icon" data-icon="◀">Retour catégories</button>
+        </div>
+        <h2 id="affinity-title">Catégorie</h2>
+        <p id="affinity-subtitle" class="muted"></p>
+        <div id="affinity-theme-list" class="theme-accordion"></div>
+      </article>
+    </section>
+
+    <section id="page-exercise" class="page" aria-labelledby="exercise-title">
+      <article class="card exercise-intro-card">
+        <div class="exercise-top-row">
+          <button id="exercise-back-btn" class="btn btn-soft has-icon" data-icon="◀">Retour thèmes</button>
+          <span id="exercise-status-pill" class="status-pill">À faire</span>
+        </div>
+        <h2 id="exercise-title">Exercice</h2>
+        <p id="exercise-theme-line" class="muted"></p>
+      </article>
+
+      <article class="card">
+        <h2>Étapes à faire</h2>
+        <ol id="exercise-steps" class="steps-list"></ol>
+      </article>
+
+      <article class="card">
+        <h2>Fichiers et images</h2>
+        <div class="asset-actions">
+          <a id="exercise-docx-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le fichier</a>
+          <a id="exercise-download-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le 2ᵉ fichier</a>
+        </div>
+        <div class="images-grid">
+          <figure class="image-card">
+            <figcaption id="exercise-enonce-caption">Énoncé</figcaption>
+            <div id="exercise-enonce-images" class="image-stack"></div>
+          </figure>
+          <figure class="image-card result-card">
+            <figcaption id="exercise-result-caption">Résultat attendu</figcaption>
+            <div id="exercise-result-images" class="image-stack"></div>
+          </figure>
+        </div>
+        <div id="exercise-extra-wrap" class="extra-wrap">
+          <h3>Images illustratives</h3>
+          <div id="exercise-extra-images" class="extra-images"></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="exercise-actions-row">
+          <button id="exercise-prev-btn" class="btn btn-soft has-icon" data-icon="⟵">Exercice précédent</button>
+          <button id="exercise-toggle-done-btn" class="btn has-icon" data-icon="✓">Fait</button>
+          <button id="exercise-next-btn" class="btn btn-soft has-icon icon-right" data-icon="⟶">Exercice suivant</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="page-progress" class="page" aria-labelledby="progress-title">
+      <article class="card">
+        <h2 id="progress-title">Progression</h2>
+        <div class="stats-grid">
+          <div class="stat"><p>Terminés</p><strong id="progress-stat-completed">0 / 0</strong></div>
+          <div class="stat"><p>Taux</p><strong id="progress-stat-rate">0%</strong></div>
+          <div class="stat"><p>Série</p><strong id="progress-stat-streak">0 jour</strong></div>
+          <div class="stat"><p>Palier</p><strong id="progress-stat-level">Démarrage</strong></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Courbe (30 jours)</h2>
+        <svg id="progress-curve" viewBox="0 0 860 220" role="img" aria-label="Courbe de progression"></svg>
+      </article>
+    </section>
+
+    <section id="page-profile" class="page" aria-labelledby="profile-title">
+      <article class="card">
+        <h2 id="profile-title">Profil utilisateur</h2>
+        <p class="muted">Sauvegarde automatique dans le dossier utilisateur: <code>Dossier utilisateur &gt; ProgressionAtelier</code>.</p>
+        <p id="progress-user-path" class="muted status-line">Aucun utilisateur sélectionné.</p>
+        <div class="progress-actions">
+          <button id="progress-change-user-btn" class="btn btn-soft has-icon" data-icon="👤">Changer d'utilisateur</button>
+          <button id="progress-reset-btn" class="btn btn-danger has-icon" data-icon="↺">Réinitialiser progression</button>
+          <button id="progress-reset-profile-btn" class="btn btn-danger has-icon" data-icon="🗑">Réinitialiser profil local</button>
+        </div>
+        <p id="progress-file-status" class="muted status-line"></p>
+      </article>
+
+      <article class="card">
+        <h2>Conseils</h2>
+        <ul class="profile-tips">
+          <li>Utilisez un dossier utilisateur dédié par usager (ex: AD) pour éviter tout mélange de progression.</li>
+          <li>Le changement d'utilisateur ouvre ce dossier puis recharge automatiquement la progression associée.</li>
+          <li>Réinitialiser progression efface uniquement l'avancement des exercices du profil actif.</li>
+          <li>Réinitialiser profil local oublie le prénom et le dossier de référence sur cet appareil.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <div id="image-modal" class="image-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Aperçu de l'image">
+    <button id="image-modal-close" class="image-modal-close" type="button" aria-label="Fermer l'aperçu">×</button>
+    <img id="image-modal-img" alt="">
+  </div>
+
+  <div id="user-setup-modal" class="image-modal" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Configuration utilisateur">
+    <div class="modal-content user-setup-content">
+      <h2 style="margin-top:0;">Configuration utilisateur</h2>
+      <p class="muted">Choisissez directement le dossier utilisateur (par exemple <code>Documents\AD</code>).</p>
+      <p class="muted">L'application créera automatiquement <code>ProgressionAtelier</code> dans ce dossier.</p>
+      <p id="user-setup-status" class="muted status-line">Choisissez le dossier utilisateur.</p>
+
+      <div style="margin-top:12px;display:grid;gap:10px;">
+        <button id="user-setup-pick-root-btn" class="btn btn-soft has-icon" data-icon="📁" type="button">Choisir dossier utilisateur</button>
+
+        <label for="user-setup-firstname-input" class="field" style="margin-bottom:0;">Votre prénom</label>
+        <input id="user-setup-firstname-input" type="text" maxlength="30" placeholder="Ex: Alice" style="border:2px solid var(--line);border-radius:10px;padding:10px;font:inherit;">
+      </div>
+
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:8px;">
+        <button id="user-setup-validate-btn" class="btn has-icon" data-icon="✓" type="button">Valider</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
