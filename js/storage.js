@@ -37,10 +37,18 @@
     });
   }
 
-  async ensureWritePermission(handle) {
+  async pickDocumentsDirectory() {
+    return window.showDirectoryPicker({
+      id: "word-atelier-documents-root",
+      mode: "read",
+      startIn: "documents",
+    });
+  }
+
+  async ensureDirectoryPermission(handle, mode = "readwrite") {
     if (!handle) return false;
     try {
-      const opts = { mode: "readwrite" };
+      const opts = { mode };
       const current = await handle.queryPermission(opts);
       if (current === "granted") return true;
       const requested = await handle.requestPermission(opts);
@@ -48,6 +56,34 @@
     } catch {
       return false;
     }
+  }
+
+  async queryDirectoryPermission(handle, mode = "readwrite") {
+    if (!handle) return false;
+    try {
+      const opts = { mode };
+      return (await handle.queryPermission(opts)) === "granted";
+    } catch {
+      return false;
+    }
+  }
+
+  async requestDirectoryPermission(handle, mode = "readwrite") {
+    if (!handle) return false;
+    try {
+      const opts = { mode };
+      return (await handle.requestPermission(opts)) === "granted";
+    } catch {
+      return false;
+    }
+  }
+
+  async ensureReadPermission(handle) {
+    return this.ensureDirectoryPermission(handle, "read");
+  }
+
+  async ensureWritePermission(handle) {
+    return this.ensureDirectoryPermission(handle, "readwrite");
   }
 
   async resolveUserRootHandle(rootHandle, initials) {
@@ -176,6 +212,53 @@
     return this.#setSetting("rootHandle", handle);
   }
 
+  async getSavedDocumentsHandle() {
+    return this.#getSetting("documentsHandle");
+  }
+
+  async setSavedDocumentsHandle(handle) {
+    return this.#setSetting("documentsHandle", handle);
+  }
+
+  async scanDocumentsFolders(documentsHandle, options = {}) {
+    if (!documentsHandle || documentsHandle.kind !== "directory") return [];
+
+    const includeWithoutProgress = options.includeWithoutProgress !== false;
+    const maxItems = Number.isFinite(options.maxItems)
+      ? Math.max(1, Math.min(500, Number(options.maxItems)))
+      : 250;
+    const folders = [];
+
+    for await (const [name, handle] of documentsHandle.entries()) {
+      if (folders.length >= maxItems) break;
+      if (!handle || handle.kind !== "directory") continue;
+      if (String(name || "").startsWith(".")) continue;
+
+      let hasProgressFolder = false;
+      try {
+        await handle.getDirectoryHandle("ProgressionAtelier", { create: false });
+        hasProgressFolder = true;
+      } catch {
+        hasProgressFolder = false;
+      }
+
+      if (!hasProgressFolder && !includeWithoutProgress) continue;
+      folders.push({
+        id: `scan-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        name: handle.name || String(name || "Dossier de travail"),
+        handle,
+        hasProgressFolder,
+      });
+    }
+
+    return folders.sort((a, b) => {
+      if (a.hasProgressFolder !== b.hasProgressFolder) {
+        return a.hasProgressFolder ? -1 : 1;
+      }
+      return String(a.name || "").localeCompare(String(b.name || ""), "fr", { sensitivity: "base" });
+    });
+  }
+
   async getSavedWorkFolders() {
     const raw = await this.#getSetting("workFolders");
     if (!Array.isArray(raw)) return [];
@@ -263,6 +346,139 @@
 
   async setSavedFirstName(firstName) {
     return this.#setSetting("firstName", this.normalizeFirstName(firstName));
+  }
+
+  supportsWorkFilePicker() {
+    return typeof window.showOpenFilePicker === "function";
+  }
+
+  normalizeProfileKey(value) {
+    return this.normalizeInitials(value) || "USER";
+  }
+
+  async pickWorkFile(options = {}) {
+    if (!this.supportsWorkFilePicker()) return null;
+
+    const pickerOptions = {
+      multiple: false,
+      startIn: options.startIn || "downloads",
+      excludeAcceptAllOption: false,
+      types: [
+        {
+          description: "Document Word",
+          accept: {
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+            "application/msword": [".doc"],
+          },
+        },
+      ],
+    };
+
+    try {
+      const handles = await window.showOpenFilePicker(pickerOptions);
+      if (!Array.isArray(handles) || !handles.length) return null;
+      const [handle] = handles;
+      if (!handle || handle.kind !== "file") return null;
+      return handle;
+    } catch {
+      return null;
+    }
+  }
+
+  async ensureFileReadPermission(handle) {
+    if (!handle || handle.kind !== "file") return false;
+    try {
+      const opts = { mode: "read" };
+      const current = await handle.queryPermission(opts);
+      if (current === "granted") return true;
+      const requested = await handle.requestPermission(opts);
+      return requested === "granted";
+    } catch {
+      return false;
+    }
+  }
+
+  async getSavedExerciseFiles() {
+    const raw = await this.#getSetting("exerciseFiles");
+    if (!Array.isArray(raw)) return [];
+    const items = [];
+    for (const item of raw) {
+      if (!item || typeof item !== "object") continue;
+      const handle = item.handle;
+      if (!handle || handle.kind !== "file") continue;
+      const profileKey = this.normalizeProfileKey(item.profileKey);
+      const exerciseId = String(item.exerciseId || "").trim();
+      if (!exerciseId) continue;
+      items.push({
+        profileKey,
+        exerciseId,
+        handle,
+        fileName: String(item.fileName || handle.name || "fichier.docx").trim() || "fichier.docx",
+        lastUsedAt: typeof item.lastUsedAt === "string" ? item.lastUsedAt : "",
+      });
+    }
+    return items;
+  }
+
+  async setSavedExerciseFiles(items) {
+    if (!Array.isArray(items)) return this.#setSetting("exerciseFiles", []);
+    const payload = items
+      .filter((item) => item && item.handle && item.handle.kind === "file")
+      .map((item) => ({
+        profileKey: this.normalizeProfileKey(item.profileKey),
+        exerciseId: String(item.exerciseId || "").trim(),
+        handle: item.handle,
+        fileName: String(item.fileName || item.handle.name || "fichier.docx").trim() || "fichier.docx",
+        lastUsedAt: typeof item.lastUsedAt === "string" ? item.lastUsedAt : "",
+      }))
+      .filter((item) => item.exerciseId);
+    return this.#setSetting("exerciseFiles", payload);
+  }
+
+  async setSavedExerciseFile(profileKey, exerciseId, handle) {
+    const cleanProfileKey = this.normalizeProfileKey(profileKey);
+    const cleanExerciseId = String(exerciseId || "").trim();
+    if (!cleanExerciseId || !handle || handle.kind !== "file") return null;
+
+    const all = await this.getSavedExerciseFiles();
+    const now = new Date().toISOString();
+    const next = all.filter((entry) => !(entry.profileKey === cleanProfileKey && entry.exerciseId === cleanExerciseId));
+    next.push({
+      profileKey: cleanProfileKey,
+      exerciseId: cleanExerciseId,
+      handle,
+      fileName: handle.name || "fichier.docx",
+      lastUsedAt: now,
+    });
+    await this.setSavedExerciseFiles(next);
+    return {
+      profileKey: cleanProfileKey,
+      exerciseId: cleanExerciseId,
+      handle,
+      fileName: handle.name || "fichier.docx",
+      lastUsedAt: now,
+    };
+  }
+
+  async getSavedExerciseFile(profileKey, exerciseId) {
+    const cleanProfileKey = this.normalizeProfileKey(profileKey);
+    const cleanExerciseId = String(exerciseId || "").trim();
+    if (!cleanExerciseId) return null;
+    const all = await this.getSavedExerciseFiles();
+    return all.find((entry) => entry.profileKey === cleanProfileKey && entry.exerciseId === cleanExerciseId) || null;
+  }
+
+  async touchSavedExerciseFile(profileKey, exerciseId) {
+    const cleanProfileKey = this.normalizeProfileKey(profileKey);
+    const cleanExerciseId = String(exerciseId || "").trim();
+    if (!cleanExerciseId) return null;
+
+    const all = await this.getSavedExerciseFiles();
+    const entry = all.find((item) => item.profileKey === cleanProfileKey && item.exerciseId === cleanExerciseId);
+    if (!entry) return null;
+    entry.lastUsedAt = new Date().toISOString();
+    await this.setSavedExerciseFiles(all);
+    return entry;
   }
 
   async clearSavedSession() {

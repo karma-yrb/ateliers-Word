@@ -107,7 +107,7 @@ class WordAtelierModel {
 
   #emptyProgress() {
     return {
-      version: 1,
+      version: 2,
       updatedAt: new Date().toISOString(),
       completedIds: [],
       lastExerciseId: null,
@@ -264,8 +264,7 @@ class WordAtelierModel {
   }
 
   getLastExercise() {
-    const doneSet = new Set(this.progress.completedIds);
-    if (this.progress.lastExerciseId && doneSet.has(this.progress.lastExerciseId)) {
+    if (this.progress.lastExerciseId && this.exById.has(this.progress.lastExerciseId)) {
       const ex = this.getExerciseById(this.progress.lastExerciseId);
       if (ex) return ex;
     }
@@ -275,15 +274,18 @@ class WordAtelierModel {
 
   getResumeExercise() {
     const doneSet = new Set(this.progress.completedIds);
-    const totalDone = doneSet.size;
     if (!this.exercises.length) return null;
-
-    if (totalDone === 0) {
-      return this.exercises[0];
-    }
 
     const anchorId = this.progress.lastExerciseId || this.#findLatestCompletedFromHistory();
     const anchor = anchorId ? this.getExerciseById(anchorId) : null;
+    if (anchor && !doneSet.has(anchor.id)) {
+      return anchor;
+    }
+
+    const totalDone = doneSet.size;
+    if (totalDone === 0) {
+      return this.exercises[0];
+    }
 
     // Priorité 1: continuer dans la même série à partir du dernier exercice fait.
     if (anchor) {
@@ -381,6 +383,14 @@ class WordAtelierModel {
     this.#saveProgress();
   }
 
+  markExerciseOpened(exerciseId) {
+    if (!this.exById.has(exerciseId)) return false;
+    if (this.progress.lastExerciseId === exerciseId) return false;
+    this.progress.lastExerciseId = exerciseId;
+    this.#saveProgress();
+    return true;
+  }
+
   getSummary() {
     const total = this.exercises.length;
     const completed = this.progress.completedIds.length;
@@ -460,7 +470,7 @@ class WordAtelierModel {
 
   importProgressObject(obj) {
     const imported = {
-      version: 1,
+      version: 2,
       updatedAt: new Date().toISOString(),
       completedIds: uniqueStrings(obj && obj.completedIds),
       lastExerciseId: obj && typeof obj.lastExerciseId === "string" ? obj.lastExerciseId : null,

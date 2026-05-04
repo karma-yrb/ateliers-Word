@@ -15,7 +15,9 @@ class WordAtelierController {
 
     this.isReady = false;
     this.userSession = null;
+    this.pendingPermissionSession = null;
     this.saveQueue = Promise.resolve();
+    this.exerciseWorkFileToken = 0;
 
     this.userModal = {
       root: document.getElementById("user-setup-modal"),
@@ -62,10 +64,17 @@ class WordAtelierController {
       return;
     }
 
-    const session = await this.#resolveUserSession(false);
+    const session = await this.#resolveUserSession(false, { allowPermissionPrompt: false });
     if (!session) {
       this.view.setHeaderUser("", "");
       this.view.setProgressStatus("Aucun utilisateur configuré.");
+      this.view.showPage("home");
+      return;
+    }
+    if (session.permissionRequired) {
+      this.pendingPermissionSession = session;
+      this.view.setHeaderUser(session.firstName || "", session.initials || "");
+      this.view.setProgressStatus("Accès dossier requis. Cliquez sur « Commencer maintenant » pour autoriser l'accès.");
       this.view.showPage("home");
       return;
     }
@@ -87,8 +96,11 @@ class WordAtelierController {
       });
     }
 
-    document.getElementById("home-start-btn").addEventListener("click", () => {
-      if (!this.isReady) return;
+    document.getElementById("home-start-btn").addEventListener("click", async () => {
+      if (!this.isReady) {
+        const resumed = await this.#resumePendingSessionFromUserGesture();
+        if (!resumed) return;
+      }
       const resume = this.model.getResumeExercise();
       if (resume) {
         window.location.hash = `#exercise/${resume.id}`;
@@ -156,12 +168,25 @@ class WordAtelierController {
       this.#renderExercisePage(id);
     });
 
+    if (this.view.exercisePickWorkFileBtn) {
+      this.view.exercisePickWorkFileBtn.addEventListener("click", async () => {
+        await this.#pickWorkFileForCurrentExercise();
+      });
+    }
+
+    if (this.view.exerciseOpenWorkFileBtn) {
+      this.view.exerciseOpenWorkFileBtn.addEventListener("click", async () => {
+        await this.#openWorkFileForCurrentExercise();
+      });
+    }
+
     const changeBtn = document.getElementById("progress-change-user-btn");
     if (changeBtn) {
       changeBtn.addEventListener("click", async () => {
-        const session = await this.#resolveUserSession(true);
+        const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
         if (!session) return;
         this.userSession = session;
+        this.pendingPermissionSession = null;
         await this.#loadProgressForSession(session);
         if (this.isReady) this.#renderFromHash();
       });
@@ -200,7 +225,7 @@ class WordAtelierController {
         this.view.setProgressUserPath("Aucun utilisateur sélectionné.");
         this.view.setProgressStatus("Profil local supprimé. Reconfiguration en cours...");
 
-        const session = await this.#resolveUserSession(true);
+        const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
         if (!session) {
           this.view.setProgressStatus("Profil local supprimé. Configuration utilisateur annulée.");
           this.view.showPage("home");
@@ -208,6 +233,7 @@ class WordAtelierController {
         }
 
         this.userSession = session;
+        this.pendingPermissionSession = null;
         await this.#loadProgressForSession(session);
         this.isReady = true;
         this.#renderFromHash();
@@ -451,6 +477,9 @@ class WordAtelierController {
     }
     this.currentThemeId = exercise.moduleId;
     this.currentAffinityId = this.model.getAffinityIdForTheme(exercise.moduleId) || this.currentAffinityId;
+    if (this.model.markExerciseOpened(exercise.id)) {
+      this.#saveProgress();
+    }
     this.view.showPage("exercise");
 
     const done = this.model.getIsDone(exercise.id);
@@ -464,7 +493,11 @@ class WordAtelierController {
       visuals,
       prevId,
       nextId,
+      workFile: {
+        pickerSupported: this.storage && this.storage.supportsWorkFilePicker && this.storage.supportsWorkFilePicker(),
+      },
     });
+    this.#refreshExerciseWorkFileState(exercise.id);
   }
 
   #renderProgressPage() {
@@ -486,7 +519,40 @@ class WordAtelierController {
     return "USER";
   }
 
-  async #resolveUserSession(forcePrompt) {
+  async #resumePendingSessionFromUserGesture() {
+    if (!this.pendingPermissionSession || !this.pendingPermissionSession.rootHandle) return false;
+
+    const pending = this.pendingPermissionSession;
+    let selectedHandle = pending.rootHandle;
+    let ok = await this.storage.requestDirectoryPermission(selectedHandle, "readwrite");
+
+    if (ok) {
+      selectedHandle = await this.storage.resolveUserRootHandle(selectedHandle, pending.initials || "");
+      ok = await this.storage.requestDirectoryPermission(selectedHandle, "readwrite");
+    }
+
+    if (!ok) {
+      this.view.setProgressStatus("Accès au dossier refusé. Cliquez à nouveau sur « Commencer maintenant » pour réessayer.");
+      return false;
+    }
+
+    await this.storage.setSavedRootHandle(selectedHandle);
+    const session = await this.#resolveUserSession(false, { allowPermissionPrompt: false });
+    if (!session || session.permissionRequired) {
+      this.view.setProgressStatus("Impossible de restaurer la session. Rechoisissez un dossier utilisateur.");
+      return false;
+    }
+
+    this.pendingPermissionSession = null;
+    this.userSession = session;
+    await this.#loadProgressForSession(session);
+    this.isReady = true;
+    this.#renderFromHash();
+    return true;
+  }
+
+  async #resolveUserSession(forcePrompt, options = {}) {
+    const allowPermissionPrompt = options.allowPermissionPrompt !== false;
     let rootHandle = null;
     let initials = "";
     let firstName = "";
@@ -497,10 +563,22 @@ class WordAtelierController {
       initials = this.storage.normalizeInitials(await this.storage.getSavedInitials());
       firstName = this.storage.normalizeFirstName(await this.storage.getSavedFirstName());
       if (rootHandle) {
-        let ok = await this.storage.ensureWritePermission(rootHandle);
+        let ok = allowPermissionPrompt
+          ? await this.storage.ensureWritePermission(rootHandle)
+          : await this.storage.queryDirectoryPermission(rootHandle, "readwrite");
         if (ok) {
           rootHandle = await this.storage.resolveUserRootHandle(rootHandle, initials);
-          ok = await this.storage.ensureWritePermission(rootHandle);
+          ok = allowPermissionPrompt
+            ? await this.storage.ensureWritePermission(rootHandle)
+            : await this.storage.queryDirectoryPermission(rootHandle, "readwrite");
+        }
+        if (!ok && !allowPermissionPrompt) {
+          return {
+            rootHandle,
+            initials: this.#deriveInitials(rootHandle, initials),
+            firstName,
+            permissionRequired: true,
+          };
         }
         if (!ok) rootHandle = null;
         if (ok && rootHandle) {
@@ -529,8 +607,7 @@ class WordAtelierController {
       }
     }
 
-    const shouldPromptFolderChoiceOnLaunch = !forcePrompt && savedWorkFolders.length > 0;
-    if (forcePrompt || shouldPromptFolderChoiceOnLaunch || !rootHandle || !firstName) {
+    if (forcePrompt || !rootHandle || !firstName) {
       const picked = await this.#promptUserSetup(rootHandle, { initials, firstName, savedWorkFolders });
       if (!picked) return null;
       rootHandle = picked.rootHandle;
@@ -547,7 +624,7 @@ class WordAtelierController {
     await this.storage.setSavedInitials(initials);
     await this.storage.setSavedFirstName(firstName);
 
-    return { rootHandle, initials, firstName };
+    return { rootHandle, initials, firstName, permissionRequired: false };
   }
 
   async #loadProgressForSession(session) {
@@ -581,6 +658,128 @@ class WordAtelierController {
       .catch(() => {
         this.view.setProgressStatus("Erreur de sauvegarde. Vérifiez les permissions du dossier utilisateur.");
       });
+  }
+
+  #getCurrentExerciseIdFromView() {
+    if (!this.view || !this.view.exerciseToggleDoneBtn) return "";
+    return String(this.view.exerciseToggleDoneBtn.getAttribute("data-id") || "").trim();
+  }
+
+  #buildWorkFileProfileKey() {
+    if (!this.userSession || !this.userSession.initials) return "USER";
+    if (!this.storage || !this.storage.normalizeProfileKey) return String(this.userSession.initials).trim() || "USER";
+    return this.storage.normalizeProfileKey(this.userSession.initials);
+  }
+
+  async #refreshExerciseWorkFileState(exerciseId, options = {}) {
+    if (!this.view || !this.view.setExerciseWorkFileState) return;
+    const token = ++this.exerciseWorkFileToken;
+    const pickerSupported = Boolean(
+      this.storage
+      && this.storage.supportsWorkFilePicker
+      && this.storage.supportsWorkFilePicker(),
+    );
+
+    if (!exerciseId || !this.userSession || !pickerSupported) {
+      this.view.setExerciseWorkFileState({
+        pickerSupported,
+        statusText: pickerSupported ? "Aucun fichier lié pour cet exercice." : "Association de fichier indisponible sur ce navigateur.",
+      });
+      return;
+    }
+
+    const entry = await this.storage.getSavedExerciseFile(this.#buildWorkFileProfileKey(), exerciseId);
+    if (token !== this.exerciseWorkFileToken) return;
+
+    this.view.setExerciseWorkFileState({
+      pickerSupported,
+      fileName: entry && entry.fileName ? entry.fileName : "",
+      statusText: options.statusText || "",
+    });
+  }
+
+  async #pickWorkFileForCurrentExercise() {
+    if (!this.isReady || !this.userSession || !this.storage) return;
+    const exerciseId = this.#getCurrentExerciseIdFromView();
+    if (!exerciseId) return;
+
+    if (!this.storage.supportsWorkFilePicker || !this.storage.supportsWorkFilePicker()) {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "Association de fichier indisponible sur ce navigateur.",
+      });
+      return;
+    }
+
+    const profileKey = this.#buildWorkFileProfileKey();
+    const existing = await this.storage.getSavedExerciseFile(profileKey, exerciseId);
+    const handle = await this.storage.pickWorkFile({
+      startIn: existing && existing.handle ? existing.handle : "downloads",
+    });
+    if (!handle) {
+      await this.#refreshExerciseWorkFileState(exerciseId);
+      return;
+    }
+
+    const ok = await this.storage.ensureFileReadPermission(handle);
+    if (!ok) {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "Permission refusée pour ce fichier. Réessayez avec un autre document.",
+      });
+      return;
+    }
+
+    await this.storage.setSavedExerciseFile(profileKey, exerciseId, handle);
+    await this.#refreshExerciseWorkFileState(exerciseId, {
+      statusText: `Fichier associé: ${handle.name || "document Word"}.`,
+    });
+  }
+
+  async #openWorkFileForCurrentExercise() {
+    if (!this.isReady || !this.userSession || !this.storage) return;
+    const exerciseId = this.#getCurrentExerciseIdFromView();
+    if (!exerciseId) return;
+
+    const profileKey = this.#buildWorkFileProfileKey();
+    const entry = await this.storage.getSavedExerciseFile(profileKey, exerciseId);
+    if (!entry || !entry.handle) {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "Aucun fichier associé. Cliquez d'abord sur « Associer mon fichier ».",
+      });
+      return;
+    }
+
+    const ok = await this.storage.ensureFileReadPermission(entry.handle);
+    if (!ok) {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "Permission refusée pour ce fichier. Associez-le à nouveau.",
+      });
+      return;
+    }
+
+    try {
+      const file = await entry.handle.getFile();
+      const objectUrl = URL.createObjectURL(file);
+      const opened = window.open(objectUrl, "_blank", "noopener");
+      window.setTimeout(() => {
+        URL.revokeObjectURL(objectUrl);
+      }, 30000);
+
+      if (!opened) {
+        await this.#refreshExerciseWorkFileState(exerciseId, {
+          statusText: "Le navigateur a bloqué l'ouverture. Autorisez les fenêtres puis réessayez.",
+        });
+        return;
+      }
+
+      await this.storage.touchSavedExerciseFile(profileKey, exerciseId);
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: `Ouverture: ${file.name}.`,
+      });
+    } catch {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "Impossible d'ouvrir ce fichier. Réassociez un document valide.",
+      });
+    }
   }
 
   #getSaveReminderFolderLabel() {
@@ -664,6 +863,7 @@ class WordAtelierController {
       const defaultFirstName = this.storage.normalizeFirstName(defaults.firstName);
       let savedFolders = Array.isArray(defaults.savedWorkFolders) ? defaults.savedWorkFolders.slice() : [];
       let selectedSavedId = "";
+      let hasScannedDocuments = false;
 
       const closeModal = (result) => {
         modal.style.display = "none";
@@ -677,10 +877,22 @@ class WordAtelierController {
 
       const updateFolderStatus = () => {
         if (!rootHandle) {
-          status.textContent = "Choisissez un dossier de travail dans la liste ou ajoutez-en un nouveau.";
+          status.textContent = hasScannedDocuments
+            ? "Choisissez un dossier de travail dans la liste ou ajoutez-en un nouveau."
+            : "Scannez d'abord les dossiers existants dans Documents.";
           return;
         }
         status.textContent = `Dossier sélectionné : ${rootHandle.name || "dossier utilisateur"}.`;
+      };
+
+      const setPickButtonMode = () => {
+        if (!hasScannedDocuments) {
+          pickBtn.textContent = "Scanner Documents";
+          pickBtn.setAttribute("data-icon", "🔎");
+          return;
+        }
+        pickBtn.textContent = "Ajouter un dossier de travail";
+        pickBtn.setAttribute("data-icon", "📁");
       };
 
       const renderSavedFolders = () => {
@@ -725,6 +937,47 @@ class WordAtelierController {
         return "";
       };
 
+      const mergeSavedFolders = async (incomingFolders) => {
+        if (!Array.isArray(incomingFolders) || !incomingFolders.length) return savedFolders;
+        const merged = savedFolders.slice();
+
+        for (const incoming of incomingFolders) {
+          const handle = incoming && incoming.handle;
+          if (!handle || handle.kind !== "directory") continue;
+
+          let existing = null;
+          for (const folder of merged) {
+            try {
+              if (await folder.handle.isSameEntry(handle)) {
+                existing = folder;
+                break;
+              }
+            } catch {
+              if (folder.name === (handle.name || folder.name)) {
+                existing = folder;
+                break;
+              }
+            }
+          }
+
+          if (existing) {
+            existing.handle = handle;
+            existing.name = handle.name || existing.name || "Dossier de travail";
+            continue;
+          }
+
+          merged.push({
+            id: String(incoming.id || `wf-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`),
+            name: String(incoming.name || handle.name || "Dossier de travail").trim() || "Dossier de travail",
+            handle,
+            lastUsedAt: typeof incoming.lastUsedAt === "string" ? incoming.lastUsedAt : "",
+          });
+        }
+
+        savedFolders = merged;
+        return savedFolders;
+      };
+
       const applySavedFolderSelection = async (folderId, options = {}) => {
         const requestPermission = options.requestPermission !== false;
         const folder = savedFolders.find((entry) => entry.id === folderId);
@@ -764,8 +1017,68 @@ class WordAtelierController {
         }
       };
 
+      const scanDocumentsBeforeAdd = async (options = {}) => {
+        const allowPrompt = options.allowPrompt !== false;
+        let documentsHandle = await this.storage.getSavedDocumentsHandle();
+
+        if (documentsHandle) {
+          const canRead = await this.storage.ensureReadPermission(documentsHandle);
+          if (!canRead) documentsHandle = null;
+        }
+
+        if (!documentsHandle && allowPrompt) {
+          documentsHandle = await this.storage.pickDocumentsDirectory();
+          if (!documentsHandle) {
+            status.textContent = "Scan Documents annulé.";
+            return false;
+          }
+          const canRead = await this.storage.ensureReadPermission(documentsHandle);
+          if (!canRead) {
+            status.textContent = "Permission refusée pour lire Documents.";
+            return false;
+          }
+          await this.storage.setSavedDocumentsHandle(documentsHandle);
+        }
+
+        if (!documentsHandle) return false;
+
+        status.textContent = "Analyse des dossiers existants dans Documents...";
+        const scannedFolders = await this.storage.scanDocumentsFolders(documentsHandle, {
+          includeWithoutProgress: true,
+        });
+
+        hasScannedDocuments = true;
+        setPickButtonMode();
+
+        if (!scannedFolders.length) {
+          status.textContent = "Aucun sous-dossier trouvé dans Documents. Ajoutez un dossier de travail.";
+          return true;
+        }
+
+        await mergeSavedFolders(scannedFolders);
+        await this.storage.setSavedWorkFolders(savedFolders);
+        renderSavedFolders();
+
+        if (!rootHandle && savedFoldersSelect && savedFoldersSelect.value) {
+          selectedSavedId = savedFoldersSelect.value;
+          await applySavedFolderSelection(selectedSavedId, { requestPermission: false });
+        } else {
+          updateFolderStatus();
+        }
+
+        if (!rootHandle) {
+          status.textContent = `${scannedFolders.length} dossier(s) détecté(s) dans Documents.`;
+        }
+        return true;
+      };
+
       pickBtn.onclick = async () => {
         try {
+          if (!hasScannedDocuments) {
+            await scanDocumentsBeforeAdd({ allowPrompt: true });
+            return;
+          }
+
           rootHandle = await this.storage.pickUserDirectory();
           const ok = await this.storage.ensureWritePermission(rootHandle);
           if (!ok) {
@@ -853,6 +1166,8 @@ class WordAtelierController {
       resolvedInitials = this.#deriveInitials(rootHandle, defaults.initials);
       firstNameInput.value = defaultFirstName || "";
       (async () => {
+        setPickButtonMode();
+        await scanDocumentsBeforeAdd({ allowPrompt: false });
         if (rootHandle) {
           selectedSavedId = await findSavedFolderIdByHandle(rootHandle);
         }

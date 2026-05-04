@@ -13,7 +13,9 @@
     "audit:data": "node scripts/audit-exercises.mjs",
     "test": "node scripts/validate-encoding.mjs && node --test \"tests/**/*.test.mjs\"",
     "release": "standard-version",
-    "release:first": "standard-version --first-release"
+    "release:first": "standard-version --first-release",
+    "release:all": "node scripts/release-all.mjs",
+    "lance pub": "npm run release:all"
   },
   "devDependencies": {
     "standard-version": "^9.5.0"

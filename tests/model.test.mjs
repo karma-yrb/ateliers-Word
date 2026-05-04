@@ -82,6 +82,13 @@ test("resume exercise continues in same theme when possible", () => {
   assert.equal(resume.id, "ex-002");
 });
 
+test("resume exercise returns last opened exercise when it is not done yet", () => {
+  const model = createModel();
+  model.markExerciseOpened("ex-003");
+  const resume = model.getResumeExercise();
+  assert.equal(resume.id, "ex-003");
+});
+
 test("single image is treated as expected result when result image is missing", () => {
   const model = createModel();
   const exercise = model.getExerciseById("ex-001");

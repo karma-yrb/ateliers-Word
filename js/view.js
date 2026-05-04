@@ -76,6 +76,9 @@ class WordAtelierView {
     this.exerciseSteps = document.getElementById("exercise-steps");
     this.exerciseDocxBtn = document.getElementById("exercise-docx-btn");
     this.exerciseDownloadBtn = document.getElementById("exercise-download-btn");
+    this.exercisePickWorkFileBtn = document.getElementById("exercise-pick-workfile-btn");
+    this.exerciseOpenWorkFileBtn = document.getElementById("exercise-open-workfile-btn");
+    this.exerciseWorkFileStatus = document.getElementById("exercise-workfile-status");
     this.exerciseImagesGrid = document.querySelector("#page-exercise .images-grid");
     this.exerciseEnonceCaption = document.getElementById("exercise-enonce-caption");
     this.exerciseResultCaption = document.getElementById("exercise-result-caption");
@@ -310,6 +313,7 @@ class WordAtelierView {
     this.exercisePrevBtn.setAttribute("data-target-id", vm.prevId || "");
     this.exerciseNextBtn.setAttribute("data-target-id", vm.nextId || "");
     this.exerciseToggleDoneBtn.setAttribute("data-id", vm.exercise.id);
+    this.setExerciseWorkFileState(vm.workFile || null);
   }
 
   #formatStep(step) {
@@ -565,6 +569,37 @@ class WordAtelierView {
       return;
     }
     this.headerUserName.textContent = "Non connecté";
+  }
+
+  setExerciseWorkFileState(workFileVm) {
+    if (!this.exercisePickWorkFileBtn || !this.exerciseOpenWorkFileBtn || !this.exerciseWorkFileStatus) return;
+
+    const vm = workFileVm && typeof workFileVm === "object" ? workFileVm : {};
+    const pickerSupported = vm.pickerSupported !== false;
+    const hasLinkedFile = Boolean(vm.fileName);
+
+    this.exercisePickWorkFileBtn.style.display = pickerSupported ? "" : "none";
+    this.exercisePickWorkFileBtn.textContent = hasLinkedFile ? "Changer mon fichier" : "Associer mon fichier";
+
+    this.exerciseOpenWorkFileBtn.style.display = hasLinkedFile ? "" : "none";
+    this.exerciseOpenWorkFileBtn.disabled = Boolean(vm.openDisabled);
+    this.exerciseOpenWorkFileBtn.textContent = hasLinkedFile
+      ? `Ouvrir: ${vm.fileName}`
+      : "Ouvrir mon fichier";
+
+    if (!pickerSupported) {
+      this.exerciseWorkFileStatus.textContent = "Association de fichier indisponible sur ce navigateur.";
+      return;
+    }
+
+    if (typeof vm.statusText === "string" && vm.statusText.trim()) {
+      this.exerciseWorkFileStatus.textContent = vm.statusText.trim();
+      return;
+    }
+
+    this.exerciseWorkFileStatus.textContent = hasLinkedFile
+      ? `Fichier lié: ${vm.fileName}`
+      : "Aucun fichier lié pour cet exercice.";
   }
 
   #bindModalEvents() {
