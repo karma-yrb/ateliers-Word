@@ -56,13 +56,13 @@ function isSkippableCommit(subject) {
 function validate() {
   const lastTag = getLastTag();
   if (!lastTag) {
-    console.log("[release-check] Aucun tag trouvé, validation des commits ignorée pour cette release.");
+    console.error("[release-check] Aucun tag trouvé, validation des commits ignorée pour cette release.");
     return;
   }
 
   const commits = getCommits(`${lastTag}..HEAD`);
   if (!commits.length) {
-    console.log(`[release-check] Aucun commit depuis ${lastTag}.`);
+    console.error(`[release-check] Aucun commit depuis ${lastTag}.`);
     return;
   }
 
@@ -88,7 +88,7 @@ function validate() {
   }
 
   if (!invalid.length) {
-    console.log(`[release-check] ${commits.length} commit(s) valides depuis ${lastTag}.`);
+    console.error(`[release-check] ${commits.length} commit(s) valides depuis ${lastTag}.`);
     return;
   }
 
