@@ -1,0 +1,80 @@
+{
+  "version": "1.1.0",
+  "updatedAt": "2026-05-04T00:00:00.000Z",
+  "releases": [
+    {
+      "version": "1.1.0",
+      "tag": "v1.1.0",
+      "date": "2026-04-30",
+      "releaseType": "minor",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités et améliorations de l'expérience utilisateur."
+      },
+      "summary": "Version mineure avec améliorations de la configuration utilisateur et des contenus d'atelier.",
+      "elements": [
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "",
+          "description": "améliorer la configuration utilisateur et les contenus d'atelier",
+          "breaking": false,
+          "hash": "5858c0e"
+        }
+      ],
+      "counts": {
+        "feat": 1,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 0,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 1
+      }
+    },
+    {
+      "version": "1.0.0",
+      "tag": "v1.0.0",
+      "date": "2026-04-28",
+      "releaseType": "initial",
+      "impact": {
+        "level": "medium",
+        "rationale": "Première version applicative avec le parcours principal."
+      },
+      "summary": "Version initiale de l'application Atelier Word.",
+      "elements": [
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "",
+          "description": "initialiser le projet et afficher la version dans le header",
+          "breaking": false,
+          "hash": "fd2baed"
+        }
+      ],
+      "counts": {
+        "feat": 1,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 0,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 1
+      }
+    }
+  ]
+}

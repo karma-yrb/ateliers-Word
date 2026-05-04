@@ -28,5 +28,50 @@
       "type": "chore",
       "hidden": true
     }
-  ]
+  ],
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "package-lock.json",
+      "type": "json"
+    },
+    {
+      "filename": "index.html",
+      "updater": "./scripts/standard-version-html-updater.cjs"
+    },
+    {
+      "filename": "app/index.html",
+      "updater": "./scripts/standard-version-html-updater.cjs"
+    },
+    {
+      "filename": "releases/releases.json",
+      "type": "json"
+    },
+    {
+      "filename": "releases/releases.js",
+      "updater": "./scripts/standard-version-releases-js-updater.cjs"
+    },
+    {
+      "filename": "app/releases/releases.json",
+      "type": "json"
+    },
+    {
+      "filename": "app/releases/releases.js",
+      "updater": "./scripts/standard-version-releases-js-updater.cjs"
+    }
+  ],
+  "scripts": {
+    "prerelease": "node scripts/validate-release-worktree.mjs",
+    "prebump": "node scripts/validate-release-commits.mjs",
+    "postchangelog": "node scripts/update-release-artifacts.mjs"
+  }
 }

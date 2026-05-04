@@ -137,6 +137,12 @@ body {
   color: #134a51;
 }
 
+.nav-link-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
 .container {
   max-width: 980px;
   margin: 0 auto 24px;
@@ -875,6 +881,9 @@ select {
 
 .asset-actions {
   margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .images-grid {

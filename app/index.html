@@ -36,6 +36,7 @@
     <button class="nav-btn" data-nav="home">Accueil</button>
     <button class="nav-btn" data-nav="themes">Thèmes</button>
     <button class="nav-btn" data-nav="progress">Progression</button>
+    <a class="nav-btn nav-link-btn" href="releases/">Releases</a>
   </nav>
 
   <main class="container">
@@ -121,7 +122,10 @@
         <div class="asset-actions">
           <a id="exercise-docx-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le fichier</a>
           <a id="exercise-download-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le 2ᵉ fichier</a>
+          <button id="exercise-pick-workfile-btn" class="btn btn-soft has-icon" data-icon="📄" type="button">Associer mon fichier</button>
+          <button id="exercise-open-workfile-btn" class="btn btn-soft has-icon" data-icon="↗" type="button" style="display:none;">Ouvrir mon fichier</button>
         </div>
+        <p id="exercise-workfile-status" class="muted status-line">Aucun fichier lié pour cet exercice.</p>
         <div class="images-grid">
           <figure class="image-card">
             <figcaption id="exercise-enonce-caption">Énoncé</figcaption>

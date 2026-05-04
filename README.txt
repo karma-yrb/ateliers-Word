@@ -37,6 +37,16 @@ Scripts npm
 - npm run validate:encoding -> verifie parse JSON/JS, absence BOM et absence de mojibake.
 - npm test -> lance les tests unitaires.
 - npm run release / npm run release:first -> versioning standard-version (necessite un depot git).
+  - met a jour automatiquement la version dans `package*.json`, `CHANGELOG.md`, `index.html`, `app/index.html`.
+  - met a jour automatiquement la page `releases/index.html` via `releases/releases.json` (+ copie `app/releases/`).
+  - valide les commits depuis le dernier tag (Conventional Commits obligatoires).
+  - bloque la release si le worktree git n'est pas propre (publication ciblee uniquement).
+
+Conventions de commit (obligatoire pour release)
+- Format: `type(scope): description` (ou `type: description`).
+- Types recommandes: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `chore`.
+- Exemple: `feat(profile): ajouter la reconfiguration utilisateur`.
+- Si changement incompatible: ajouter `!` ou `BREAKING CHANGE:` dans le body.
 
 Notes
 - La progression est conservee dans le dossier utilisateur via File System Access API.
