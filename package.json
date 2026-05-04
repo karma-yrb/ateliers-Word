@@ -14,7 +14,7 @@
     "test": "node scripts/validate-encoding.mjs && node --test \"tests/**/*.test.mjs\"",
     "release": "standard-version",
     "release:first": "standard-version --first-release",
-    "release:all": "node scripts/release-all.mjs",
+    "release:all": "if exist \"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" (\"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" scripts/release-all.sh) else (bash scripts/release-all.sh)",
     "lance pub": "npm run release:all"
   },
   "devDependencies": {
