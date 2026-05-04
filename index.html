@@ -201,9 +201,9 @@
   <div id="user-setup-modal" class="image-modal" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Configuration utilisateur">
     <div class="modal-content user-setup-content">
       <h2 style="margin-top:0;">Configuration utilisateur</h2>
-      <p class="muted">Choisissez directement le dossier utilisateur (par exemple <code>Documents\AD</code>).</p>
-      <p class="muted">L'application créera automatiquement <code>ProgressionAtelier</code> dans ce dossier.</p>
-      <p id="user-setup-status" class="muted status-line">Choisissez le dossier utilisateur.</p>
+      <p class="muted">L'application scanne automatiquement les dossiers existants dans <code>Documents</code>.</p>
+      <p class="muted">Si votre dossier n'existe pas encore, créez-le dans <code>Documents</code>, puis relancez l'application.</p>
+      <p id="user-setup-status" class="muted status-line">Choisissez un dossier détecté.</p>
 
       <div style="margin-top:12px;display:grid;gap:10px;">
         <div id="user-setup-saved-folders-wrap" style="display:none;">
@@ -211,7 +211,7 @@
           <select id="user-setup-saved-folders-select"></select>
         </div>
 
-        <button id="user-setup-pick-root-btn" class="btn btn-soft has-icon" data-icon="📁" type="button">Ajouter un dossier de travail</button>
+        <button id="user-setup-pick-root-btn" class="btn btn-soft has-icon" data-icon="📁" type="button" style="display:none;">Ajouter un dossier de travail</button>
 
         <label for="user-setup-firstname-input" class="field" style="margin-bottom:0;">Votre prénom</label>
         <input id="user-setup-firstname-input" type="text" maxlength="30" placeholder="Ex: Alice" style="border:2px solid var(--line);border-radius:10px;padding:10px;font:inherit;">

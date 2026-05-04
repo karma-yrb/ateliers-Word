@@ -878,16 +878,26 @@ class WordAtelierController {
       const updateFolderStatus = () => {
         if (!rootHandle) {
           status.textContent = hasScannedDocuments
-            ? "Choisissez un dossier de travail dans la liste ou ajoutez-en un nouveau."
-            : "Scan automatique de Documents indisponible (autorisation manquante). Ajoutez un dossier de travail.";
+            ? "Choisissez un dossier de travail détecté. Si votre dossier n'existe pas encore, créez-le dans Documents puis relancez l'application."
+            : "Scan automatique de Documents indisponible (autorisation manquante). Créez votre dossier dans Documents puis relancez l'application.";
           return;
         }
         status.textContent = `Dossier sélectionné : ${rootHandle.name || "dossier utilisateur"}.`;
       };
 
       const setPickButtonMode = () => {
-        pickBtn.textContent = "Ajouter un dossier de travail";
-        pickBtn.setAttribute("data-icon", "📁");
+        pickBtn.style.display = "none";
+      };
+
+      const setFirstNameEditMode = (canEdit) => {
+        firstNameInput.readOnly = !canEdit;
+        if (canEdit) {
+          firstNameInput.removeAttribute("aria-readonly");
+          firstNameInput.placeholder = "Ex: Alice";
+        } else {
+          firstNameInput.setAttribute("aria-readonly", "true");
+          firstNameInput.placeholder = "Prénom du dossier";
+        }
       };
 
       const renderSavedFolders = () => {
@@ -980,8 +990,16 @@ class WordAtelierController {
         selectedSavedId = folderId;
         rootHandle = folder.handle || null;
         resolvedInitials = this.#deriveInitials(rootHandle, "");
+        setFirstNameEditMode(false);
 
         if (!requestPermission) {
+          const profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
+          if (profile && profile.firstName) {
+            firstNameInput.value = profile.firstName;
+            setFirstNameEditMode(false);
+          } else {
+            setFirstNameEditMode(true);
+          }
           updateFolderStatus();
           return;
         }
@@ -1004,7 +1022,14 @@ class WordAtelierController {
           if (profile) {
             const profileInitials = this.storage.normalizeInitials(profile.initials);
             if (profileInitials) resolvedInitials = profileInitials;
-            if (profile.firstName) firstNameInput.value = profile.firstName;
+            if (profile.firstName) {
+              firstNameInput.value = profile.firstName;
+              setFirstNameEditMode(false);
+            } else {
+              setFirstNameEditMode(true);
+            }
+          } else {
+            setFirstNameEditMode(true);
           }
           updateFolderStatus();
         } catch {
@@ -1036,7 +1061,7 @@ class WordAtelierController {
         setPickButtonMode();
 
         if (!scannedFolders.length) {
-          status.textContent = "Aucun sous-dossier trouvé dans Documents. Ajoutez un dossier de travail.";
+          status.textContent = "Aucun dossier prêt trouvé dans Documents. Créez votre dossier dans Documents puis relancez l'application.";
           return true;
         }
 
@@ -1077,7 +1102,10 @@ class WordAtelierController {
             }
             if (profile.firstName) {
               firstNameInput.value = profile.firstName;
+              setFirstNameEditMode(false);
             }
+          } else {
+            setFirstNameEditMode(true);
           }
 
           selectedSavedId = await findSavedFolderIdByHandle(rootHandle);
@@ -1145,6 +1173,7 @@ class WordAtelierController {
       modal.setAttribute("aria-hidden", "false");
       resolvedInitials = this.#deriveInitials(rootHandle, defaults.initials);
       firstNameInput.value = defaultFirstName || "";
+      setFirstNameEditMode(!firstNameInput.value);
       (async () => {
         setPickButtonMode();
         await scanDocumentsBeforeAdd();
@@ -1157,6 +1186,9 @@ class WordAtelierController {
           await applySavedFolderSelection(selectedSavedId, { requestPermission: false });
         } else {
           updateFolderStatus();
+        }
+        if (rootHandle && !firstNameInput.value) {
+          setFirstNameEditMode(true);
         }
         firstNameInput.focus();
       })();
