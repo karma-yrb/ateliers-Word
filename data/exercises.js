@@ -1062,7 +1062,7 @@ window.WORD_ATELIER_DATA = {
         "extraImages": [],
         "enonceImages": [],
         "resultImages": [
-          "https://www.clic-formation.net/images/02-word/word-competence-04/ex-004/ex-004.jpg"
+          "data/ex-004.jpg"
         ]
       }
     },
