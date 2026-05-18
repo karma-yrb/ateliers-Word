@@ -1,7 +1,44 @@
 {
-  "version": "1.2.24",
-  "updatedAt": "2026-05-18T15:02:39.806Z",
+  "version": "1.2.25",
+  "updatedAt": "2026-05-18T15:08:20.001Z",
   "releases": [
+    {
+      "version": "1.2.25",
+      "tag": "v1.2.25",
+      "date": "2026-05-18",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "71f0234"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 1,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 1
+      }
+    },
     {
       "version": "1.2.24",
       "tag": "v1.2.24",
