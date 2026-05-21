@@ -708,13 +708,16 @@
       "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-04/ex-001/ex-001.webp",
       "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-04/ex-001/ex-001.jpg",
       "description": "Mise en page (Gestion de l'espace) :\nMarges : Configurer des marges de page identiques (haut, bas, gauche, droite) d'au moins 2,5 cm pour centrer le bloc de texte.\nAlignement horizontal : Centrer le texte horizontalement sur la page.\nAlignement vertical : Utiliser les options de mise en page pour centrer verticalement le paragraphe au milieu de la page blanche.\n\nMise en forme du texte (Groupe Police) :\nAppliquer la police Arial Rounded MT Bold (ou une police épaisse équivalente).\nDéfinir la taille des caractères à 24 points.\nAppliquer l'attribut Italique à l'ensemble du texte.\n\nMise en forme du paragraphe (Groupe Paragraphe) :\nEspacement : Ajuster l'interligne et l'espacement (avant/après) pour que le texte s'étende de manière harmonieuse et utilise la quasi-totalité de la hauteur disponible dans le cadre.\nBordure et ombre : Appliquer une bordure de 0,5 pt de style \"Ombré\" directement au paragraphe (et non à la page). Ajuster les options de distance du texte si nécessaire pour que le cadre ne colle pas aux lettres.",
-      "consignes": [
+      "instructions": [
+        "Mise en page (Gestion de l'espace) :",
         "Marges : Configurer des marges de page identiques (haut, bas, gauche, droite) d'au moins 2,5 cm pour centrer le bloc de texte.",
         "Alignement horizontal : Centrer le texte horizontalement sur la page.",
         "Alignement vertical : Utiliser les options de mise en page pour centrer verticalement le paragraphe au milieu de la page blanche.",
+        "Mise en forme du texte (Groupe Police) :",
         "Appliquer la police Arial Rounded MT Bold (ou une police épaisse équivalente).",
         "Définir la taille des caractères à 24 points.",
         "Appliquer l'attribut Italique à l'ensemble du texte.",
+        "Mise en forme du paragraphe (Groupe Paragraphe) :",
         "Espacement : Ajuster l'interligne et l'espacement (avant/après) pour que le texte s'étende de manière harmonieuse et utilise la quasi-totalité de la hauteur disponible dans le cadre.",
         "Bordure et ombre : Appliquer une bordure de 0,5 pt de style \"Ombré\" directement au paragraphe (et non à la page). Ajuster les options de distance du texte si nécessaire pour que le cadre ne colle pas aux lettres."
       ]
