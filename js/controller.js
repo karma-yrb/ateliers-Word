@@ -88,8 +88,15 @@ class WordAtelierController {
 
   #bindStaticEvents() {
     for (const btn of this.view.navButtons) {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         const page = btn.getAttribute("data-nav");
+        if (!this.isReady && page !== "home") {
+          const ready = await this.#ensureReadyFromUserGesture();
+          if (!ready) {
+            window.location.hash = "#home";
+            return;
+          }
+        }
         if (page === "home") window.location.hash = "#home";
         if (page === "themes") window.location.hash = "#themes";
         if (page === "progress") window.location.hash = "#progress";
@@ -99,8 +106,8 @@ class WordAtelierController {
 
     document.getElementById("home-start-btn").addEventListener("click", async () => {
       if (!this.isReady) {
-        const resumed = await this.#resumePendingSessionFromUserGesture();
-        if (!resumed) return;
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
       }
       const resume = this.model.getResumeExercise();
       if (resume) {
@@ -116,8 +123,11 @@ class WordAtelierController {
       }
     });
 
-    document.getElementById("exercise-back-btn").addEventListener("click", () => {
-      if (!this.isReady) return;
+    document.getElementById("exercise-back-btn").addEventListener("click", async () => {
+      if (!this.isReady) {
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
+      }
       if (this.currentAffinityId) {
         window.location.hash = `#affinity/${this.currentAffinityId}/${this.currentThemeId || ""}`;
       } else {
@@ -125,19 +135,28 @@ class WordAtelierController {
       }
     });
 
-    document.getElementById("affinity-back-btn").addEventListener("click", () => {
-      if (!this.isReady) return;
+    document.getElementById("affinity-back-btn").addEventListener("click", async () => {
+      if (!this.isReady) {
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
+      }
       window.location.hash = "#themes";
     });
 
-    this.view.exercisePrevBtn.addEventListener("click", () => {
-      if (!this.isReady) return;
+    this.view.exercisePrevBtn.addEventListener("click", async () => {
+      if (!this.isReady) {
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
+      }
       const targetId = this.view.exercisePrevBtn.getAttribute("data-target-id");
       if (targetId) window.location.hash = `#exercise/${targetId}`;
     });
 
     this.view.exerciseNextBtn.addEventListener("click", async () => {
-      if (!this.isReady) return;
+      if (!this.isReady) {
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
+      }
       const currentId = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
       const wasDone = currentId ? this.model.getIsDone(currentId) : false;
       if (currentId && !wasDone) {
@@ -154,7 +173,10 @@ class WordAtelierController {
     });
 
     this.view.exerciseToggleDoneBtn.addEventListener("click", async () => {
-      if (!this.isReady) return;
+      if (!this.isReady) {
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
+      }
       const id = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
       if (!id) return;
       const isDone = this.model.getIsDone(id);
@@ -287,8 +309,12 @@ class WordAtelierController {
       }
       const headerProfileBtn = document.getElementById("header-user-profile-btn");
       if (headerProfileBtn) {
-        headerProfileBtn.addEventListener("click", () => {
+        headerProfileBtn.addEventListener("click", async () => {
           closeUserMenu();
+          if (!this.isReady) {
+            const ready = await this.#ensureReadyFromUserGesture();
+            if (!ready) return;
+          }
           window.location.hash = "#profile";
         });
       }
@@ -296,8 +322,11 @@ class WordAtelierController {
   }
 
   #bindDynamicEvents() {
-    const onAction = (event) => {
-      if (!this.isReady) return;
+    const onAction = async (event) => {
+      if (!this.isReady) {
+        const ready = await this.#ensureReadyFromUserGesture();
+        if (!ready) return;
+      }
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
       const actionEl = target.closest("[data-action]");
@@ -594,6 +623,26 @@ class WordAtelierController {
     await this.#loadProgressForSession(session);
     this.isReady = true;
     this.#renderFromHash();
+    return true;
+  }
+
+  async #ensureReadyFromUserGesture() {
+    if (this.isReady) return true;
+
+    if (this.pendingPermissionSession) {
+      return this.#resumePendingSessionFromUserGesture();
+    }
+
+    const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
+    if (!session) {
+      this.view.setProgressStatus("Configuration utilisateur annulée.");
+      return false;
+    }
+
+    this.userSession = session;
+    this.pendingPermissionSession = null;
+    await this.#loadProgressForSession(session);
+    this.isReady = true;
     return true;
   }
 
