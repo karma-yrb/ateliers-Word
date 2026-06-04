@@ -130,12 +130,13 @@
   }
 
   async findNestedProgressFolder(parentHandle) {
-    if (!parentHandle || parentHandle.kind !== "directory") return null;
+  if (!parentHandle || parentHandle.kind !== "directory") return null;
 
-    const matches = [];
-    const maxItems = 250;
-    let inspected = 0;
+  const matches = [];
+  const maxItems = 250;
+  let inspected = 0;
 
+  try {                                          // ← AJOUTER
     for await (const [name, handle] of parentHandle.entries()) {
       inspected += 1;
       if (inspected > maxItems) break;
@@ -152,9 +153,12 @@
 
       if (matches.length > 1) return null;
     }
+  } catch {                                      // ← AJOUTER
+    return null;                                 // ← AJOUTER
+  }                                              // ← AJOUTER
 
-    return matches.length === 1 ? matches[0] : null;
-  }
+  return matches.length === 1 ? matches[0] : null;
+}
 
   async listUserFolders(rootHandle) {
     const users = [];

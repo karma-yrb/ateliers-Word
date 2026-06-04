@@ -1194,7 +1194,13 @@ class WordAtelierController {
 
           // Résolution : si le dossier contient déjà un sous-dossier unique avec ProgressionAtelier,
           // descendre dedans pour éviter la duplication.
-          const resolvedHandle = await this.storage.resolveUserRootHandle(handle, "") || handle;
+          let resolvedHandle = handle;
+          try {
+            resolvedHandle = await this.storage.resolveUserRootHandle(handle, "") || handle;
+          } catch {
+            resolvedHandle = handle;  // dossier nouveau → on reste dessus, c'est normal
+          }
+          
           if (resolvedHandle !== handle) {
             const ok = await this.storage.ensureWritePermission(resolvedHandle);
             if (!ok) {
