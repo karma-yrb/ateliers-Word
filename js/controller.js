@@ -556,6 +556,7 @@ class WordAtelierController {
       this.#saveProgress();
     }
     this.view.showPage("exercise");
+    window.scrollTo({ top: 0, behavior: "instant" });
 
     const done = this.model.getIsDone(exercise.id);
     const steps = this.model.getStepsForExercise(exercise);
