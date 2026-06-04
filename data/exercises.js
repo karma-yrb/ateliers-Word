@@ -961,9 +961,13 @@ window.WORD_ATELIER_DATA = {
       "description": "Téléchargez le texte de l'exercice ci-contre, vous travaillerez dans le bloc \"Paragraphe\"",
       "consignes": [],
       "instructions": [
-        "Titre : bords doubles 2,6 pt, Trame arrière-plan : gris 5 %.",
-        "Sous titre : Bordure 1 pt, ombre dist. 0,19cm Largeur de 2 à 14 sur la règle haute.",
-        "Le dialogue de Dacha et Sacha au mieux en fonction de l'exemple."
+        "Veuillez à bien séparer les paragraphe et mettre tout le texte en police \"Times New Roman\"",
+        "itre: 18pt, centré, bords doubles 3/4 pt, trame de fond gris 5 %, appliqué à Paragraphe.",
+        "Sous titre: Bordure ombre, 1 pt, Largeur de 2 à 14 sur la règle haute.",
+	"Reste du texte : 14 pt",
+	"Dacha et Sacha : gras",
+	"Dialogue Dacha : Bordure pointillés 2, couleur bleu, Largeur 2 1/4 pt, appliqué à Paragraphe",
+	"Dialogue Sacha : Bordure pointillés 2, Trame de fond Remplissage Orange 80%, appliqué à Paragraphe"
       ],
       "scrape": {
         "ok": true,
