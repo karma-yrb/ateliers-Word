@@ -959,15 +959,24 @@
       "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-04/ex-002/ex-002.webp",
       "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-04/ex-002/ex-002.jpg",
       "description": "Téléchargez le texte de l'exercice ci-contre, vous travaillerez dans le bloc \"Paragraphe\"",
-      "consignes": [],
-      "instructions": [
-        "Veuillez à bien séparer les paragraphe et mettre tout le texte en police \"Times New Roman\"",
-        "itre: 18pt, centré, bords doubles 3/4 pt, trame de fond gris 5 %, appliqué à Paragraphe.",
+      "preamble": [
+        "Veuillez à bien séparer les paragraphe et mettre tout le texte en police \"Times New Roman\""
+      ],
+      "consignes": [
+        "Titre: 18pt, centré, bords doubles 3/4 pt, trame de fond gris 5 %, appliqué à Paragraphe.",
         "Sous titre: Bordure ombre, 1 pt, Largeur de 2 à 14 sur la règle haute.",
-	"Reste du texte : 14 pt",
-	"Dacha et Sacha : gras",
-	"Dialogue Dacha : Bordure pointillés 2, couleur bleu, Largeur 2 1/4 pt, appliqué à Paragraphe",
-	"Dialogue Sacha : Bordure pointillés 2, Trame de fond Remplissage Orange 80%, appliqué à Paragraphe"
+        "Reste du texte : 14 pt",
+        "Dacha et Sacha : gras",
+        "Dialogue Dacha : Bordure pointillés 2, couleur bleu, Largeur 2 1/4 pt, appliqué à Paragraphe",
+        "Dialogue Sacha : Bordure pointillés 2, Trame de fond Remplissage Orange 80%, appliqué à Paragraphe"
+      ],
+      "instructions": [
+        "Titre: 18pt, centré, bords doubles 3/4 pt, trame de fond gris 5 %, appliqué à Paragraphe.",
+        "Sous titre: Bordure ombre, 1 pt, Largeur de 2 à 14 sur la règle haute.",
+        "Reste du texte : 14 pt",
+        "Dacha et Sacha : gras",
+        "Dialogue Dacha : Bordure pointillés 2, couleur bleu, Largeur 2 1/4 pt, appliqué à Paragraphe",
+        "Dialogue Sacha : Bordure pointillés 2, Trame de fond Remplissage Orange 80%, appliqué à Paragraphe"
       ],
       "scrape": {
         "ok": true,
