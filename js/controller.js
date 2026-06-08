@@ -1135,6 +1135,11 @@ class WordAtelierController {
           return;
         }
 
+        // Tente d'obtenir la permission FS. Si ce n'est pas possible (pas de geste
+        // utilisateur explicite, handle périmé, etc.), on bascule en mode dégradé :
+        // le prénom est chargé depuis IndexedDB et la permission réelle sera demandée
+        // au clic sur Valider — exactement comme pour requestPermission: false.
+        let permissionOk = false;
         try {
           let selectedHandle = rootHandle;
           let ok = await this.storage.ensureWritePermission(selectedHandle);
@@ -1142,37 +1147,49 @@ class WordAtelierController {
             selectedHandle = await this.storage.resolveUserRootHandle(selectedHandle, resolvedInitials);
             ok = await this.storage.ensureWritePermission(selectedHandle);
           }
-          if (!ok) {
-            status.textContent = "Permission refusée sur ce dossier. Sélectionnez-en un autre ou ajoutez-en un nouveau.";
-            return;
+          if (ok) {
+            rootHandle = selectedHandle;
+            resolvedInitials = this.#deriveInitials(rootHandle, "");
+            permissionOk = true;
           }
+        } catch {
+          // Pas de permission immédiate (pas de geste utilisateur) — mode dégradé.
+          permissionOk = false;
+        }
 
-          rootHandle = selectedHandle;
-          resolvedInitials = this.#deriveInitials(rootHandle, "");
-          const profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
-          if (profile) {
-            const profileInitials = this.storage.normalizeInitials(profile.initials);
-            if (profileInitials) resolvedInitials = profileInitials;
-            if (profile.firstName) {
-              firstNameInput.value = profile.firstName;
-              setFirstNameEditMode(false);
-            } else {
-              // Profil sans prénom : champ vide et éditable.
-              firstNameInput.value = "";
-              setFirstNameEditMode(true);
-            }
+        // Chargement du profil : depuis le FS si permission obtenue,
+        // sinon tentative quand même (loadUserProfile est robuste aux erreurs).
+        let profile = null;
+        try {
+          profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
+        } catch {
+          profile = null;
+        }
+
+        if (profile) {
+          const profileInitials = this.storage.normalizeInitials(profile.initials);
+          if (profileInitials) resolvedInitials = profileInitials;
+          if (profile.firstName) {
+            firstNameInput.value = profile.firstName;
+            setFirstNameEditMode(false);
           } else {
-            // Aucun profil pour ce dossier : champ vide et éditable.
-            // On n'utilise pas defaultFirstName qui appartient à l'ancien utilisateur.
             firstNameInput.value = "";
             setFirstNameEditMode(true);
           }
-          setFirstNameVisibility(true);
-          setValidateVisibility(true);
+        } else {
+          firstNameInput.value = "";
+          setFirstNameEditMode(true);
+        }
+
+        setFirstNameVisibility(true);
+        setValidateVisibility(true);
+        // En mode dégradé, on informe discrètement que la permission sera demandée à la validation.
+        if (!permissionOk) {
+          status.textContent = rootHandle
+            ? `Dossier sélectionné : ${rootHandle.name || "dossier utilisateur"}. La permission d'accès sera confirmée à la validation.`
+            : "Choisissez un dossier de travail dans la liste ci-dessous.";
+        } else {
           updateFolderStatus();
-        } catch {
-          setValidateVisibility(false);
-          status.textContent = "Impossible d'ouvrir ce dossier. Sélectionnez-en un autre.";
         }
       };
 
