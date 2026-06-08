@@ -1,7 +1,44 @@
 window.RELEASES_DATA = {
-  "version": "1.2.42",
-  "updatedAt": "2026-06-08T11:02:38.705Z",
+  "version": "1.2.43",
+  "updatedAt": "2026-06-08T12:11:05.714Z",
   "releases": [
+    {
+      "version": "1.2.43",
+      "tag": "v1.2.43",
+      "date": "2026-06-08",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "f0c4f2f"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 1,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 1
+      }
+    },
     {
       "version": "1.2.42",
       "tag": "v1.2.42",
