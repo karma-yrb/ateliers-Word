@@ -556,7 +556,6 @@ class WordAtelierController {
       this.#saveProgress();
     }
     this.view.showPage("exercise");
-    window.scrollTo({ top: 0, behavior: "instant" });
 
     const done = this.model.getIsDone(exercise.id);
     const steps = this.model.getStepsForExercise(exercise);
@@ -989,7 +988,7 @@ class WordAtelierController {
       const updateFolderStatus = () => {
         if (!rootHandle) {
           setValidateVisibility(false);
-          status.textContent = hasScannedDocuments
+          status.textContent = savedFolders.length > 0
             ? "Choisissez un dossier de travail dans la liste ci-dessous."
             : "Cliquez sur le bouton ci-dessous pour accéder à vos dossiers dans Documents.";
           return;
