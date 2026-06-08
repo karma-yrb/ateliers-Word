@@ -1018,14 +1018,11 @@ class WordAtelierController {
       };
 
       const setFirstNameEditMode = (canEdit) => {
-        firstNameInput.readOnly = !canEdit;
-        if (canEdit) {
-          firstNameInput.removeAttribute("aria-readonly");
-          firstNameInput.placeholder = "Ex: Alice";
-        } else {
-          firstNameInput.setAttribute("aria-readonly", "true");
-          firstNameInput.placeholder = "Prénom du dossier";
-        }
+        // Le champ est toujours éditable : l'utilisateur doit pouvoir corriger
+        // ou changer son prénom même si un profil existant a été chargé.
+        firstNameInput.readOnly = false;
+        firstNameInput.removeAttribute("aria-readonly");
+        firstNameInput.placeholder = canEdit ? "Ex: Alice" : "Modifier si besoin";
       };
 
       const renderSavedFolders = () => {
