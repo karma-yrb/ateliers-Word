@@ -1,7 +1,35 @@
 {
-  "version": "1.2.43",
-  "updatedAt": "2026-06-08T12:11:05.714Z",
+  "version": "1.2.44",
+  "updatedAt": "2026-06-09T07:12:57.103Z",
   "releases": [
+    {
+      "version": "1.2.44",
+      "tag": "v1.2.44",
+      "date": "2026-06-09",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 0,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 0
+      }
+    },
     {
       "version": "1.2.43",
       "tag": "v1.2.43",

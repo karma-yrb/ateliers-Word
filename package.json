@@ -1,6 +1,6 @@
 {
   "name": "word-atelier",
-  "version": "1.2.43",
+  "version": "1.2.44",
   "private": true,
   "description": "Atelier Word - application pedagogique en HTML/CSS/JS vanilla.",
   "type": "module",
