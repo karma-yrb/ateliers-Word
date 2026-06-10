@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles-ux-patch.css">
+  <link rel="stylesheet" href="styles-redesign.css">
   <script defer src="data/exercises.js"></script>
   <script defer src="js/model.js"></script>
   <script defer src="js/view.js"></script>
@@ -109,74 +109,103 @@
       </article>
     </section>
 
-    <section id="page-exercise" class="page" aria-labelledby="exercise-title">
-      <article class="card exercise-intro-card">
-        <div class="exercise-top-row">
-          <button id="exercise-back-btn" class="btn btn-soft has-icon" data-icon="◀">Retour thèmes</button>
-          <span id="exercise-status-pill" class="status-pill todo">À faire</span>
-        </div>
-        <nav id="exercise-breadcrumb" aria-label="Fil d'Ariane"></nav>
-        <h2 id="exercise-title">Exercice</h2>
-        <p id="exercise-theme-line" class="muted"></p>
-        <div class="exercise-theme-progress-wrap">
-          <span id="exercise-theme-progress"></span>
-          <div class="exercise-theme-progress-track">
-            <div id="exercise-theme-progress-bar"></div>
+<section id="page-exercise" class="page" aria-labelledby="exercise-title">
+      <div class="exercise-layout">
+
+        <div class="exercise-col-main">
+
+          <article class="card exercise-intro-card">
+            <div class="exercise-top-row">
+              <button id="exercise-back-btn" class="btn btn-soft has-icon" data-icon="◀">Retour thèmes</button>
+              <span id="exercise-status-pill" class="status-pill todo">À faire</span>
+            </div>
+            <nav id="exercise-breadcrumb" aria-label="Fil d'Ariane"></nav>
+            <h2 id="exercise-title">Exercice</h2>
+            <p id="exercise-theme-line" class="muted"></p>
+            <div class="exercise-theme-progress-wrap">
+              <span id="exercise-theme-progress"></span>
+              <div class="exercise-theme-progress-track">
+                <div id="exercise-theme-progress-bar"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h2>Étapes à suivre</h2>
+            <p id="exercise-steps-preamble" class="steps-preamble" style="display:none"></p>
+            <ol id="exercise-steps" class="steps-list"></ol>
+          </article>
+
+          <div id="exercise-extra-wrap" class="extra-wrap card" style="display:none;">
+            <h3>Images illustratives</h3>
+            <div id="exercise-extra-images" class="extra-images"></div>
           </div>
-        </div>
-      </article>
 
-      <article id="exercise-files-card" class="card">
-        <h2>Préparer l'exercice</h2>
-        <div class="asset-actions">
-          <a id="exercise-docx-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le fichier .docx</a>
-          <a id="exercise-download-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le 2ᵉ fichier</a>
-          <button id="exercise-pick-workfile-btn" class="btn btn-soft has-icon" data-icon="📁" type="button" style="display:none;">Ouvrir mon dossier</button>
-          <button id="exercise-open-workfile-btn" class="btn btn-soft has-icon" data-icon="↗" type="button" style="display:none;">Ouvrir mon fichier</button>
-        </div>
-        <ol class="exercise-files-steps">
-          <li>Téléchargez le fichier ci-dessus.</li>
-          <li>Ouvrez-le dans Word, puis cliquez sur <strong>Activer la modification</strong> (bandeau jaune en haut).</li>
-          <li>Gardez cette page ouverte à côté de Word pour suivre les étapes.</li>
-        </ol>
-        <p id="exercise-workfile-status" class="muted status-line"></p>
-      </article>
+          <article class="card exercise-actions-mobile-card">
+            <div class="exercise-actions-row">
+              <button id="exercise-prev-btn" class="btn btn-soft has-icon" data-icon="⟵">Précédent</button>
+              <button id="exercise-toggle-done-btn" class="btn has-icon" data-icon="&#9675;">Marquer comme fait</button>
+              <button id="exercise-next-btn" class="btn btn-soft has-icon icon-right" data-icon="⟶">Suivant</button>
+            </div>
+          </article>
 
-      <article class="card">
-        <h2>Aperçu de l'exercice</h2>
-        <div class="images-grid">
-          <figure class="image-card">
-            <figcaption id="exercise-enonce-caption">Énoncé (document de départ)</figcaption>
-            <div id="exercise-enonce-images" class="image-stack"></div>
-          </figure>
-          <figure class="image-card result-card">
-            <figcaption id="exercise-result-caption">Résultat attendu</figcaption>
-            <div id="exercise-result-images" class="image-stack"></div>
-          </figure>
         </div>
-        <div id="exercise-extra-wrap" class="extra-wrap">
-          <h3>Images illustratives</h3>
-          <div id="exercise-extra-images" class="extra-images"></div>
-        </div>
-      </article>
 
-      <article class="card">
-        <h2>Étapes à suivre</h2>
-        <p id="exercise-steps-preamble" class="steps-preamble" style="display:none"></p>
-        <ol id="exercise-steps" class="steps-list"></ol>
-      </article>
+        <div class="exercise-col-side">
 
-      <article class="card">
-        <div id="exercise-save-nudge" hidden>
-          <span class="exercise-save-nudge-icon" aria-hidden="true">💾</span>
-          <span>Pensez à enregistrer votre travail dans Word (<strong>Ctrl+S</strong>) et à ranger le fichier dans votre dossier utilisateur avant de valider.</span>
+          <article id="exercise-files-card" class="card exercise-side-start">
+            <div class="side-section-label">
+              <span class="side-section-num">1</span>
+              Commencer par ici
+            </div>
+            <div class="asset-actions">
+              <a id="exercise-docx-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le fichier Word</a>
+              <a id="exercise-download-btn" class="btn has-icon" data-icon="⬇" target="_blank" rel="noopener">Télécharger le 2ᵉ fichier</a>
+              <button id="exercise-pick-workfile-btn" class="btn btn-soft has-icon" data-icon="📁" type="button" style="display:none;">Ouvrir mon dossier</button>
+              <button id="exercise-open-workfile-btn" class="btn btn-soft has-icon" data-icon="↗" type="button" style="display:none;">Ouvrir mon fichier</button>
+            </div>
+            <p class="exercise-docx-hint">Ouvrez dans Word → cliquez sur <strong>Activer la modification</strong></p>
+            <p id="exercise-workfile-status" class="muted status-line"></p>
+          </article>
+
+          <article class="card exercise-side-images">
+            <div class="side-section-label" style="padding: 10px 14px 8px; margin-bottom: 0;">
+              <span class="side-section-num">2</span>
+              Aperçu de l'exercice
+            </div>
+            <div class="images-grid">
+              <figure class="image-card">
+                <figcaption id="exercise-enonce-caption" data-badge="Point de départ">Énoncé</figcaption>
+                <div id="exercise-enonce-images" class="image-stack"></div>
+              </figure>
+              <figure class="image-card result-card">
+                <figcaption id="exercise-result-caption" data-badge="À reproduire">Résultat attendu</figcaption>
+                <div id="exercise-result-images" class="image-stack"></div>
+              </figure>
+            </div>
+          </article>
+
+          <article class="card exercise-side-done">
+            <div class="side-section-label">
+              <span class="side-section-num">3</span>
+              Une fois l'exercice fait
+            </div>
+            <div id="exercise-save-nudge" hidden>
+              <span class="exercise-save-nudge-icon" aria-hidden="true">💾</span>
+              <span>Enregistrez dans Word (<strong>Ctrl+S</strong>) et rangez le fichier dans votre dossier utilisateur.</span>
+            </div>
+            <button id="exercise-toggle-done-btn" class="btn has-icon" data-icon="&#9675;">Marquer comme fait</button>
+          </article>
+
+          <article class="card exercise-side-nav">
+            <div class="exercise-side-nav-row">
+              <button id="exercise-prev-btn" class="btn btn-soft has-icon" data-icon="⟵">Précédent</button>
+              <button id="exercise-next-btn" class="btn btn-soft has-icon icon-right" data-icon="⟶">Suivant</button>
+            </div>
+          </article>
+
         </div>
-        <div class="exercise-actions-row">
-          <button id="exercise-prev-btn" class="btn btn-soft has-icon" data-icon="⟵">Exercice précédent</button>
-          <button id="exercise-toggle-done-btn" class="btn has-icon" data-icon="&#9675;">Marquer comme fait</button>
-          <button id="exercise-next-btn" class="btn btn-soft has-icon icon-right" data-icon="⟶">Exercice suivant</button>
-        </div>
-      </article>
+      </div>
     </section>
 
     <section id="page-progress" class="page" aria-labelledby="progress-title">

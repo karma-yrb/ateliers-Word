@@ -143,53 +143,62 @@ class WordAtelierController {
       window.location.hash = "#themes";
     });
 
-    this.view.exercisePrevBtn.addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const targetId = this.view.exercisePrevBtn.getAttribute("data-target-id");
-      if (targetId) window.location.hash = `#exercise/${targetId}`;
-    });
+    for (const btn of (this.view.exercisePrevBtns || [this.view.exercisePrevBtn])) {
+      if (!btn) continue;
+      btn.addEventListener("click", async () => {
+        if (!this.isReady) {
+          const ready = await this.#ensureReadyFromUserGesture();
+          if (!ready) return;
+        }
+        const targetId = btn.getAttribute("data-target-id");
+        if (targetId) window.location.hash = `#exercise/${targetId}`;
+      });
+    }
 
-    this.view.exerciseNextBtn.addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const currentId = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
-      const wasDone = currentId ? this.model.getIsDone(currentId) : false;
-      if (currentId && !wasDone) {
-        const canContinue = await this.#showSaveReminderModal("next", currentId);
-        if (!canContinue) return;
-      }
+    for (const btn of (this.view.exerciseNextBtns || [this.view.exerciseNextBtn])) {
+      if (!btn) continue;
+      btn.addEventListener("click", async () => {
+        if (!this.isReady) {
+          const ready = await this.#ensureReadyFromUserGesture();
+          if (!ready) return;
+        }
+        const currentId = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
+        const wasDone = currentId ? this.model.getIsDone(currentId) : false;
+        if (currentId && !wasDone) {
+          const canContinue = await this.#showSaveReminderModal("next", currentId);
+          if (!canContinue) return;
+        }
+        if (currentId && !wasDone) {
+          this.model.markExerciseDone(currentId, true);
+          this.#saveProgress();
+        }
+        const targetId = btn.getAttribute("data-target-id");
+        if (targetId) window.location.hash = `#exercise/${targetId}`;
+      });
+    }
 
-      if (currentId && !wasDone) {
-        this.model.markExerciseDone(currentId, true);
+    for (const btn of (this.view.exerciseToggleDoneBtns || [this.view.exerciseToggleDoneBtn])) {
+      if (!btn) continue;
+      btn.addEventListener("click", async () => {
+        if (!this.isReady) {
+          const ready = await this.#ensureReadyFromUserGesture();
+          if (!ready) return;
+        }
+        const id = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
+        if (!id) return;
+        const isDone = this.model.getIsDone(id);
+
+        if (!isDone) {
+          const canContinue = await this.#showSaveReminderModal("done", id);
+          if (!canContinue) return;
+        }
+
+        this.model.markExerciseDone(id, !isDone);
         this.#saveProgress();
-      }
-      const targetId = this.view.exerciseNextBtn.getAttribute("data-target-id");
-      if (targetId) window.location.hash = `#exercise/${targetId}`;
-    });
-
-    this.view.exerciseToggleDoneBtn.addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const id = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
-      if (!id) return;
-      const isDone = this.model.getIsDone(id);
-
-      if (!isDone) {
-        const canContinue = await this.#showSaveReminderModal("done", id);
-        if (!canContinue) return;
-      }
-
-      this.model.markExerciseDone(id, !isDone);
-      this.#saveProgress();
-      this.#renderExercisePage(id);
-    });
+        this.view.updateSaveNudge(!this.model.getIsDone(id));
+        this.#renderExercisePage(id);
+      });
+    }
 
     if (this.view.exercisePickWorkFileBtn) {
       this.view.exercisePickWorkFileBtn.addEventListener("click", async () => {
@@ -382,6 +391,9 @@ class WordAtelierController {
     this.view.themesAffinityList.addEventListener("click", onAction);
     this.view.affinityThemeList.addEventListener("click", onAction);
     this.view.affinityThemeList.addEventListener("keydown", onActionKeydown);
+    // Breadcrumb dans la page exercice
+    const exercisePage = document.getElementById("page-exercise");
+    if (exercisePage) exercisePage.addEventListener("click", onAction);
   }
 
   #renderFromHash() {
@@ -561,6 +573,15 @@ class WordAtelierController {
     const steps = this.model.getStepsForExercise(exercise);
     const visuals = this.model.getVisualsForExercise(exercise);
     const { prevId, nextId } = this.model.getNeighbors(exercise.id);
+
+    const themeExercises = this.model.getExercisesByTheme(exercise.moduleId);
+    const themeIndex = themeExercises.findIndex((e) => e.id === exercise.id) + 1;
+    const themeDone = themeExercises.filter((e) => this.model.getIsDone(e.id)).length;
+    const themeTotal = themeExercises.length;
+    const affinityGroups = this.model.getThemeAffinityGroups();
+    const affinityGroup = affinityGroups.find((g) => g.id === this.currentAffinityId);
+    const affinityLabel = affinityGroup ? affinityGroup.label : "";
+
     this.view.renderExercise({
       exercise,
       done,
@@ -568,6 +589,11 @@ class WordAtelierController {
       visuals,
       prevId,
       nextId,
+      affinityId: this.currentAffinityId || "",
+      affinityLabel,
+      themeIndex,
+      themeDone,
+      themeTotal,
       workFile: {
         pickerSupported: this.storage && this.storage.supportsWorkFilePicker && this.storage.supportsWorkFilePicker(),
       },
@@ -988,7 +1014,7 @@ class WordAtelierController {
       const updateFolderStatus = () => {
         if (!rootHandle) {
           setValidateVisibility(false);
-          status.textContent = savedFolders.length > 0
+          status.textContent = hasScannedDocuments
             ? "Choisissez un dossier de travail dans la liste ci-dessous."
             : "Cliquez sur le bouton ci-dessous pour accéder à vos dossiers dans Documents.";
           return;
@@ -1018,11 +1044,14 @@ class WordAtelierController {
       };
 
       const setFirstNameEditMode = (canEdit) => {
-        // Le champ est toujours éditable : l'utilisateur doit pouvoir corriger
-        // ou changer son prénom même si un profil existant a été chargé.
-        firstNameInput.readOnly = false;
-        firstNameInput.removeAttribute("aria-readonly");
-        firstNameInput.placeholder = canEdit ? "Ex: Alice" : "Modifier si besoin";
+        firstNameInput.readOnly = !canEdit;
+        if (canEdit) {
+          firstNameInput.removeAttribute("aria-readonly");
+          firstNameInput.placeholder = "Ex: Alice";
+        } else {
+          firstNameInput.setAttribute("aria-readonly", "true");
+          firstNameInput.placeholder = "Prénom du dossier";
+        }
       };
 
       const renderSavedFolders = () => {
@@ -1135,11 +1164,6 @@ class WordAtelierController {
           return;
         }
 
-        // Tente d'obtenir la permission FS. Si ce n'est pas possible (pas de geste
-        // utilisateur explicite, handle périmé, etc.), on bascule en mode dégradé :
-        // le prénom est chargé depuis IndexedDB et la permission réelle sera demandée
-        // au clic sur Valider — exactement comme pour requestPermission: false.
-        let permissionOk = false;
         try {
           let selectedHandle = rootHandle;
           let ok = await this.storage.ensureWritePermission(selectedHandle);
@@ -1147,49 +1171,37 @@ class WordAtelierController {
             selectedHandle = await this.storage.resolveUserRootHandle(selectedHandle, resolvedInitials);
             ok = await this.storage.ensureWritePermission(selectedHandle);
           }
-          if (ok) {
-            rootHandle = selectedHandle;
-            resolvedInitials = this.#deriveInitials(rootHandle, "");
-            permissionOk = true;
+          if (!ok) {
+            status.textContent = "Permission refusée sur ce dossier. Sélectionnez-en un autre ou ajoutez-en un nouveau.";
+            return;
           }
-        } catch {
-          // Pas de permission immédiate (pas de geste utilisateur) — mode dégradé.
-          permissionOk = false;
-        }
 
-        // Chargement du profil : depuis le FS si permission obtenue,
-        // sinon tentative quand même (loadUserProfile est robuste aux erreurs).
-        let profile = null;
-        try {
-          profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
-        } catch {
-          profile = null;
-        }
-
-        if (profile) {
-          const profileInitials = this.storage.normalizeInitials(profile.initials);
-          if (profileInitials) resolvedInitials = profileInitials;
-          if (profile.firstName) {
-            firstNameInput.value = profile.firstName;
-            setFirstNameEditMode(false);
+          rootHandle = selectedHandle;
+          resolvedInitials = this.#deriveInitials(rootHandle, "");
+          const profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
+          if (profile) {
+            const profileInitials = this.storage.normalizeInitials(profile.initials);
+            if (profileInitials) resolvedInitials = profileInitials;
+            if (profile.firstName) {
+              firstNameInput.value = profile.firstName;
+              setFirstNameEditMode(false);
+            } else {
+              // Profil sans prénom : champ vide et éditable.
+              firstNameInput.value = "";
+              setFirstNameEditMode(true);
+            }
           } else {
+            // Aucun profil pour ce dossier : champ vide et éditable.
+            // On n'utilise pas defaultFirstName qui appartient à l'ancien utilisateur.
             firstNameInput.value = "";
             setFirstNameEditMode(true);
           }
-        } else {
-          firstNameInput.value = "";
-          setFirstNameEditMode(true);
-        }
-
-        setFirstNameVisibility(true);
-        setValidateVisibility(true);
-        // En mode dégradé, on informe discrètement que la permission sera demandée à la validation.
-        if (!permissionOk) {
-          status.textContent = rootHandle
-            ? `Dossier sélectionné : ${rootHandle.name || "dossier utilisateur"}. La permission d'accès sera confirmée à la validation.`
-            : "Choisissez un dossier de travail dans la liste ci-dessous.";
-        } else {
+          setFirstNameVisibility(true);
+          setValidateVisibility(true);
           updateFolderStatus();
+        } catch {
+          setValidateVisibility(false);
+          status.textContent = "Impossible d'ouvrir ce dossier. Sélectionnez-en un autre.";
         }
       };
 

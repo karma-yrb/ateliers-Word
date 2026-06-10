@@ -1,0 +1,760 @@
+/* =============================================================================
+   styles-redesign.css  —  Atelier Word · Redesign page exercice
+   Remplace styles-ux-patch.css dans index.html :
+   <link rel="stylesheet" href="styles-redesign.css">
+   ============================================================================= */
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   1. PAGE EXERCICE — Layout 2 colonnes
+   ─────────────────────────────────────────────────────────────────────────────
+   Structure DOM attendue (générée par view.js) :
+   #page-exercise
+     .exercise-layout
+       .exercise-col-main
+         article.exercise-intro-card      ← header + fil d'ariane + barre thème
+         article.card                      ← étapes
+       .exercise-col-side
+         article.card.exercise-side-start ← 1. Préparer (docx)
+         article.card.exercise-side-images← 2. Images
+         article.card.exercise-side-done  ← 3. Marquer comme fait
+         article.card.exercise-side-nav   ← 4. Navigation prev/next
+   ───────────────────────────────────────────────────────────────────────────── */
+
+#page-exercise {
+  gap: 0;
+}
+
+.exercise-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+  align-items: start;
+}
+
+.exercise-col-main {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.exercise-col-side {
+  display: grid;
+  gap: 10px;
+  position: sticky;
+  top: 12px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   2. CARD INTRO — header de l'exercice
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.exercise-intro-card {
+  display: grid;
+  gap: 10px;
+  padding-bottom: 14px;
+}
+
+/* Fil d'ariane */
+#exercise-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  order: 0;
+}
+
+.breadcrumb-link {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+
+.breadcrumb-link:hover,
+.breadcrumb-link:focus-visible {
+  color: var(--ink);
+  border-bottom-color: currentColor;
+  outline: none;
+}
+
+.breadcrumb-sep {
+  color: #b0bcc9;
+  user-select: none;
+}
+
+.breadcrumb-current {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Bouton retour — compact dans le header */
+.exercise-intro-card .exercise-top-row {
+  order: -1;
+  margin-bottom: 0;
+}
+
+/* Titre principal */
+.exercise-intro-card #exercise-title {
+  order: 1;
+  margin: 0;
+  font-size: 1.38rem;
+  text-align: left;
+  color: #153e62;
+}
+
+/* Pill thème — repositionnée sous le titre */
+.exercise-intro-card #exercise-theme-line {
+  order: 2;
+  margin: 0;
+  width: fit-content;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #e8f2f3;
+  border: 1px solid #bcd6da;
+  color: #1e5f66;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Barre de progression thème */
+.exercise-theme-progress-wrap {
+  order: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+#exercise-theme-progress {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.exercise-theme-progress-track {
+  flex: 1;
+  height: 5px;
+  background: #e8e2d8;
+  border-radius: 999px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+#exercise-theme-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+  width: 0%;
+  transition: width 0.35s ease;
+}
+
+/* Pill statut — dans le top-row */
+.status-pill {
+  display: inline-block;
+  border-radius: 999px;
+  border: 1px solid #c7d8cc;
+  background: #eef8f2;
+  color: #2f6c4a;
+  padding: 4px 12px;
+  font-size: 0.83rem;
+  font-weight: 800;
+}
+
+.status-pill.todo {
+  border-color: #cfd6de;
+  background: #edf1f5;
+  color: #4b5b6c;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   3. CARD ÉTAPES — colonne principale
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.exercise-col-main > .card:not(.exercise-intro-card) h2 {
+  font-size: 1.1rem;
+  color: #1e4a5f;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.steps-preamble {
+  margin: 0 0 10px;
+  padding: 10px 14px;
+  background: #f4f8ea;
+  border-left: 3px solid #8aad5a;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #3a5228;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.steps-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  gap: 0;
+  counter-reset: step-counter;
+}
+
+.steps-list li {
+  display: flex;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid #ede7de;
+  line-height: 1.5;
+  font-size: 0.97rem;
+  counter-increment: step-counter;
+  align-items: flex-start;
+}
+
+.steps-list li:last-child {
+  border-bottom: none;
+}
+
+.steps-list li::before {
+  content: counter(step-counter);
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e8f2f3;
+  border: 1px solid #bcd6da;
+  color: #1e5f66;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+/* Étapes en mode paragraphe — pas de compteur */
+.steps-list.steps-paragraph-mode {
+  counter-reset: none;
+}
+
+.steps-list.steps-paragraph-mode li::before {
+  display: none;
+}
+
+.steps-list.steps-paragraph-mode li {
+  display: block;
+  padding: 0;
+  border: none;
+}
+
+/* Blocs copier-coller */
+.steps-copy-block {
+  margin: 8px 0 0;
+  border: 1px solid #d7d0c4;
+  border-radius: 8px;
+  background: #fffdf9;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
+  font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 0.93rem;
+  width: 100%;
+}
+
+.steps-list.steps-copy-mode,
+.steps-list.steps-has-copy {
+  list-style: none;
+  padding: 0;
+  counter-reset: step-counter;
+}
+
+.steps-list.steps-copy-mode li,
+.steps-list.steps-has-copy li {
+  counter-increment: step-counter;
+}
+
+.steps-list.steps-copy-mode li::before,
+.steps-list.steps-has-copy li::before {
+  content: counter(step-counter);
+}
+
+.steps-list.steps-copy-mode .steps-instruction,
+.steps-list.steps-has-copy .steps-instruction {
+  margin: 0;
+  line-height: 1.45;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   4. COLONNE LATÉRALE — cards d'action
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.exercise-col-side .card {
+  padding: 12px 14px;
+}
+
+/* Label de section numéroté */
+.side-section-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.side-section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Card 1 — Télécharger */
+.exercise-side-start {
+  border-color: #bcd6da;
+  background: linear-gradient(180deg, #f4fafb 0%, #edf5f7 100%);
+}
+
+.exercise-side-start .asset-actions {
+  margin-bottom: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exercise-side-start .asset-actions .btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+}
+
+/* Hint sous le bouton docx */
+.exercise-docx-hint {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  color: #3a6575;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Masquer les étapes textuelles de la card préparer (redondantes avec le nouveau layout) */
+.exercise-files-steps {
+  display: none;
+}
+
+#exercise-workfile-status {
+  font-size: 0.82rem;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* Card 2 — Images */
+.exercise-side-images {
+  padding: 0;
+  overflow: hidden;
+}
+
+.exercise-side-images .side-section-label {
+  padding: 10px 14px 0;
+  margin-bottom: 0;
+}
+
+.exercise-side-images .images-grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.exercise-side-images .image-card {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  padding: 8px 12px 10px;
+}
+
+.exercise-side-images .image-card:last-child {
+  border-bottom: none;
+}
+
+.exercise-side-images .image-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* Badge "Point de départ" / "À reproduire" */
+.exercise-side-images .image-card figcaption::after {
+  content: attr(data-badge);
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+#exercise-enonce-caption::after {
+  background: #e8f2f3;
+  color: #1e5f66;
+  border: 1px solid #bcd6da;
+}
+
+#exercise-result-caption::after {
+  background: #eef8f2;
+  color: #2f6c4a;
+  border: 1px solid #a6ccb4;
+}
+
+.exercise-side-images .image-thumb img {
+  max-height: 160px;
+  max-width: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* Zone extra images — déplacée dans la colonne principale si présente */
+#exercise-extra-wrap {
+  margin-top: 0;
+}
+
+/* Card 3 — Marquer comme fait */
+.exercise-side-done {
+  text-align: center;
+}
+
+#exercise-toggle-done-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.97rem;
+  padding: 11px 14px;
+  min-width: 0;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#exercise-toggle-done-btn.done {
+  background: #e8f3f5;
+  border-color: #9fe1cb;
+  color: #0f6e56;
+}
+
+/* Nudge de sauvegarde */
+#exercise-save-nudge {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #fdf6ec;
+  border: 1px solid #f0d9a8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  color: #7a5520;
+  line-height: 1.45;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+#exercise-save-nudge[hidden] {
+  display: none;
+}
+
+.exercise-save-nudge-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  margin-top: 1px;
+}
+
+/* Card 4 — Navigation */
+.exercise-side-nav {
+  padding: 10px 12px;
+}
+
+/* Masquer la zone actions du bas (déplacée en sidebar) */
+.exercise-actions-row {
+  display: none;
+}
+
+/* Nouvelle nav sidebar */
+.exercise-side-nav-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.exercise-side-nav-row .btn {
+  font-size: 0.88rem;
+  padding: 9px 8px;
+  justify-content: center;
+}
+
+.exercise-side-nav-row .btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   5. IMAGES — améliorations hover
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.image-thumb {
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+.image-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.image-thumb:hover img,
+.image-thumb:focus-visible img {
+  transform: scale(1.03);
+}
+
+.image-thumb-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.48);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.18s;
+  pointer-events: none;
+  user-select: none;
+}
+
+.image-thumb:hover .image-thumb-hint,
+.image-thumb:focus-visible .image-thumb-hint {
+  opacity: 1;
+}
+
+.extra-image {
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.extra-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.extra-image:hover img { transform: scale(1.03); }
+
+.extra-image:hover .image-thumb-hint,
+.extra-image:focus-visible .image-thumb-hint {
+  opacity: 1;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   6. MODALE IMAGE
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.image-modal-stage {
+  margin-top: 0;
+}
+
+.image-modal-close {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   7. RESPONSIVE — ≤ 780px : retour mono-colonne
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 780px) {
+  .exercise-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .exercise-col-side {
+    position: static;
+    order: -1; /* actions AVANT les étapes sur mobile */
+  }
+
+  /* Sur mobile, remettre la nav en bas */
+  .exercise-actions-row {
+    display: grid;
+  }
+
+  .exercise-side-nav {
+    display: none;
+  }
+
+  /* Images côte à côte sur mobile */
+  .exercise-side-images .images-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .exercise-intro-card #exercise-title {
+    font-size: 1.18rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   8. FIL D'ARIANE — breadcrumb dans la card intro
+   ───────────────────────────────────────────────────────────────────────────── */
+
+#exercise-breadcrumb {
+  order: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   9. MOBILE — carte actions en bas visible, sidebar masquée
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Sur desktop, masquer la carte mobile-only du bas */
+.exercise-actions-mobile-card {
+  display: none;
+}
+
+@media (max-width: 780px) {
+  .exercise-layout {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Sidebar passe en premier sur mobile (actions visibles sans scroll) */
+  .exercise-col-side {
+    position: static;
+    order: -1;
+  }
+
+  /* Sur mobile : masquer la nav sidebar, montrer la nav mobile en bas */
+  .exercise-side-nav {
+    display: none;
+  }
+
+  .exercise-actions-mobile-card {
+    display: block;
+  }
+
+  .exercise-actions-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Images côte à côte dans la sidebar sur mobile */
+  .exercise-side-images .images-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .exercise-side-images .image-thumb img {
+    max-height: 120px;
+  }
+
+  .exercise-intro-card #exercise-title {
+    font-size: 1.18rem;
+  }
+
+  /* Sticky désactivé */
+  .exercise-col-side {
+    position: static !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   10. DÉTAILS SUPPLÉMENTAIRES
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Enlever le double h2 "Étapes à suivre" si on garde le titre de la card */
+.exercise-col-main > .card:not(.exercise-intro-card):not(.exercise-actions-mobile-card) > h2 {
+  font-size: 1.05rem;
+  color: #1e4a5f;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Quand il n'y a pas de fichier docx : masquer la card "1. Commencer par ici"
+   (géré par view.js via filesCard.style.display = none) */
+#exercise-files-card[style*="display: none"],
+#exercise-files-card[style*="display:none"] {
+  display: none !important;
+}
+
+/* Assurer que le bouton "Marquer comme fait" dans la sidebar est full-width */
+.exercise-side-done > .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Fond légèrement distinct pour la card "Fait" quand validé */
+.exercise-side-done:has(#exercise-toggle-done-btn.done) {
+  background: linear-gradient(180deg, #f0faf4 0%, #e8f5ee 100%);
+  border-color: #a6ccb4;
+}
+
+/* Transition douce sur les cards de la sidebar */
+.exercise-col-side .card {
+  transition: border-color 0.2s, background 0.2s;
+}
+
+/* Rendre le `data-badge` visible sur les figcaptions des images */
+.exercise-side-images .image-card figcaption::after {
+  content: attr(data-badge);
+}
+
+/* Améliorer lisibilité de la pill thème dans l'intro */
+.exercise-intro-card #exercise-theme-line {
+  display: inline-block;
+  font-size: 0.88rem;
+}
+
+/* S'assurer que breadcrumb cliquable dans la page exercice répond au clic */
+#exercise-breadcrumb .breadcrumb-link {
+  cursor: pointer;
+}
