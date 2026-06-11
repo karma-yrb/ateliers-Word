@@ -60,7 +60,11 @@ class WordAtelierController {
   async #bootstrap() {
     if (!this.storage || !this.storage.isSupported()) {
       this.view.setHeaderUser("", "");
-      this.view.setProgressStatus("Ce navigateur ne permet pas la sauvegarde automatique locale (utiliser Edge/Chrome récents).");
+      const reason = this.storage && this.storage.getUnsupportedReason ? this.storage.getUnsupportedReason() : null;
+      const message = reason === "file-protocol"
+        ? "Cette page est ouverte en local (file://). La sauvegarde automatique nécessite un serveur web (ex: lancez `npx serve .` puis ouvrez http://localhost:3000)."
+        : "Ce navigateur ne permet pas la sauvegarde automatique locale (utiliser Edge/Chrome récents).";
+      this.view.setProgressStatus(message);
       this.view.showPage("home");
       return;
     }
@@ -167,14 +171,12 @@ class WordAtelierController {
       if (currentId && !wasDone) {
         this.model.markExerciseDone(currentId, true);
         this.#saveProgress();
-        this.view.updateStatusTag(true);
       }
       const targetId = this.view.exerciseNextBtn.getAttribute("data-target-id");
       if (targetId) window.location.hash = `#exercise/${targetId}`;
     });
 
-    // Toggle via le tag statut dans le header (click + Enter/Space)
-    const handleToggleDone = async (sourceEl) => {
+    this.view.exerciseToggleDoneBtn.addEventListener("click", async () => {
       if (!this.isReady) {
         const ready = await this.#ensureReadyFromUserGesture();
         if (!ready) return;
@@ -190,19 +192,8 @@ class WordAtelierController {
 
       this.model.markExerciseDone(id, !isDone);
       this.#saveProgress();
-      this.view.updateStatusTag(!isDone);
-      this.view.updateSaveNudge(!isDone);
       this.#renderExercisePage(id);
-    };
-
-    this.view.exerciseToggleDoneBtn.addEventListener("click", () => handleToggleDone(this.view.exerciseToggleDoneBtn));
-
-    if (this.view.exerciseStatusPill) {
-      this.view.exerciseStatusPill.addEventListener("click", () => handleToggleDone(this.view.exerciseStatusPill));
-      this.view.exerciseStatusPill.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleToggleDone(this.view.exerciseStatusPill); }
-      });
-    }
+    });
 
     if (this.view.exercisePickWorkFileBtn) {
       this.view.exercisePickWorkFileBtn.addEventListener("click", async () => {
@@ -395,8 +386,6 @@ class WordAtelierController {
     this.view.themesAffinityList.addEventListener("click", onAction);
     this.view.affinityThemeList.addEventListener("click", onAction);
     this.view.affinityThemeList.addEventListener("keydown", onActionKeydown);
-    const exercisePage = document.getElementById("page-exercise");
-    if (exercisePage) exercisePage.addEventListener("click", onAction);
   }
 
   #renderFromHash() {
@@ -576,15 +565,6 @@ class WordAtelierController {
     const steps = this.model.getStepsForExercise(exercise);
     const visuals = this.model.getVisualsForExercise(exercise);
     const { prevId, nextId } = this.model.getNeighbors(exercise.id);
-
-    const themeExercises = this.model.getExercisesByTheme(exercise.moduleId);
-    const themeIndex = themeExercises.findIndex((e) => e.id === exercise.id) + 1;
-    const themeDone = themeExercises.filter((e) => this.model.getIsDone(e.id)).length;
-    const themeTotal = themeExercises.length;
-    const affinityGroups = this.model.getThemeAffinityGroups();
-    const affinityGroup = affinityGroups.find((g) => g.id === this.currentAffinityId);
-    const affinityLabel = affinityGroup ? affinityGroup.label : "";
-
     this.view.renderExercise({
       exercise,
       done,
@@ -592,11 +572,6 @@ class WordAtelierController {
       visuals,
       prevId,
       nextId,
-      affinityId: this.currentAffinityId || "",
-      affinityLabel,
-      themeIndex,
-      themeDone,
-      themeTotal,
       workFile: {
         pickerSupported: this.storage && this.storage.supportsWorkFilePicker && this.storage.supportsWorkFilePicker(),
       },
@@ -1202,9 +1177,11 @@ class WordAtelierController {
           setFirstNameVisibility(true);
           setValidateVisibility(true);
           updateFolderStatus();
-        } catch {
+        } catch (error) {
           setValidateVisibility(false);
-          status.textContent = "Impossible d'ouvrir ce dossier. Sélectionnez-en un autre.";
+          status.textContent = (error && error.name === "NotAllowedError" && window.location.protocol === "file:")
+            ? "Accès au dossier bloqué : cette page est ouverte en local (file://). Lancez un serveur web (ex: npx serve .) puis ouvrez http://localhost."
+            : "Impossible d'ouvrir ce dossier. Sélectionnez-en un autre.";
         }
       };
 
@@ -1282,6 +1259,8 @@ class WordAtelierController {
           setPickButtonMode(restoreMode);
           if (!error || error.name === "AbortError") {
             status.textContent = "Sélection annulée.";
+          } else if (error.name === "NotAllowedError" && window.location.protocol === "file:") {
+            status.textContent = "Accès au dossier bloqué : cette page est ouverte en local (file://). Lancez un serveur web (ex: npx serve .) puis ouvrez http://localhost.";
           } else {
             status.textContent = "Impossible d'ouvrir ce dossier.";
           }

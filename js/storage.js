@@ -7,7 +7,23 @@
   }
 
   isSupported() {
-    return typeof window.showDirectoryPicker === "function" && typeof window.indexedDB !== "undefined";
+    return (
+      typeof window.showDirectoryPicker === "function" &&
+      typeof window.indexedDB !== "undefined" &&
+      window.location.protocol !== "file:"
+    );
+  }
+
+  /**
+   * Donne une raison précise quand isSupported() renvoie false, pour
+   * afficher un message d'erreur clair plutôt qu'un échec silencieux ou
+   * un "NotAllowedError" cryptique en console.
+   */
+  getUnsupportedReason() {
+    if (window.location.protocol === "file:") return "file-protocol";
+    if (typeof window.showDirectoryPicker !== "function") return "no-file-system-api";
+    if (typeof window.indexedDB === "undefined") return "no-indexeddb";
+    return null;
   }
 
   normalizeInitials(value) {
