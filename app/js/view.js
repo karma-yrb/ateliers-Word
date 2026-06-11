@@ -428,7 +428,13 @@ class WordAtelierView {
     const looksLikeLabel = label.length <= 30 && wordCount <= 4;
 
     const rest = text.slice(colonIndex + 1).trimStart();
-    if (!looksLikeLabel) return formatMultiline(text);
+    if (!looksLikeLabel) {
+      // Phrase longue suivie de son contenu : on saute une ligne après les
+      // deux-points pour bien séparer visuellement l'objectif du contenu,
+      // sans pour autant le mettre en gras (ce n'est pas un vrai "label").
+      if (!rest) return formatMultiline(text);
+      return `${formatMultiline(`${label} :`)}<br>${formatMultiline(rest)}`;
+    }
     if (!rest) return `<strong>${escapeHtml(label)}:</strong>`;
     return `<strong>${escapeHtml(label)}:</strong> ${formatMultiline(rest)}`;
   }

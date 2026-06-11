@@ -244,7 +244,7 @@
   border-color: var(--ex-blue-border);
 }
 
-#exercise-files-card::before {
+#exercise-files-card::after {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -262,18 +262,28 @@
   margin-bottom: 10px;
 }
 
-#exercise-files-card h2::before {
-  content: "1";
-  display: inline-flex;
+/* Repère de carte : grande lettre en ruban, bien distincte des petits
+   cercles de numérotation des étapes (forme carrée + lettre + position
+   en haut à gauche, en débord de la carte). */
+#exercise-files-card::before {
+  content: "A";
+  position: absolute;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px; height: 22px;
-  border-radius: 50%;
   background: var(--ex-blue);
   color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  flex-shrink: 0;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 0 0 10px 0;
+  z-index: 1;
+}
+
+#exercise-files-card h2 {
+  padding-left: 32px;
 }
 
 /* Injecter le titre "Préparer l'exercice" si absent */
@@ -334,7 +344,7 @@
   border-color: var(--ex-violet-border);
 }
 
-.card:has(#exercise-steps)::before {
+.card:has(#exercise-steps)::after {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -354,18 +364,25 @@
   border-bottom: 1px solid var(--ex-violet-border);
 }
 
-.card:has(#exercise-steps) h2::before {
-  content: "2";
-  display: inline-flex;
+.card:has(#exercise-steps)::before {
+  content: "B";
+  position: absolute;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px; height: 22px;
-  border-radius: 50%;
   background: var(--ex-violet);
   color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  flex-shrink: 0;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 0 0 10px 0;
+  z-index: 1;
+}
+
+.card:has(#exercise-steps) h2 {
+  padding-left: 32px;
 }
 
 /* Préambule */
@@ -466,7 +483,7 @@
   border-color: var(--ex-green-border);
 }
 
-.card:has(.images-grid)::before {
+.card:has(.images-grid)::after {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -484,18 +501,25 @@
   margin-bottom: 12px;
 }
 
-.card:has(.images-grid) h2::before {
-  content: "3";
-  display: inline-flex;
+.card:has(.images-grid)::before {
+  content: "C";
+  position: absolute;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px; height: 22px;
-  border-radius: 50%;
   background: var(--ex-green);
   color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  flex-shrink: 0;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 0 0 10px 0;
+  z-index: 1;
+}
+
+.card:has(.images-grid) h2 {
+  padding-left: 32px;
 }
 
 /* Images grid : 2 colonnes */
