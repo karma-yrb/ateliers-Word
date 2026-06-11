@@ -22,7 +22,7 @@
       <div>
         <div class="title-row">
           <h1>Atelier Word</h1>
-          <span class="app-version" aria-label="Version de l'application">v1.2.46</span>
+          <span class="app-version" aria-label="Version de l'application">v1.2.44</span>
         </div>
         <p class="subtitle">Je choisis un thème, je lance un exercice, je suis les étapes.</p>
       </div>
@@ -113,14 +113,16 @@
 
       <article class="card exercise-intro-card">
         <div class="exercise-top-row">
-          <button id="exercise-back-btn" class="btn btn-soft has-icon" data-icon="◀">Retour thèmes</button>
-          <span id="exercise-status-pill" class="status-pill todo" role="button" tabindex="0" title="Cliquez pour marquer / démarquer">À faire</span>
+          <nav id="exercise-breadcrumb" aria-label="Fil d'Ariane"></nav>
+          <span id="exercise-theme-progress" class="theme-progress-tag"></span>
         </div>
-        <nav id="exercise-breadcrumb" aria-label="Fil d'Ariane"></nav>
         <h2 id="exercise-title">Exercice</h2>
-        <p id="exercise-theme-line" class="muted"></p>
-        <div class="exercise-theme-progress-wrap">
-          <span id="exercise-theme-progress"></span>
+        <span id="exercise-status-pill" class="status-pill todo" role="button" tabindex="0" title="Cliquez pour marquer / démarquer">À faire</span>
+
+        <!-- Éléments conservés pour compatibilité JS, masqués visuellement -->
+        <button id="exercise-back-btn" class="btn btn-soft has-icon" data-icon="◀" hidden>Retour thèmes</button>
+        <p id="exercise-theme-line" class="muted" hidden></p>
+        <div class="exercise-theme-progress-wrap" hidden>
           <div class="exercise-theme-progress-track">
             <div id="exercise-theme-progress-bar"></div>
           </div>

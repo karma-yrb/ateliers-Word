@@ -251,15 +251,15 @@ class WordAtelierView {
     // Fil d'ariane
     if (this.exerciseBreadcrumb) {
       const aff = vm.affinityLabel
-        ? `<span class="breadcrumb-link" data-action="open-affinity" data-affinity-id="${escapeHtml(vm.affinityId || "")}">${escapeHtml(vm.affinityLabel)}</span><span class="breadcrumb-sep">›</span>`
+        ? `<span class="breadcrumb-link" data-action="open-affinity" data-affinity-id="${escapeHtml(vm.affinityId || "")}">${escapeHtml(vm.affinityLabel)}</span><span class="breadcrumb-sep">&#10095;</span>`
         : "";
-      const theme = `<span class="breadcrumb-link" data-action="toggle-theme" data-affinity-id="${escapeHtml(vm.affinityId || "")}" data-theme-id="${escapeHtml(vm.exercise.moduleId)}">${escapeHtml(vm.exercise.moduleName)}</span><span class="breadcrumb-sep">›</span>`;
+      const theme = `<span class="breadcrumb-link" data-action="toggle-theme" data-affinity-id="${escapeHtml(vm.affinityId || "")}" data-theme-id="${escapeHtml(vm.exercise.moduleId)}">${escapeHtml(vm.exercise.moduleName)}</span><span class="breadcrumb-sep">&#10095;</span>`;
       this.exerciseBreadcrumb.innerHTML = `${aff}${theme}<span class="breadcrumb-current">Exercice ${vm.exercise.num}</span>`;
     }
 
     // Progression dans le thème
     if (this.exerciseThemeProgress && vm.themeTotal) {
-      this.exerciseThemeProgress.textContent = `${vm.themeDone || 0} / ${vm.themeTotal} faits dans ce thème`;
+      this.exerciseThemeProgress.textContent = `${vm.themeDone || 0} / ${vm.themeTotal} faits`;
     }
     if (this.exerciseThemeProgressBar && vm.themeTotal) {
       this.exerciseThemeProgressBar.style.width = `${Math.round(((vm.themeDone || 0) / vm.themeTotal) * 100)}%`;

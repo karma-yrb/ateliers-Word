@@ -39,7 +39,9 @@
   position: relative;
   overflow: hidden;
   padding-left: 20px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
   background: linear-gradient(135deg, #fffdf9 0%, #f4f8fb 100%);
 }
@@ -54,14 +56,40 @@
   border-radius: 4px 0 0 4px;
 }
 
-/* Top row : retour + statut */
+/* Top row : breadcrumb (gauche) + progression du thème (droite) */
 .exercise-intro-card .exercise-top-row {
+  align-self: stretch;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 0;
-  order: 0;
+}
+
+#exercise-breadcrumb {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Tag de progression dans le thème, aligné à droite du breadcrumb */
+.theme-progress-tag {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--ex-blue-soft);
+  border: 1px solid var(--ex-blue-border);
+  color: var(--ex-blue);
+  font-weight: 800;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.theme-progress-tag::before {
+  content: "📂";
+  font-size: 12px;
 }
 
 /* Fil d'ariane */
@@ -69,40 +97,68 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 3px 6px;
-  font-size: 12px;
+  gap: 0;
+  font-size: 13px;
   line-height: 1.4;
-  order: 1;
 }
 
+/* Style "explorateur de fichiers" : segments en pilule, hover gris clair */
 .breadcrumb-link {
-  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #44505c;
   font-weight: 700;
   text-decoration: none;
-  border-bottom: 1px dotted var(--accent);
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
-  padding: 1px 0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  transition: background-color 0.12s, color 0.12s;
 }
 
-.breadcrumb-link:hover { color: var(--ex-blue); border-color: var(--ex-blue); }
+/* Icône "racine" sur le premier segment, façon explorateur Windows */
+.breadcrumb-link:first-child::before {
+  content: "🏠";
+  font-size: 12px;
+}
 
+.breadcrumb-link:hover,
+.breadcrumb-link:focus-visible {
+  background-color: #e6edf3;
+  color: var(--ex-blue);
+  outline: none;
+}
+
+.breadcrumb-link:active {
+  background-color: #d8e3ec;
+}
+
+/* Chevron séparateur, à la Windows 11 */
 .breadcrumb-sep {
-  color: #b0bcc9;
-  font-size: 14px;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  color: #aab4bf;
+  font-size: 9px;
+  font-weight: 400;
   user-select: none;
   line-height: 1;
+  padding: 0 2px;
 }
 
+/* Segment courant : non cliquable, mis en avant */
 .breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
   color: var(--ink);
   font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: #f1f4f7;
 }
 
 /* Titre */
 .exercise-intro-card #exercise-title {
-  order: 2;
+  align-self: stretch;
   margin: 0;
   text-align: left;
   color: #153e62;
@@ -110,36 +166,14 @@
   line-height: 1.3;
 }
 
-/* Tag thème */
-.exercise-intro-card #exercise-theme-line {
-  order: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin: 0;
-  width: fit-content;
-  padding: 4px 12px 4px 10px;
-  border-radius: 999px;
-  background: var(--ex-blue-soft);
-  border: 1px solid var(--ex-blue-border);
-  color: var(--ex-blue);
-  font-weight: 800;
-  font-size: 0.88rem;
-}
-
-.exercise-intro-card #exercise-theme-line::before {
-  content: "📂";
-  font-size: 13px;
-}
-
-/* Barre progression thème */
-.exercise-theme-progress-wrap {
-  order: 4;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--line);
+/* #exercise-theme-line, #exercise-back-btn et la barre de progression
+   sont conservés dans le DOM pour compatibilité JS, mais masqués.
+   [hidden] seul est écrasé par .btn { display: inline-flex } (même
+   spécificité, .btn vient avant) → on force avec !important. */
+#exercise-back-btn[hidden],
+#exercise-theme-line[hidden],
+.exercise-theme-progress-wrap[hidden] {
+  display: none !important;
 }
 
 #exercise-theme-progress {
@@ -167,6 +201,7 @@
 
 /* ── Statut pill : tag cliquable pour dé-valider ──────────────────────────── */
 .status-pill {
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -596,10 +631,10 @@
 #exercise-save-nudge[hidden] { display: none; }
 .exercise-save-nudge-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
 
-/* Boutons nav */
+/* Boutons nav : Précédent / Suivant se partagent toute la largeur */
 .exercise-actions-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -626,15 +661,7 @@
    6. BREADCRUMB — séparateur visible
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-/* Ciblage direct du séparateur */
-.breadcrumb-sep {
-  color: #8a99a8;
-  font-size: 15px;
-  font-weight: 900;
-  user-select: none;
-  line-height: 1;
-  padding: 0 1px;
-}
+/* (séparateur breadcrumb défini plus haut) */
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    7. SUPPRESSION des doublons du layout v1
@@ -661,6 +688,14 @@
 @media (max-width: 600px) {
   .exercise-intro-card #exercise-title { font-size: 1.1rem; }
   .images-grid { grid-template-columns: 1fr; }
-  .exercise-actions-row { grid-template-columns: 1fr 1fr; }
-  .exercise-actions-row #exercise-toggle-done-btn { display: none; }
+}
+
+/* Sur très petit écran, le tag breadcrumb passe sous le breadcrumb si besoin */
+@media (max-width: 420px) {
+  .exercise-intro-card .exercise-top-row {
+    flex-wrap: wrap;
+  }
+  .theme-progress-tag {
+    order: 1;
+  }
 }
