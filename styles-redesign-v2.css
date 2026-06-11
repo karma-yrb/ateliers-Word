@@ -1,0 +1,701 @@
+/* =============================================================================
+   styles-redesign-v2.css  —  Atelier Word · Redesign exercice mono-colonne
+   Remplace styles-redesign.css (ou styles-ux-patch.css) dans index.html
+   ============================================================================= */
+
+/* ─── Variables supplémentaires ─────────────────────────────────────────────── */
+:root {
+  --ex-blue:        #1a5eb8;
+  --ex-blue-soft:   #e8f0fc;
+  --ex-blue-border: #b3caf0;
+  --ex-violet:      #6c5ce7;
+  --ex-violet-soft: #f0eeff;
+  --ex-violet-border: #c4b8f5;
+  --ex-green:       #2f7a56;
+  --ex-green-soft:  #eef8f2;
+  --ex-green-border:#a6ccb4;
+  --ex-orange:      #c86a14;
+  --ex-orange-soft: #fdf3e7;
+  --ex-orange-border:#f0c88a;
+  --ex-bar:         5px;   /* épaisseur barre latérale signature */
+}
+
+/* ─── Retirer le layout 2 colonnes si résidu du v1 ──────────────────────────── */
+.exercise-layout { display: contents; }
+.exercise-col-main,
+.exercise-col-side { display: contents; }
+.exercise-actions-mobile-card { display: none; }
+
+/* ─── PAGE EXERCICE — flux mono-colonne ─────────────────────────────────────── */
+#page-exercise {
+  gap: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   1. CARD HEADER — statut + titre + breadcrumb + progression
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.exercise-intro-card {
+  position: relative;
+  overflow: hidden;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  background: linear-gradient(135deg, #fffdf9 0%, #f4f8fb 100%);
+}
+
+/* Barre signature bleue à gauche */
+.exercise-intro-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--ex-bar);
+  background: linear-gradient(180deg, var(--ex-blue) 0%, var(--accent) 100%);
+  border-radius: 4px 0 0 4px;
+}
+
+/* Top row : breadcrumb (gauche) + progression du thème (droite) */
+.exercise-intro-card .exercise-top-row {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+#exercise-breadcrumb {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Tag de progression dans le thème, aligné à droite du breadcrumb */
+.theme-progress-tag {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--ex-blue-soft);
+  border: 1px solid var(--ex-blue-border);
+  color: var(--ex-blue);
+  font-weight: 800;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.theme-progress-tag::before {
+  content: "📂";
+  font-size: 12px;
+}
+
+/* Fil d'ariane */
+#exercise-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Style "explorateur de fichiers" : segments en pilule, hover gris clair */
+.breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #44505c;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: 6px;
+  transition: background-color 0.12s, color 0.12s;
+}
+
+/* Icône "racine" sur le premier segment, façon explorateur Windows */
+.breadcrumb-link:first-child::before {
+  content: "🏠";
+  font-size: 12px;
+}
+
+.breadcrumb-link:hover,
+.breadcrumb-link:focus-visible {
+  background-color: #e6edf3;
+  color: var(--ex-blue);
+  outline: none;
+}
+
+.breadcrumb-link:active {
+  background-color: #d8e3ec;
+}
+
+/* Chevron séparateur, à la Windows 11 */
+.breadcrumb-sep {
+  display: inline-flex;
+  align-items: center;
+  color: #aab4bf;
+  font-size: 9px;
+  font-weight: 400;
+  user-select: none;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+/* Segment courant : non cliquable, mis en avant */
+.breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: #f1f4f7;
+}
+
+/* Titre */
+.exercise-intro-card #exercise-title {
+  align-self: stretch;
+  margin: 0;
+  text-align: left;
+  color: #153e62;
+  font-size: 1.28rem;
+  line-height: 1.3;
+}
+
+/* #exercise-theme-line, #exercise-back-btn et la barre de progression
+   sont conservés dans le DOM pour compatibilité JS, mais masqués.
+   [hidden] seul est écrasé par .btn { display: inline-flex } (même
+   spécificité, .btn vient avant) → on force avec !important. */
+#exercise-back-btn[hidden],
+#exercise-theme-line[hidden],
+.exercise-theme-progress-wrap[hidden] {
+  display: none !important;
+}
+
+#exercise-theme-progress {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.exercise-theme-progress-track {
+  flex: 1;
+  height: 6px;
+  background: #e0d8cc;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#exercise-theme-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #59a0aa);
+  border-radius: inherit;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+/* ── Statut pill : tag cliquable pour dé-valider ──────────────────────────── */
+.status-pill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  user-select: none;
+}
+
+.status-pill::before { font-size: 13px; }
+
+.status-pill.todo {
+  border: 1.5px solid #cfd6de;
+  background: #edf1f5;
+  color: #4b5b6c;
+}
+.status-pill.todo::before { content: "○"; }
+
+.status-pill:not(.todo) {
+  border: 1.5px solid var(--ex-green-border);
+  background: var(--ex-green-soft);
+  color: var(--ex-green);
+}
+.status-pill:not(.todo)::before { content: "✓"; }
+
+.status-pill:hover { transform: scale(1.04); box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   2. CARD TÉLÉCHARGEMENT — bleue, action principale
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+#exercise-files-card {
+  position: relative;
+  overflow: hidden;
+  padding-left: 20px;
+  background: linear-gradient(135deg, var(--ex-blue-soft) 0%, #f0f6ff 100%);
+  border-color: var(--ex-blue-border);
+}
+
+#exercise-files-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--ex-bar);
+  background: var(--ex-blue);
+  border-radius: 4px 0 0 4px;
+}
+
+#exercise-files-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ex-blue);
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+#exercise-files-card h2::before {
+  content: "1";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--ex-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Injecter le titre "Préparer l'exercice" si absent */
+#exercise-files-card:not(:has(h2)) .asset-actions::before {
+  content: "① Télécharger le fichier";
+  display: block;
+  font-weight: 800;
+  color: var(--ex-blue);
+  margin-bottom: 8px;
+}
+
+.asset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Bouton téléchargement docx : couleur bleue forte */
+#exercise-docx-btn {
+  background: var(--ex-blue);
+  border-color: #144fa0;
+  color: #fff;
+  font-size: 1rem;
+  padding: 11px 16px;
+  flex: 1;
+}
+
+#exercise-docx-btn:hover { background: #1550a8; }
+
+/* Hint sous le bouton */
+.exercise-docx-hint,
+.exercise-files-steps {
+  font-size: 0.85rem;
+  color: #2a4e80;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.exercise-files-steps {
+  display: none; /* remplacé par .exercise-docx-hint */
+}
+
+#exercise-workfile-status {
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   3. CARD ÉTAPES — violet, numéros colorés
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.card:has(#exercise-steps) {
+  position: relative;
+  overflow: hidden;
+  padding-left: 20px;
+  background: linear-gradient(135deg, #faf9ff 0%, #f5f3ff 100%);
+  border-color: var(--ex-violet-border);
+}
+
+.card:has(#exercise-steps)::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--ex-bar);
+  background: var(--ex-violet);
+  border-radius: 4px 0 0 4px;
+}
+
+.card:has(#exercise-steps) h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ex-violet);
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ex-violet-border);
+}
+
+.card:has(#exercise-steps) h2::before {
+  content: "2";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--ex-violet);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Préambule */
+.steps-preamble {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  background: var(--ex-violet-soft);
+  border-left: 3px solid var(--ex-violet);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #4a3fa0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Liste numérotée stylée */
+.steps-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0;
+  counter-reset: step-counter;
+}
+
+.steps-list li {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e8e4f8;
+  line-height: 1.5;
+  font-size: 0.97rem;
+  counter-increment: step-counter;
+  align-items: flex-start;
+}
+
+.steps-list li:last-child { border-bottom: none; }
+
+.steps-list li::before {
+  content: counter(step-counter);
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--ex-violet);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+/* Étapes mode paragraphe (ex spéciaux) */
+.steps-list.steps-paragraph-mode {
+  counter-reset: none;
+}
+.steps-list.steps-paragraph-mode li::before { display: none; }
+.steps-list.steps-paragraph-mode li { display: block; padding: 0; border: none; }
+
+/* Blocs copier-coller */
+.steps-copy-block {
+  margin: 8px 0 0;
+  border: 1px solid var(--ex-violet-border);
+  border-radius: 8px;
+  background: #fff;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
+  font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 0.93rem;
+  width: 100%;
+}
+
+.steps-list.steps-copy-mode,
+.steps-list.steps-has-copy {
+  list-style: none;
+  padding: 0;
+  counter-reset: step-counter;
+}
+.steps-list.steps-copy-mode li,
+.steps-list.steps-has-copy li { counter-increment: step-counter; }
+.steps-list.steps-copy-mode li::before,
+.steps-list.steps-has-copy li::before { content: counter(step-counter); }
+.steps-list.steps-copy-mode .steps-instruction,
+.steps-list.steps-has-copy .steps-instruction { margin: 0; line-height: 1.45; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   4. CARD IMAGES — verte, labels clairs
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.card:has(.images-grid) {
+  position: relative;
+  overflow: hidden;
+  padding-left: 20px;
+  background: linear-gradient(135deg, var(--ex-green-soft) 0%, #f5fdf8 100%);
+  border-color: var(--ex-green-border);
+}
+
+.card:has(.images-grid)::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--ex-bar);
+  background: var(--ex-green);
+  border-radius: 4px 0 0 4px;
+}
+
+.card:has(.images-grid) h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ex-green);
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+
+.card:has(.images-grid) h2::before {
+  content: "3";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--ex-green);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Images grid : 2 colonnes */
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.images-grid.single-image-block {
+  grid-template-columns: 1fr;
+}
+
+/* Figures images */
+.image-card {
+  margin: 0;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  border: 2px solid var(--ex-green-border);
+}
+
+/* Figcaption avec badge coloré */
+.image-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #2a5040;
+}
+
+#exercise-enonce-caption::before { content: "👁"; font-size: 14px; }
+#exercise-result-caption::before { content: "🎯"; font-size: 14px; }
+
+/* Badge Point de départ / À reproduire */
+.image-card figcaption::after {
+  content: attr(data-badge);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  background: var(--ex-green-soft);
+  color: var(--ex-green);
+  border: 1px solid var(--ex-green-border);
+}
+
+/* Images thumb */
+.image-thumb {
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.image-thumb img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 320px);
+  max-height: 220px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+  border-radius: 6px;
+}
+
+.image-thumb:hover img { transform: scale(1.03); }
+
+.image-thumb-hint {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.18s;
+  pointer-events: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.image-thumb:hover .image-thumb-hint { opacity: 1; }
+
+/* Extra images */
+.extra-image {
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 6px;
+}
+.extra-image img { display: block; width: 100%; height: auto; transition: transform 0.2s; border-radius: 6px; }
+.extra-image:hover img { transform: scale(1.03); }
+.extra-image:hover .image-thumb-hint { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   5. CARD NAVIGATION — neutre, prev/next centrés
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* La card qui contient exercise-actions-row */
+.card:has(.exercise-actions-row) {
+  background: #faf7f2;
+  border-color: #d8cfc0;
+}
+
+/* Nudge de sauvegarde (avant la nav) */
+#exercise-save-nudge {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  background: var(--ex-orange-soft);
+  border: 1px solid var(--ex-orange-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  color: #7a4810;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+#exercise-save-nudge[hidden] { display: none; }
+.exercise-save-nudge-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+/* Boutons nav : Précédent / Suivant se partagent toute la largeur */
+.exercise-actions-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* Bouton "Marquer comme fait" masqué — remplacé par le tag dans le header */
+#exercise-toggle-done-btn {
+  display: none;
+}
+
+/* Prev/next */
+#exercise-prev-btn,
+#exercise-next-btn {
+  font-size: 0.92rem;
+  padding: 10px 10px;
+}
+
+#exercise-prev-btn:disabled,
+#exercise-next-btn:disabled {
+  opacity: 0.38;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   6. BREADCRUMB — séparateur visible
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* (séparateur breadcrumb défini plus haut) */
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   7. SUPPRESSION des doublons du layout v1
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Si des vestiges du layout 2-colonnes subsistent, on les cache */
+.exercise-col-side { display: none !important; }
+.exercise-actions-mobile-card { display: none !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   8. MODAL IMAGE — inchangée, nettoyage léger
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.image-modal-close {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   9. RESPONSIVE ≤ 600px
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  .exercise-intro-card #exercise-title { font-size: 1.1rem; }
+  .images-grid { grid-template-columns: 1fr; }
+}
+
+/* Sur très petit écran, le tag breadcrumb passe sous le breadcrumb si besoin */
+@media (max-width: 420px) {
+  .exercise-intro-card .exercise-top-row {
+    flex-wrap: wrap;
+  }
+  .theme-progress-tag {
+    order: 1;
+  }
+}
