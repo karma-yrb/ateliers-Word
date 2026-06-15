@@ -27,5 +27,5 @@ Depuis `apps/word` ou `apps/excel`, les commandes locales restent disponibles (`
 ## Organisation cible
 
 - `apps/*` : applications finales (`word`, `excel`, puis `powerpoint`, etc.).
-- `packages/atelier-core` : scripts communs (`build-data`, `sync-app`) partagés par les ateliers.
+- `packages/atelier-core` : scripts communs (`build-data`, `sync-app`, validation encodage) partagés par les ateliers.
 - `packages/*` : autres codes communs à extraire progressivement.
