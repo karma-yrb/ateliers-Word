@@ -6,6 +6,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const CORE_MODEL_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "model.js"), "utf8");
 const MODEL_SOURCE = await fs.readFile(path.join(ROOT, "js", "model.js"), "utf8");
 
 function createDataset() {
@@ -54,6 +55,7 @@ function createDataset() {
 
 function createModel(rawData = createDataset()) {
   const context = vm.createContext({ window: {} });
+  vm.runInContext(CORE_MODEL_SOURCE, context, { filename: "js/core/model.js" });
   vm.runInContext(MODEL_SOURCE, context, { filename: "js/model.js" });
   const ModelClass = context.window.ExcelAtelierModel;
   return new ModelClass(rawData);
