@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "ateliers-bureautique",
   "private": true,
   "description": "Monorepo des ateliers bureautiques Pimms.",
@@ -16,6 +16,16 @@
     "word:audit:data": "npm --prefix apps/word run audit:data",
     "word:test": "npm --prefix apps/word test",
     "word:release": "npm --prefix apps/word run release",
-    "word:release:all": "npm --prefix apps/word run release:all"
+    "word:release:all": "npm --prefix apps/word run release:all",
+    "excel:build:data": "npm --prefix apps/excel run build:data",
+    "excel:sync:app": "npm --prefix apps/excel run sync:app",
+    "excel:repair:encoding": "npm --prefix apps/excel run repair:encoding",
+    "excel:validate:encoding": "npm --prefix apps/excel run validate:encoding",
+    "excel:scrape:data": "npm --prefix apps/excel run scrape:data",
+    "excel:revise:data": "npm --prefix apps/excel run revise:data",
+    "excel:audit:data": "npm --prefix apps/excel run audit:data",
+    "excel:test": "npm --prefix apps/excel test",
+    "excel:release": "npm --prefix apps/excel run release",
+    "excel:release:all": "npm --prefix apps/excel run release:all"
   }
 }
