@@ -629,6 +629,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-010",
       "globalIndex": 10,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m3",
       "moduleName": "✍️ Saisir du texte",
       "moduleNameClean": "Saisir du texte",
@@ -642,15 +643,7 @@ window.WORD_ATELIER_DATA = {
       "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-03/ex-005/ex-05.jpg",
       "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-03/ex-005/ex-05.jpg",
       "description": "Reproduire la ligne ci-dessous en utilisant la fonction copier-coller pour cette phrase",
-      "consignes": [
-        "Reproduire la ligne ci-dessous en utilisant la fonction copier-coller pour cette phrase",
-        "« Le raccourci clavier pour enregistrer rapidement est ctrl+s »",
-        "Et surlignez en fonction des consignes",
-        "Texte 1: \"Arial\", taille : 12, surligné : bleu clair.",
-        "Texte 2: \"Comic Sans MS\", taille : 16, gras, surligné : gris.",
-        "Texte 3: \"Verdana\", taille : 20, italique, couleur : vert, surligné : jaune.",
-        "Texte 4: \"Times New Roman\", taille : 26, couleur : blanc, surligné : violet."
-      ],
+      "consignes": [],
       "instructions": [
         "Ouvrez Microsoft Word : cliquez sur le bouton Demarrer, recherchez \"Word\", puis ouvrez l'application. Ensuite, cliquez sur \"Document vierge\" pour creer un nouveau document.",
         "Reproduire la ligne ci-dessous en utilisant la fonction copier-coller pour cette phrase",
@@ -827,6 +820,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-014",
       "globalIndex": 14,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m3",
       "moduleName": "✍️ Saisir du texte",
       "moduleNameClean": "Saisir du texte",
@@ -903,6 +897,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-016",
       "globalIndex": 16,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m4",
       "moduleName": "¶ Options paragraphe",
       "moduleNameClean": "Options paragraphe",
@@ -1038,6 +1033,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-019",
       "globalIndex": 19,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m4",
       "moduleName": "¶ Options paragraphe",
       "moduleNameClean": "Options paragraphe",
@@ -1051,28 +1047,17 @@ window.WORD_ATELIER_DATA = {
       "imageEnonce": null,
       "imageResultat": "data/ex-004-2.jpg",
       "description": "1 - Téléchargez le fichier de travail",
-      "consignes": [
-        "Téléchargez le fichier de travail",
-        "Respectant les consignes ci-dessous en faisant attention à bien séparer les paragraphes :",
-        "- Titre: Police \"Trebuchet MS\", 18, Gras, Alignement centré",
-        "- Paragraphe 1: Police \"Tempus Sans ITC\", 11, Retrait gauche 1,5cm, Retrait droit 0,5cm, Retrait 1ère ligne ligne 0,5cm",
-        "- Paragraphe 2: Police \"Forte\", 12, Alignement Droit, Interligne au moins 0,7cm, Retrait gauche 2cm, Retrait droit 3cm",
-        "- Paragraphe 3: Police \"Arial Narrow\", 11, Gras, Alignement centré, Espacement au-dessus (avant) 6 pt (ou 0,5cm), Retrait gauche 0,4cm, Retrait droit 0,4cm",
-        "- Paragraphe 4: Police \"Arial Rounded Mt Bold\", 12, Retrait gauche 1cm, Retrait droit 2cm",
-        "- Paragraphe 5: Police \"Arial\", 11, Interligne double, Alignement justifié, Retrait gauche 3,5cm, Retrait droit 1,5cm, Retrait 1ère ligne -2cm ",
-        "- Paragraphe 6: Police \"Tahoma\", 12, Alignement justifié, Retrait droit - 0,5cm, Retrait 1ère ligne 1cm,",
-        "- Paragraphe 7: Alignement centré, Interligne fixe (Exactement) 1cm, Retrait gauche 4cm, Retrait droit 4cm"
-      ],
+      "consignes": [ ],
       "instructions": [
-        "Respectant les consignes ci-dessous en faisant attention à bien séparer les paragraphes :",
-        "- Titre: Police \"Trebuchet MS\", 18, Gras, Alignement centré",
-        "- Paragraphe 1: Police \"Tempus Sans ITC\", 11, Retrait gauche 1,5cm, Retrait droit 0,5cm, Retrait 1ère ligne ligne 0,5cm",
-        "- Paragraphe 2: Police \"Forte\", 12, Alignement Droit, Interligne au moins 0,7cm, Retrait gauche 2cm, Retrait droit 3cm",
-        "- Paragraphe 3: Police \"Arial Narrow\", 11, Gras, Alignement centré, Espacement au-dessus (avant) 6 pt (ou 0,5cm), Retrait gauche 0,4cm, Retrait droit 0,4cm",
-        "- Paragraphe 4: Police \"Arial Rounded Mt Bold\", 12, Retrait gauche 1cm, Retrait droit 2cm",
-        "- Paragraphe 5: Police \"Arial\", 11, Interligne double, Alignement justifié, Retrait gauche 3,5cm, Retrait droit 1,5cm, Retrait 1ère ligne -2cm ",
-        "- Paragraphe 6: Police \"Tahoma\", 12, Alignement justifié, Retrait droit - 0,5cm, Retrait 1ère ligne 1cm,",
-        "- Paragraphe 7: Alignement centré, Interligne fixe (Exactement) 1cm, Retrait gauche 4cm, Retrait droit 4cm"
+        "Respectant les consignes ci-dessous en faisant attention à bien séparer les paragraphes",
+        "Titre: Police \"Trebuchet MS\", 18, Gras, Alignement centré",
+        "Paragraphe 1: Police \"Tempus Sans ITC\", 11, Retrait gauche 1,5cm, Retrait droit 0,5cm, Retrait 1ère ligne ligne 0,5cm",
+        "Paragraphe 2: Police \"Forte\", 12, Alignement Droit, Interligne au moins 0,7cm, Retrait gauche 2cm, Retrait droit 3cm",
+        "Paragraphe 3: Police \"Arial Narrow\", 11, Gras, Alignement centré, Espacement au-dessus (avant) 6 pt (ou 0,5cm), Retrait gauche 0,4cm, Retrait droit 0,4cm",
+        "Paragraphe 4: Police \"Arial Rounded Mt Bold\", 12, Retrait gauche 1cm, Retrait droit 2cm",
+        "Paragraphe 5: Police \"Arial\", 11, Interligne double, Alignement justifié, Retrait gauche 3,5cm, Retrait droit 1,5cm, Retrait 1ère ligne -2cm ",
+        "Paragraphe 6: Police \"Tahoma\", 12, Alignement justifié, Retrait droit - 0,5cm, Retrait 1ère ligne 1cm,",
+        "Paragraphe 7: Alignement centré, Interligne fixe (Exactement) 1cm, Retrait gauche 4cm, Retrait droit 4cm"
       ],
       "scrape": {
         "ok": true,
@@ -1090,6 +1075,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-020",
       "globalIndex": 20,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m4",
       "moduleName": "¶ Options paragraphe",
       "moduleNameClean": "Options paragraphe",
@@ -1187,8 +1173,9 @@ window.WORD_ATELIER_DATA = {
       "description": "Téléchargez le fichier de travail ci-contre",
       "consignes": [],
       "instructions": [
-        "Reproduisez les listes de puces à l'identique du résultat attendu : Texte \"Calibri\" taille 12.",
-        "Les Caractères spéciaux en début de chaque paragraphe sont en taille 20 à trouver dans : insertion-->symboles-->autres symboles."
+        "Centrez le titre de l'exercice et mettez-le en gras.",
+        "Reproduisez les listes de puces à l'identique paragraphe par paragraphe, veuillez à respecter la taille de 12pt",
+        "Les caractères spéciaux en début de chaque paragraphe sont à trouver dans : Insertion > Icônes"
       ],
       "scrape": {
         "ok": true,
@@ -1219,15 +1206,13 @@ window.WORD_ATELIER_DATA = {
       "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-05/ex-002/ex-002-resultat.jpg",
       "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-05/ex-002/ex-002-resultat.jpg",
       "description": "1- Téléchargez les visuels qui vous serviront de puces personnalisées",
-      "consignes": [
-        "Vous faites quatre listes distinctes avec les puces personnalisées que vous venez de télécharger.",
-        "Texte : \"Calibri\", 12",
-        "Titre : vert, souligné pointillé rose."
-      ],
+      "consignes": [],
       "instructions": [
         "Vous faites quatre listes distinctes avec les puces personnalisées que vous venez de télécharger.",
-        "Texte : \"Calibri\", 12",
-        "Titre : vert, souligné pointillé rose."
+        "Document : Police \"Calibri\", 12",
+        "Titre : vert, souligné pointillé rose.",
+        "Pour personnaliser les puces, sélectionnez votre liste puis cliquez sur le bouton \"Puces\" dans l'onglet \"Accueil\" et choisissez \"Définir une puce\".",
+        "Dans la fenêtre qui s'ouvre, cliquez sur \"Image\" puis \"Importer\" et sélectionnez l'image que vous souhaitez utiliser comme puce personnalisée."
       ],
       "scrape": {
         "ok": true,
@@ -1745,6 +1730,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-037",
       "globalIndex": 37,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m7",
       "moduleName": "🅰 Word Art et Lettrine",
       "moduleNameClean": "Word Art et Lettrine",
@@ -1784,6 +1770,7 @@ window.WORD_ATELIER_DATA = {
       "id": "ex-038",
       "globalIndex": 38,
       "section": "bases",
+      "paragraphMode": true,
       "moduleId": "m7",
       "moduleName": "🅰 Word Art et Lettrine",
       "moduleNameClean": "Word Art et Lettrine",

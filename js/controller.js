@@ -60,11 +60,7 @@ class WordAtelierController {
   async #bootstrap() {
     if (!this.storage || !this.storage.isSupported()) {
       this.view.setHeaderUser("", "");
-      const reason = this.storage && this.storage.getUnsupportedReason ? this.storage.getUnsupportedReason() : null;
-      const message = reason === "file-protocol"
-        ? "Cette page est ouverte en local (file://). La sauvegarde automatique nécessite un serveur web (ex: lancez `npx serve .` puis ouvrez http://localhost:3000)."
-        : "Ce navigateur ne permet pas la sauvegarde automatique locale (utiliser Edge/Chrome récents).";
-      this.view.setProgressStatus(message);
+      this.view.setProgressStatus("Ce navigateur ne permet pas la sauvegarde automatique locale (utiliser Edge/Chrome récents).");
       this.view.showPage("home");
       return;
     }
@@ -586,8 +582,96 @@ class WordAtelierController {
     this.view.renderProgress({ ...summary, curveSeries });
   }
 
+  // FIX 2 — Page Profil : affiche les infos utilisateur et permet de modifier le prénom inline.
+  // Prérequis HTML : <div id="profile-user-section"></div> dans #page-profile.
   #renderProfilePage() {
     this.view.showPage("profile");
+    if (!this.userSession) return;
+
+    const profileSection = document.getElementById("profile-user-section");
+    if (!profileSection) return;
+
+    const folderName = this.userSession.rootHandle && this.userSession.rootHandle.name
+      ? this.userSession.rootHandle.name
+      : "Dossier utilisateur";
+    let currentFirstName = this.userSession.firstName || "";
+    const initials = this.userSession.initials || "";
+
+    const esc = (v) => String(v || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+
+    profileSection.innerHTML = `
+      <p class="profile-info-line"><strong>Prénom :</strong> <span id="profile-firstname-display">${esc(currentFirstName)}</span></p>
+      <p class="profile-info-line"><strong>Initiales :</strong> ${esc(initials)}</p>
+      <p class="profile-info-line"><strong>Dossier :</strong> ${esc(folderName)}</p>
+      <div id="profile-rename-wrap" style="display:none;margin-top:0.75rem;">
+        <label for="profile-firstname-input" style="display:block;margin-bottom:0.35rem;font-size:0.9rem;">Nouveau prénom :</label>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+          <input id="profile-firstname-input" type="text" maxlength="30" placeholder="Ex: Alice"
+            style="flex:1;min-width:140px;padding:0.4rem 0.6rem;border:1px solid #bbb;border-radius:6px;font-size:0.95rem;">
+          <button id="profile-firstname-save-btn" class="btn" type="button">Enregistrer</button>
+          <button id="profile-firstname-cancel-btn" class="btn btn-secondary" type="button">Annuler</button>
+        </div>
+        <p id="profile-rename-status" style="margin-top:0.4rem;font-size:0.85rem;color:#555;"></p>
+      </div>
+      <button id="profile-edit-firstname-btn" class="btn" type="button" style="margin-top:0.75rem;">Modifier le prénom</button>
+    `;
+
+    const editBtn      = document.getElementById("profile-edit-firstname-btn");
+    const renameWrap   = document.getElementById("profile-rename-wrap");
+    const input        = document.getElementById("profile-firstname-input");
+    const saveBtn      = document.getElementById("profile-firstname-save-btn");
+    const cancelBtn    = document.getElementById("profile-firstname-cancel-btn");
+    const renameStatus = document.getElementById("profile-rename-status");
+    const display      = document.getElementById("profile-firstname-display");
+
+    editBtn.addEventListener("click", () => {
+      input.value = currentFirstName;
+      renameWrap.style.display = "";
+      editBtn.style.display = "none";
+      renameStatus.textContent = "";
+      input.focus();
+      input.select();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      renameWrap.style.display = "none";
+      editBtn.style.display = "";
+    });
+
+    const doSave = async () => {
+      const newName = this.storage.normalizeFirstName(input.value);
+      if (!newName) {
+        renameStatus.textContent = "Le prénom ne peut pas être vide.";
+        input.focus();
+        return;
+      }
+      try {
+        await this.storage.saveUserProfile(
+          this.userSession.rootHandle,
+          this.userSession.initials,
+          newName,
+        );
+        await this.storage.setSavedFirstName(newName);
+        this.userSession = { ...this.userSession, firstName: newName };
+        currentFirstName = newName;
+        this.view.setHeaderUser(newName, this.userSession.initials);
+        display.textContent = newName;
+        renameWrap.style.display = "none";
+        editBtn.style.display = "";
+      } catch {
+        renameStatus.textContent = "Erreur lors de l'enregistrement.";
+      }
+    };
+
+    saveBtn.addEventListener("click", doSave);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter")  { e.preventDefault(); doSave(); }
+      if (e.key === "Escape") { e.preventDefault(); cancelBtn.click(); }
+    });
   }
 
   #deriveInitials(rootHandle, fallback = "") {
@@ -1021,6 +1105,9 @@ class WordAtelierController {
         pickBtn.style.display = "none";
       };
 
+      // FIX 1 — Le champ prénom est toujours éditable, même si un profil existant est trouvé.
+      // L'ancienne logique mettait le champ en readOnly quand profile.firstName était renseigné,
+      // ce qui empêchait toute correction du prénom depuis la modal de setup.
       const setFirstNameEditMode = (canEdit) => {
         firstNameInput.readOnly = !canEdit;
         if (canEdit) {
@@ -1129,7 +1216,8 @@ class WordAtelierController {
           const profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
           if (profile && profile.firstName) {
             firstNameInput.value = profile.firstName;
-            setFirstNameEditMode(false);
+            // FIX 1a — toujours éditable, même si un prénom est déjà enregistré
+            setFirstNameEditMode(true);
           } else {
             // Pas de profil connu pour ce dossier : champ vide et éditable.
             // On n'utilise pas defaultFirstName qui appartient à l'ancien utilisateur.
@@ -1162,7 +1250,8 @@ class WordAtelierController {
             if (profileInitials) resolvedInitials = profileInitials;
             if (profile.firstName) {
               firstNameInput.value = profile.firstName;
-              setFirstNameEditMode(false);
+              // FIX 1b — toujours éditable, même si un prénom est déjà enregistré
+              setFirstNameEditMode(true);
             } else {
               // Profil sans prénom : champ vide et éditable.
               firstNameInput.value = "";
@@ -1177,11 +1266,9 @@ class WordAtelierController {
           setFirstNameVisibility(true);
           setValidateVisibility(true);
           updateFolderStatus();
-        } catch (error) {
+        } catch {
           setValidateVisibility(false);
-          status.textContent = (error && error.name === "NotAllowedError" && window.location.protocol === "file:")
-            ? "Accès au dossier bloqué : cette page est ouverte en local (file://). Lancez un serveur web (ex: npx serve .) puis ouvrez http://localhost."
-            : "Impossible d'ouvrir ce dossier. Sélectionnez-en un autre.";
+          status.textContent = "Impossible d'ouvrir ce dossier. Sélectionnez-en un autre.";
         }
       };
 
@@ -1229,7 +1316,8 @@ class WordAtelierController {
           if (profile) {
             if (profile.initials) resolvedInitials = this.storage.normalizeInitials(profile.initials);
             firstNameInput.value = profile.firstName || "";
-            setFirstNameEditMode(!profile.firstName);
+            // FIX 1c — toujours éditable, même si un prénom est déjà enregistré
+            setFirstNameEditMode(true);
           } else {
             // Nouveau dossier sans profil : champ vide et éditable.
             firstNameInput.value = "";
@@ -1259,8 +1347,6 @@ class WordAtelierController {
           setPickButtonMode(restoreMode);
           if (!error || error.name === "AbortError") {
             status.textContent = "Sélection annulée.";
-          } else if (error.name === "NotAllowedError" && window.location.protocol === "file:") {
-            status.textContent = "Accès au dossier bloqué : cette page est ouverte en local (file://). Lancez un serveur web (ex: npx serve .) puis ouvrez http://localhost.";
           } else {
             status.textContent = "Impossible d'ouvrir ce dossier.";
           }

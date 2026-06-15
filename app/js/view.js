@@ -15,6 +15,7 @@ function shortDate(isoDay) {
   return `${parts[2]}/${parts[1]}`;
 }
 
+// Repart directement sur la constante des couleurs sans la ligne fantôme
 const THEME_COLORS = [
   { accent: "#2e6f76", soft: "#e8f3f5", track: "#d2e6ea" },
   { accent: "#8b6b4a", soft: "#f4eee6", track: "#e7d9c6" },
@@ -207,11 +208,10 @@ class WordAtelierView {
           </button>
           <div class="theme-block-body">
             <div class="exercise-list">
-              ${
-                card.rows.length
-                  ? card.rows
-                      .map(
-                        (row) => `
+              ${card.rows.length
+            ? card.rows
+              .map(
+                (row) => `
                       <div
                         class="exercise-row clickable ${row.done ? "done" : ""}"
                         data-action="open-exercise"
@@ -232,10 +232,10 @@ class WordAtelierView {
                         </div>
                       </div>
                     `,
-                      )
-                      .join("")
-                  : `<div class="empty">Aucun exercice dans ce thème.</div>`
-              }
+              )
+              .join("")
+            : `<div class="empty">Aucun exercice dans ce thème.</div>`
+          }
             </div>
           </div>
         </section>
@@ -461,10 +461,14 @@ class WordAtelierView {
 
   #isParagraphOnlyExercise(exercise, steps) {
     if (!exercise) return false;
-    const paragraphOnlyIds = new Set(["ex-010", "ex-014", "ex-016", "ex-019", "ex-020", "ex-023", "ex-037", "ex-038"]);
-    if (!paragraphOnlyIds.has(exercise.id)) return false;
-    if (!Array.isArray(steps)) return false;
-    return steps.map((line) => String(line || "").trim()).filter(Boolean).length >= 1;
+    // Si le JSON dit explicitement "active le mode paragraphe", on renvoie true
+    if (exercise.paragraphMode === true) {
+      if (!Array.isArray(steps)) return false;
+      return steps.map((line) => String(line || "").trim()).filter(Boolean).length >= 1;
+    }
+    // Par défaut, pour tous les autres exercices, cela renverra false 
+    // et l'application affichera les puces (<li>)
+    return false;
   }
 
   #renderImageGroup(containerEl, images, altPrefix, emptyMessage) {

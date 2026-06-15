@@ -723,3 +723,43 @@
     order: 1;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   10. PATCH POUR LE MODE PARAGRAPHE (.paragraphMode: true)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Désactive complètement le mode liste (puces, numéros, compteurs) */
+#exercise-steps.steps-paragraph-mode,
+.steps-list.steps-paragraph-mode {
+  list-style: none !important;
+  counter-reset: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  display: block !important;
+}
+
+/* Supprime les ronds numérotés générés par les ::before des listes */
+#exercise-steps.steps-paragraph-mode li::before,
+.steps-list.steps-paragraph-mode li::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Stylise le texte du paragraphe pour qu'il soit propre et lisible */
+.steps-paragraph-text {
+  display: block;
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.7;
+  margin: 0;
+  padding: 8px 4px;
+}
+
+/* Si ton JavaScript utilise des balises <br> pour séparer les lignes, 
+   on s'assure qu'elles créent un espacement agréable à l'œil */
+.steps-paragraph-text br {
+  content: "";
+  margin: 0.5rem 0;
+  display: block;
+}
