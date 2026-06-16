@@ -6,6 +6,7 @@ const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 
 
 export const DEFAULT_BROWSER_RUNTIME_FILES = [
   { src: "browser/model.js", dst: "js/core/model.js" },
+  { src: "browser/storage.js", dst: "js/core/storage.js" },
 ];
 
 export function syncBrowserRuntime({

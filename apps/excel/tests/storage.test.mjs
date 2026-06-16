@@ -6,10 +6,12 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const CORE_STORAGE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "storage.js"), "utf8");
 const STORAGE_SOURCE = await fs.readFile(path.join(ROOT, "js", "storage.js"), "utf8");
 
 function createStorage() {
   const context = vm.createContext({ window: {} });
+  vm.runInContext(CORE_STORAGE_SOURCE, context, { filename: "js/core/storage.js" });
   vm.runInContext(STORAGE_SOURCE, context, { filename: "js/storage.js" });
   const StorageClass = context.window.ExcelAtelierFileStorage;
   return new StorageClass();
