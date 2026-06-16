@@ -1,7 +1,196 @@
 window.RELEASES_DATA = {
-  "version": "1.2.52",
-  "updatedAt": "2026-06-15T08:44:34.416Z",
+  "version": "1.3.0",
+  "updatedAt": "2026-06-16T12:13:18.055Z",
   "releases": [
+    {
+      "version": "1.3.0",
+      "tag": "word-v1.3.0",
+      "date": "2026-06-16",
+      "releaseType": "initial",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités ou changements techniques structurants."
+      },
+      "summary": "Version corrective orientée stabilité.",
+      "elements": [
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser model runtime",
+          "breaking": false,
+          "hash": "399c350"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share encoding validation scripts",
+          "breaking": false,
+          "hash": "bab817c"
+        },
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "",
+          "description": "enrich excel exercise dataset",
+          "breaking": false,
+          "hash": "748158f"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share atelier scripts and fix excel bootstrap",
+          "breaking": false,
+          "hash": "d29473f"
+        },
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "excel",
+          "description": "scaffold excel atelier app",
+          "breaking": false,
+          "hash": "9522678"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "repo",
+          "description": "migrate word app to monorepo",
+          "breaking": false,
+          "hash": "bf2fb8d"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.52",
+          "breaking": false,
+          "hash": "718dd41"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "dceb20e"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.51",
+          "breaking": false,
+          "hash": "614175c"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "bee0ade"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.50",
+          "breaking": false,
+          "hash": "6f8dae8"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "ce6477d"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.49",
+          "breaking": false,
+          "hash": "7cdce65"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "3533743"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.48",
+          "breaking": false,
+          "hash": "f77f107"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "2c1f633"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.47",
+          "breaking": false,
+          "hash": "0b6fc49"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "94d3a6e"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.2.46",
+          "breaking": false,
+          "hash": "bf8fa18"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "441c81f"
+        }
+      ],
+      "counts": {
+        "feat": 5,
+        "fix": 2,
+        "perf": 0,
+        "refactor": 4,
+        "docs": 0,
+        "test": 0,
+        "chore": 105,
+        "build": 0,
+        "ci": 1,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 117
+      }
+    },
     {
       "version": "1.2.52",
       "tag": "v1.2.52",
