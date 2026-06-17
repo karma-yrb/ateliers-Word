@@ -265,7 +265,9 @@
         <li>Nommez le fichier <code id="save-reminder-file-name">ex-xxx-termine.docx</code>, puis validez avec <strong>Enregistrer</strong>.</li>
         <li>Dans Word, cliquez <span class="word-close-icon" aria-hidden="true" title="Fermer">×</span> (fermer) si besoin.</li>
       </ol>
-      <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+      <p id="save-reminder-existing-status" class="save-reminder-existing-status" hidden></p>
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;">
+        <button id="save-reminder-cancel-btn" class="btn btn-soft" type="button">Annuler</button>
         <button id="save-reminder-continue-btn" class="btn has-icon" data-icon="✓" type="button">Continuer</button>
       </div>
     </div>

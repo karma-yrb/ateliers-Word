@@ -43,6 +43,8 @@ function createAtelierController(config = {}) {
       message: document.getElementById("save-reminder-message"),
       userFolder: document.getElementById("save-reminder-user-folder"),
       fileName: document.getElementById("save-reminder-file-name"),
+      existingStatus: document.getElementById("save-reminder-existing-status"),
+      cancelBtn: document.getElementById("save-reminder-cancel-btn"),
       continueBtn: document.getElementById("save-reminder-continue-btn"),
     };
   }
@@ -1006,6 +1008,52 @@ function createAtelierController(config = {}) {
     window.location.href = href;
   }
 
+  #escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  async #fileExistsInDirectory(directoryHandle, fileName) {
+    if (!directoryHandle || directoryHandle.kind !== "directory" || !fileName) return null;
+    try {
+      if (this.storage && this.storage.queryDirectoryPermission) {
+        const allowed = await this.storage.queryDirectoryPermission(directoryHandle, "read");
+        if (!allowed) return null;
+      }
+      await directoryHandle.getFileHandle(fileName, { create: false });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async #buildDownloadExistingStatus(fileName) {
+    const folderLabel = this.#getSaveReminderFolderLabel();
+    const userFolderExists = await this.#fileExistsInDirectory(
+      this.userSession && this.userSession.rootHandle,
+      fileName,
+    );
+
+    const userFolderText = userFolderExists === true
+      ? `Attention : le fichier existe d\u00e9j\u00e0 dans votre dossier ${folderLabel}.`
+      : userFolderExists === false
+        ? `Aucun fichier du m\u00eame nom trouv\u00e9 dans votre dossier ${folderLabel}.`
+        : `Dossier ${folderLabel} non v\u00e9rifi\u00e9 : permission de lecture absente.`;
+
+    return {
+      important: userFolderExists === true,
+      html: `
+        <strong>V\u00e9rification avant t\u00e9l\u00e9chargement</strong><br>
+        ${this.#escapeHtml(userFolderText)}<br>
+        T\u00e9l\u00e9chargements : v\u00e9rification impossible sans acc\u00e8s explicite au dossier du navigateur.
+      `,
+    };
+  }
+
   async #trackExerciseDownloadFromLink(linkEl) {
     if (!this.isReady || !this.userSession || !this.storage || !linkEl) return;
     const exerciseId = this.#getCurrentExerciseIdFromView();
@@ -1045,23 +1093,39 @@ function createAtelierController(config = {}) {
     return this.#getNumberedSaveReminderFileName(exercise.num);
   }
 
-  #setSaveReminderContent({ title, message, steps, continueLabel = "Continuer" }) {
+  #setSaveReminderContent({
+    title,
+    message,
+    steps,
+    continueLabel = "Continuer",
+    existingStatusHtml = "",
+    existingStatusImportant = false,
+  }) {
     const modal = this.saveReminderModal.root;
     const titleEl = modal ? modal.querySelector("#save-reminder-title") : null;
     const stepsEl = modal ? modal.querySelector(".save-reminder-steps") : null;
+    const existingStatus = this.saveReminderModal.existingStatus;
     const continueBtn = this.saveReminderModal.continueBtn;
 
     if (titleEl) titleEl.textContent = title;
     if (this.saveReminderModal.message) this.saveReminderModal.message.textContent = message;
     if (stepsEl) stepsEl.innerHTML = steps;
+    if (existingStatus) {
+      existingStatus.hidden = !existingStatusHtml;
+      existingStatus.innerHTML = existingStatusHtml;
+      existingStatus.classList.toggle("is-important", Boolean(existingStatusImportant));
+    }
     if (continueBtn) continueBtn.textContent = continueLabel;
   }
 
-  #showDownloadReminderModal(downloadFileName) {
+  async #showDownloadReminderModal(downloadFileName) {
+    const existingStatus = await this.#buildDownloadExistingStatus(downloadFileName);
+
     return new Promise((resolve) => {
       const modal = this.saveReminderModal.root;
       const userFolder = this.saveReminderModal.userFolder;
       const fileName = this.saveReminderModal.fileName;
+      const cancelBtn = this.saveReminderModal.cancelBtn;
       const continueBtn = this.saveReminderModal.continueBtn;
 
       if (!modal || !userFolder || !fileName || !continueBtn) {
@@ -1083,6 +1147,8 @@ function createAtelierController(config = {}) {
           <li>Ouvrez ensuite le fichier dans ${settings.officeAppName}.</li>
         `,
         continueLabel: "T\u00e9l\u00e9charger",
+        existingStatusHtml: existingStatus.html,
+        existingStatusImportant: existingStatus.important,
       });
 
       const nextUserFolder = modal.querySelector("#save-reminder-user-folder");
@@ -1090,22 +1156,28 @@ function createAtelierController(config = {}) {
       if (nextUserFolder) nextUserFolder.textContent = folderLabel;
       if (nextFileName) nextFileName.textContent = cleanFileName;
 
-      const onClose = () => {
+      const onClose = (result) => {
         modal.style.display = "none";
         modal.setAttribute("aria-hidden", "true");
+        if (cancelBtn) cancelBtn.onclick = null;
         continueBtn.onclick = null;
         window.removeEventListener("keydown", onKeydown);
-        resolve(true);
+        resolve(result);
       };
 
       const onKeydown = (event) => {
-        if (event.key === "Escape" || event.key === "Enter") {
+        if (event.key === "Escape") {
           event.preventDefault();
-          onClose();
+          onClose(false);
+        }
+        if (event.key === "Enter") {
+          event.preventDefault();
+          onClose(true);
         }
       };
 
-      continueBtn.onclick = () => onClose();
+      if (cancelBtn) cancelBtn.onclick = () => onClose(false);
+      continueBtn.onclick = () => onClose(true);
       window.addEventListener("keydown", onKeydown);
       modal.style.display = "flex";
       modal.setAttribute("aria-hidden", "false");
@@ -1119,6 +1191,7 @@ function createAtelierController(config = {}) {
       const message = this.saveReminderModal.message;
       const userFolder = this.saveReminderModal.userFolder;
       const fileName = this.saveReminderModal.fileName;
+      const cancelBtn = this.saveReminderModal.cancelBtn;
       const continueBtn = this.saveReminderModal.continueBtn;
 
       if (!modal || !message || !userFolder || !fileName || !continueBtn) {
@@ -1147,22 +1220,28 @@ function createAtelierController(config = {}) {
       if (nextUserFolder) nextUserFolder.textContent = folderLabel;
       if (nextFileName) nextFileName.textContent = expectedFileName;
 
-      const onClose = () => {
+      const onClose = (result) => {
         modal.style.display = "none";
         modal.setAttribute("aria-hidden", "true");
+        if (cancelBtn) cancelBtn.onclick = null;
         continueBtn.onclick = null;
         window.removeEventListener("keydown", onKeydown);
-        resolve(true);
+        resolve(result);
       };
 
       const onKeydown = (event) => {
-        if (event.key === "Escape" || event.key === "Enter") {
+        if (event.key === "Escape") {
           event.preventDefault();
-          onClose();
+          onClose(false);
+        }
+        if (event.key === "Enter") {
+          event.preventDefault();
+          onClose(true);
         }
       };
 
-      continueBtn.onclick = () => onClose();
+      if (cancelBtn) cancelBtn.onclick = () => onClose(false);
+      continueBtn.onclick = () => onClose(true);
       window.addEventListener("keydown", onKeydown);
       modal.style.display = "flex";
       modal.setAttribute("aria-hidden", "false");
