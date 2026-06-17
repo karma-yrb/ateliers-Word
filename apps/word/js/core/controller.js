@@ -865,34 +865,82 @@ function createAtelierController(config = {}) {
   async #refreshExerciseWorkFileState(exerciseId, options = {}) {
     if (!this.view || !this.view.setExerciseWorkFileState) return;
     const token = ++this.exerciseWorkFileToken;
-    const folderAccessSupported = Boolean(
+    const filePickerSupported = Boolean(
       this.storage
-      && this.storage.isSupported
-      && this.storage.isSupported(),
+      && this.storage.supportsWorkFilePicker
+      && this.storage.supportsWorkFilePicker(),
     );
 
-    if (!exerciseId || !this.userSession || !folderAccessSupported) {
+    if (!exerciseId || !this.userSession || !filePickerSupported) {
       this.view.setExerciseWorkFileState({
-        pickerSupported: folderAccessSupported,
+        pickerSupported: filePickerSupported,
         openVisible: false,
-        statusText: folderAccessSupported ? "" : "Ouverture du dossier utilisateur indisponible sur ce navigateur.",
+        statusText: filePickerSupported ? "" : "S\u00e9lection du fichier indisponible sur ce navigateur.",
       });
       return;
     }
 
-    const entry = await this.storage.getSavedExerciseDownload(this.#buildWorkFileProfileKey(), exerciseId);
+    const profileKey = this.#buildWorkFileProfileKey();
+    const entry = await this.storage.getSavedExerciseDownload(profileKey, exerciseId);
+    const selectedFile = this.storage.getSavedExerciseFile
+      ? await this.storage.getSavedExerciseFile(profileKey, exerciseId)
+      : null;
     if (token !== this.exerciseWorkFileToken) return;
 
+    const fileName = selectedFile && selectedFile.fileName
+      ? selectedFile.fileName
+      : entry && entry.fileName ? entry.fileName : "";
+
     this.view.setExerciseWorkFileState({
-      pickerSupported: folderAccessSupported,
-      openVisible: Boolean(entry && entry.fileName),
-      fileName: entry && entry.fileName ? entry.fileName : "",
+      pickerSupported: filePickerSupported,
+      openVisible: Boolean(fileName),
+      fileName,
       statusText: options.statusText || "",
     });
   }
 
   async #pickWorkFileForCurrentExercise() {
-    return;
+    if (!this.isReady || !this.userSession || !this.storage) return;
+    const exerciseId = this.#getCurrentExerciseIdFromView();
+    if (!exerciseId) return;
+
+    if (!this.storage.supportsWorkFilePicker || !this.storage.supportsWorkFilePicker()) {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "S\u00e9lection du fichier indisponible sur ce navigateur.",
+      });
+      return;
+    }
+
+    const profileKey = this.#buildWorkFileProfileKey();
+    const expected = await this.storage.getSavedExerciseDownload(profileKey, exerciseId);
+
+    try {
+      const handle = await this.storage.pickWorkFile({
+        startIn: this.userSession.rootHandle || "downloads",
+      });
+
+      if (!handle) {
+        await this.#refreshExerciseWorkFileState(exerciseId, {
+          statusText: "S\u00e9lection du fichier annul\u00e9e.",
+        });
+        return;
+      }
+
+      await this.storage.setSavedExerciseFile(profileKey, exerciseId, handle);
+      const selectedName = handle.name || "fichier s\u00e9lectionn\u00e9";
+      const expectedName = expected && expected.fileName ? expected.fileName : "";
+      const mismatchText = expectedName && selectedName !== expectedName
+        ? ` Attention, le fichier attendu \u00e9tait ${expectedName}.`
+        : "";
+
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: `Fichier s\u00e9lectionn\u00e9 : ${selectedName}.${mismatchText}`,
+      });
+    } catch {
+      await this.#refreshExerciseWorkFileState(exerciseId, {
+        statusText: "Impossible de s\u00e9lectionner le fichier.",
+      });
+    }
   }
 
   async #openWorkFileForCurrentExercise() {
@@ -900,9 +948,9 @@ function createAtelierController(config = {}) {
     const exerciseId = this.#getCurrentExerciseIdFromView();
     if (!exerciseId) return;
 
-    if (!this.storage.isSupported || !this.storage.isSupported()) {
+    if (!this.storage.supportsWorkFilePicker || !this.storage.supportsWorkFilePicker()) {
       await this.#refreshExerciseWorkFileState(exerciseId, {
-        statusText: "Ouverture du dossier utilisateur indisponible sur ce navigateur.",
+        statusText: "S\u00e9lection du fichier indisponible sur ce navigateur.",
       });
       return;
     }
@@ -911,38 +959,13 @@ function createAtelierController(config = {}) {
     const entry = await this.storage.getSavedExerciseDownload(profileKey, exerciseId);
     if (!entry || !entry.fileName) {
       await this.#refreshExerciseWorkFileState(exerciseId, {
-        statusText: "Téléchargez d'abord le fichier de l'exercice, puis enregistrez-le dans votre dossier utilisateur.",
+        statusText: "T\u00e9l\u00e9chargez d'abord le fichier de l'exercice, puis s\u00e9lectionnez-le ici.",
       });
       return;
     }
 
-    try {
-      const handle = await this.storage.openUserDirectory(this.userSession.rootHandle);
-
-      if (!handle) {
-        await this.#refreshExerciseWorkFileState(exerciseId, {
-          statusText: `Dossier utilisateur prêt : ${this.userSession.rootHandle && this.userSession.rootHandle.name ? this.userSession.rootHandle.name : "dossier utilisateur"}.`,
-        });
-        return;
-      }
-
-      const ok = await this.storage.ensureDirectoryPermission(handle, "readwrite");
-      if (!ok) {
-        await this.#refreshExerciseWorkFileState(exerciseId, {
-          statusText: "Permission refusée pour ce dossier utilisateur.",
-        });
-        return;
-      }
-
-      await this.storage.touchSavedExerciseDownload(profileKey, exerciseId);
-      await this.#refreshExerciseWorkFileState(exerciseId, {
-        statusText: `Dossier ouvert : ${handle.name || "dossier utilisateur"}. Cherchez ${entry.fileName}.`,
-      });
-    } catch {
-      await this.#refreshExerciseWorkFileState(exerciseId, {
-        statusText: "Impossible d'ouvrir le dossier utilisateur.",
-      });
-    }
+    await this.storage.touchSavedExerciseDownload(profileKey, exerciseId);
+    await this.#pickWorkFileForCurrentExercise();
   }
 
   #getDownloadFileName(downloadUrl) {
@@ -964,7 +987,7 @@ function createAtelierController(config = {}) {
     const fileName = this.#getDownloadFileName(href);
     await this.storage.setSavedExerciseDownload(this.#buildWorkFileProfileKey(), exerciseId, fileName, href);
     await this.#refreshExerciseWorkFileState(exerciseId, {
-      statusText: `Téléchargement lancé. Ouvrez le document dans ${settings.officeAppName}, cliquez sur « Activer la modification », enregistrez ${fileName} dans votre dossier utilisateur, puis cliquez sur « Ouvrir mon fichier ».`,
+      statusText: `T\u00e9l\u00e9chargement lanc\u00e9. Ouvrez le document dans ${settings.officeAppName}, cliquez sur "Activer la modification", enregistrez ${fileName} dans votre dossier utilisateur, puis cliquez sur "S\u00e9lectionner mon fichier".`,
     });
   }
 

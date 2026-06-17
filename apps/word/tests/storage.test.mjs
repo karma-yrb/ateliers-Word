@@ -9,8 +9,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CORE_STORAGE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "storage.js"), "utf8");
 const STORAGE_SOURCE = await fs.readFile(path.join(ROOT, "js", "storage.js"), "utf8");
 
-function createStorage() {
-  const context = vm.createContext({ window: {} });
+function createStorage(windowOverrides = {}) {
+  const context = vm.createContext({ window: { ...windowOverrides } });
   vm.runInContext(CORE_STORAGE_SOURCE, context, { filename: "js/core/storage.js" });
   vm.runInContext(STORAGE_SOURCE, context, { filename: "js/storage.js" });
   const StorageClass = context.window.WordAtelierFileStorage;
@@ -133,4 +133,24 @@ test("scanDocumentsFolders returns resolved user folder and filters folders with
   assert.equal(scanned[0].name, "progression-atelier");
   assert.equal(scanned[0].handle, userFolder);
   assert.equal(scanned[0].hasProgressFolder, true);
+});
+
+test("pickWorkFile opens a file picker, not a directory picker", async () => {
+  const fileHandle = { kind: "file", name: "exercice.docx" };
+  let filePickerOptions = null;
+  const storage = createStorage({
+    async showDirectoryPicker() {
+      throw new Error("directory picker should not be used");
+    },
+    async showOpenFilePicker(options) {
+      filePickerOptions = options;
+      return [fileHandle];
+    },
+  });
+
+  const selected = await storage.pickWorkFile();
+
+  assert.equal(selected, fileHandle);
+  assert.equal(filePickerOptions.multiple, false);
+  assert.equal(filePickerOptions.types[0].description, "Document Word");
 });

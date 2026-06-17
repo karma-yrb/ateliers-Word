@@ -697,16 +697,16 @@ class AtelierView {
     const openVisible = Boolean(vm.openVisible && fileName);
 
     this.exercisePickWorkFileBtn.style.display = "none";
-    this.exercisePickWorkFileBtn.textContent = "Ouvrir mon dossier";
+    this.exercisePickWorkFileBtn.textContent = "S\u00e9lectionner mon fichier";
 
     this.exerciseOpenWorkFileBtn.style.display = pickerSupported && openVisible ? "" : "none";
     this.exerciseOpenWorkFileBtn.disabled = !pickerSupported || !openVisible || Boolean(vm.openDisabled);
     this.exerciseOpenWorkFileBtn.textContent = openVisible
-      ? `Ouvrir mon fichier: ${fileName}`
-      : "Ouvrir mon fichier";
+      ? `S\u00e9lectionner mon fichier: ${fileName}`
+      : "S\u00e9lectionner mon fichier";
 
     if (!pickerSupported) {
-      this.exerciseWorkFileStatus.textContent = "Ouverture du dossier utilisateur indisponible sur ce navigateur.";
+      this.exerciseWorkFileStatus.textContent = "S\u00e9lection du fichier indisponible sur ce navigateur.";
       return;
     }
 
@@ -716,7 +716,7 @@ class AtelierView {
     }
 
     this.exerciseWorkFileStatus.textContent = openVisible
-      ? `Fichier attendu dans le dossier utilisateur: ${fileName}`
+      ? `Fichier attendu: ${fileName}`
       : "";
   }
 
