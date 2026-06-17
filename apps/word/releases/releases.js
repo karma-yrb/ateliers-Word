@@ -1,7 +1,52 @@
 window.RELEASES_DATA = {
-  "version": "1.3.1",
-  "updatedAt": "2026-06-16T12:27:10.679Z",
+  "version": "1.3.2",
+  "updatedAt": "2026-06-17T07:00:42.098Z",
   "releases": [
+    {
+      "version": "1.3.2",
+      "tag": "word-v1.3.2",
+      "date": "2026-06-17",
+      "releaseType": "patch",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités ou changements techniques structurants."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser controller runtime",
+          "breaking": false,
+          "hash": "077cb7a"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser view runtime",
+          "breaking": false,
+          "hash": "b82e3ea"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 2,
+        "docs": 0,
+        "test": 0,
+        "chore": 0,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 2
+      }
+    },
     {
       "version": "1.3.1",
       "tag": "word-v1.3.1",

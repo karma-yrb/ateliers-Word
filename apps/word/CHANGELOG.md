@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/karma-yrb/ateliers-Word/compare/word-v1.3.1...word-v1.3.2) (2026-06-17)
+
+
+### Refactoring
+
+* share browser controller runtime ([077cb7a](https://github.com/karma-yrb/ateliers-Word/commit/077cb7a6d188fe24a4420fc8587b1e3e9a68a230))
+* share browser view runtime ([b82e3ea](https://github.com/karma-yrb/ateliers-Word/commit/b82e3ea58b6c247410876da9d1e7dbb4bdce03af))
+
 ### [1.3.1](https://github.com/karma-yrb/ateliers-Word/compare/word-v1.3.0...word-v1.3.1) (2026-06-16)
 
 
