@@ -1,7 +1,196 @@
 {
-  "version": "0.1.0",
-  "updatedAt": "2026-06-15T13:15:35.522Z",
+  "version": "0.1.1",
+  "updatedAt": "2026-06-17T10:16:14.495Z",
   "releases": [
+    {
+      "version": "0.1.1",
+      "tag": "excel-v0.1.1",
+      "date": "2026-06-17",
+      "releaseType": "initial",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités ou changements techniques structurants."
+      },
+      "summary": "Version corrective orientée stabilité.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.4.0",
+          "breaking": false,
+          "hash": "b2acef9"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "430982c"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "",
+          "description": "sécuriser l'encodage des accents",
+          "breaking": false,
+          "hash": "1ee2850"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "48a3693"
+        },
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "",
+          "description": "améliore le flux de téléchargement des exercices",
+          "breaking": false,
+          "hash": "2e95f58"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.3.5",
+          "breaking": false,
+          "hash": "95392b5"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "4548138"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.3.4",
+          "breaking": false,
+          "hash": "f8642e2"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "1e88443"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.3.3",
+          "breaking": false,
+          "hash": "b0d1d36"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "fd74344"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.3.2",
+          "breaking": false,
+          "hash": "a75123a"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser controller runtime",
+          "breaking": false,
+          "hash": "077cb7a"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser view runtime",
+          "breaking": false,
+          "hash": "b82e3ea"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.3.1",
+          "breaking": false,
+          "hash": "f83c6db"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser storage runtime",
+          "breaking": false,
+          "hash": "49f505a"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.3.0",
+          "breaking": false,
+          "hash": "e64876e"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share browser model runtime",
+          "breaking": false,
+          "hash": "399c350"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "",
+          "description": "share encoding validation scripts",
+          "breaking": false,
+          "hash": "bab817c"
+        },
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "",
+          "description": "enrich excel exercise dataset",
+          "breaking": false,
+          "hash": "748158f"
+        }
+      ],
+      "counts": {
+        "feat": 6,
+        "fix": 3,
+        "perf": 0,
+        "refactor": 7,
+        "docs": 0,
+        "test": 0,
+        "chore": 117,
+        "build": 0,
+        "ci": 1,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 134
+      }
+    },
     {
       "version": "0.1.0",
       "tag": "excel-v0.1.0",
