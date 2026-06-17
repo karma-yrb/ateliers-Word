@@ -27,10 +27,18 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p dist/word dist/excel
+          cp -R pages/. dist/
+          cp -R apps/word/app/. dist/word/
+          cp -R apps/excel/app/. dist/excel/
+          touch dist/.nojekyll
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './apps/word/app'
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

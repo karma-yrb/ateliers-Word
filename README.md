@@ -7,6 +7,12 @@ Monorepo des ateliers bureautiques.
 - `apps/word` : atelier Word actuel, versionne independamment.
 - `apps/excel` : atelier Excel initialise avec un dataset temporaire minimal.
 
+## URLs publiees
+
+- `/word/` : atelier Word.
+- `/excel/` : atelier Excel.
+- `/` : choix de l'atelier.
+
 ## Commandes
 
 Depuis la racine :
