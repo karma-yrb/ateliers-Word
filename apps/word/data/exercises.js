@@ -319,9 +319,7 @@ window.WORD_ATELIER_DATA = {
         "prevUrl": null,
         "nextUrl": null,
         "extraImages": [],
-        "enonceImages": [
-          "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/ex-01.jpg"
-        ],
+        "enonceImages": [],
         "resultImages": []
       }
     },

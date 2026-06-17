@@ -875,8 +875,7 @@ select {
 
 .steps-preamble {
   margin: 0 0 10px;
-  font-style: italic;
-  color: var(--text-soft, #555);
+  color: var(--text, #102033);
   line-height: 1.45;
 }
 

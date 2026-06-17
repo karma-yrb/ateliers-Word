@@ -338,6 +338,65 @@ class AtelierModel {
     return fallback;
   }
 
+  getExerciseStepsView(exercise) {
+    const steps = this.getStepsForExercise(exercise)
+      .map((step) => String(step || "").trim())
+      .filter(Boolean);
+    if (!steps.length) return { preamble: "", steps: [] };
+
+    const explicitPreamble = String(exercise && exercise.preamble ? exercise.preamble : "").trim();
+    if (explicitPreamble) return { preamble: explicitPreamble, steps };
+
+    const [firstStep, ...remainingSteps] = steps;
+    if (remainingSteps.length && this.#looksLikeStepIntro(firstStep)) {
+      return { preamble: firstStep, steps: remainingSteps };
+    }
+
+    return { preamble: "", steps };
+  }
+
+  #looksLikeStepIntro(value) {
+    const text = cleanText(value);
+    if (!text) return false;
+    if (text.includes("\n")) return false;
+    if (/^\d+[\.)]\s+/.test(text)) return false;
+    if (text.length > 140) return false;
+
+    const lower = text.toLowerCase();
+    const actionStarters = [
+      "affichez",
+      "ajoutez",
+      "appliquez",
+      "choisissez",
+      "cliquez",
+      "comparez",
+      "copiez",
+      "cr\u00e9ez",
+      "faites",
+      "ins\u00e9rez",
+      "modifiez",
+      "ouvrez",
+      "pr\u00e9sentez",
+      "reproduisez",
+      "s\u00e9lectionnez",
+      "tapez",
+      "t\u00e9l\u00e9chargez",
+      "utilisez",
+      "validez",
+    ];
+    if (actionStarters.some((starter) => lower.startsWith(starter))) return false;
+
+    return [
+      /\bexercice\b/,
+      /\bobjectif\b/,
+      /\ble but\b/,
+      /\bil s'agit\b/,
+      /\bvous allez\b/,
+      /\bcet exercice\b/,
+      /\bdans cet exercice\b/,
+    ].some((pattern) => pattern.test(lower));
+  }
+
   getVisualsForExercise(exercise) {
     if (!exercise) return { enonceImages: [], resultImages: [], extraImages: [] };
 

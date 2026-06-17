@@ -846,11 +846,15 @@ class AtelierView {
   }
 
   #getExerciseDownloadFileName(exercise, fileUrl) {
-    const exerciseId = String(exercise && exercise.id ? exercise.id : "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9_-]+/g, "-")
-      .replace(/^-+|-+$/g, "") || "exercice";
+    const exerciseNumber = Number(exercise && exercise.num);
+    const exerciseId = Number.isFinite(exerciseNumber) && exerciseNumber > 0
+      ? `ex-${String(exerciseNumber).padStart(3, "0")}`
+      : String(exercise && exercise.id ? exercise.id : "")
+        .trim()
+        .toLowerCase()
+        .replace(/^ex-(\d{1,2})$/, (_match, value) => `ex-${String(value).padStart(3, "0")}`)
+        .replace(/[^a-z0-9_-]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "exercice";
     let extension = ".docx";
 
     try {

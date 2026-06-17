@@ -568,13 +568,18 @@ function createAtelierController(config = {}) {
     this.view.showPage("exercise");
 
     const done = this.model.getIsDone(exercise.id);
-    const steps = this.model.getStepsForExercise(exercise);
+    const stepsVm = this.model.getExerciseStepsView
+      ? this.model.getExerciseStepsView(exercise)
+      : { preamble: "", steps: this.model.getStepsForExercise(exercise) };
     const visuals = this.model.getVisualsForExercise(exercise);
     const { prevId, nextId } = this.model.getNeighbors(exercise.id);
     this.view.renderExercise({
-      exercise,
+      exercise: {
+        ...exercise,
+        preamble: stepsVm.preamble || "",
+      },
       done,
-      steps,
+      steps: stepsVm.steps || [],
       visuals,
       prevId,
       nextId,
@@ -1097,8 +1102,9 @@ function createAtelierController(config = {}) {
   #getSaveReminderFileName(exerciseId) {
     if (!exerciseId) return this.#getDefaultSaveReminderFileName();
     const normalized = String(exerciseId).trim().toLowerCase();
-    if (/^ex-\d+$/.test(normalized)) {
-      return `${normalized}-termine.${settings.completedFileExtension}`;
+    const normalizedMatch = normalized.match(/^ex-(\d+)$/);
+    if (normalizedMatch) {
+      return `ex-${String(normalizedMatch[1]).padStart(3, "0")}-termine.${settings.completedFileExtension}`;
     }
     const exercise = this.model.getExerciseById(exerciseId);
     if (!exercise || typeof exercise.num !== "number") return this.#getDefaultSaveReminderFileName();
