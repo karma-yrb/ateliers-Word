@@ -3,6 +3,12 @@ set -euo pipefail
 
 COMMIT_MESSAGE="${RELEASE_COMMIT_MESSAGE:-chore: prepare monorepo release}"
 
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "[release:all] ERREUR: ce dossier n'est pas un depot Git."
+  echo "[release:all] Ouvre le dossier clone du depot, ou initialise Git avant de publier."
+  exit 1
+fi
+
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [[ "$CURRENT_BRANCH" != "main" ]]; then
   echo "[release:all] ERREUR: pas sur main (branche actuelle: $CURRENT_BRANCH)"

@@ -16,6 +16,7 @@
     "release": "standard-version",
     "release:first": "standard-version --first-release",
     "release:all": "if exist \"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" (\"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" scripts/release-all.sh) else (bash scripts/release-all.sh)",
+    "lance": "node scripts/run-release-all.mjs",
     "lance pub": "npm run release:all"
   },
   "devDependencies": {

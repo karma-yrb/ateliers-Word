@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "release:all": "if exist \"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" (\"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" scripts/release-all.sh) else (bash scripts/release-all.sh)",
+    "lance": "node scripts/run-release-all.mjs",
     "lance pub": "npm run release:all",
     "word:build:data": "npm --prefix apps/word run build:data",
     "word:sync:app": "npm --prefix apps/word run sync:app",
