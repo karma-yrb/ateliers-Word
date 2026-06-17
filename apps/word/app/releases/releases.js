@@ -1,7 +1,52 @@
 window.RELEASES_DATA = {
-  "version": "1.4.1",
-  "updatedAt": "2026-06-17T12:41:08.138Z",
+  "version": "1.4.2",
+  "updatedAt": "2026-06-17T14:02:54.183Z",
   "releases": [
+    {
+      "version": "1.4.2",
+      "tag": "word-v1.4.2",
+      "date": "2026-06-17",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "4552b6f"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.2",
+          "breaking": false,
+          "hash": "47e76b8"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 2
+      }
+    },
     {
       "version": "1.4.1",
       "tag": "word-v1.4.1",
