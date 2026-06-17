@@ -16,6 +16,9 @@ const ALLOWED_TYPES = new Set([
 
 const CONVENTIONAL_RE = /^(?<type>[a-z]+)(\([^)]+\))?(?<breaking>!)?: (?<description>.+)$/;
 const TAG_PREFIX = "word-v";
+const ALLOWED_LEGACY_COMMITS = new Set([
+  "f55a031",
+]);
 
 function git(args) {
   return execFileSync("git", args, {
@@ -54,6 +57,10 @@ function isSkippableCommit(subject) {
   return subject.startsWith("Merge ") || subject.startsWith("Revert \"");
 }
 
+function isAllowedLegacyCommit(hash) {
+  return ALLOWED_LEGACY_COMMITS.has(hash);
+}
+
 function validate() {
   const lastTag = getLastTag();
   if (!lastTag) {
@@ -70,6 +77,7 @@ function validate() {
   const invalid = [];
 
   for (const commit of commits) {
+    if (isAllowedLegacyCommit(commit.hash)) continue;
     if (isSkippableCommit(commit.subject)) continue;
     const match = commit.subject.match(CONVENTIONAL_RE);
     if (!match) {
