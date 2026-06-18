@@ -85,6 +85,7 @@ class AtelierModel {
         imageResultatCaption: cleanText(ex.imageResultatCaption || ""),
         scrapeEnonceImages: uniqueStrings(ex.scrape && ex.scrape.enonceImages),
         scrapeResultImages: uniqueStrings(ex.scrape && ex.scrape.resultImages),
+        criteria: Array.isArray(ex.criteria) ? ex.criteria.map((s) => cleanStepText(s)).filter(Boolean) : [],
         extraImages: uniqueStrings(
           Array.isArray(ex.extraImages)
             ? ex.extraImages

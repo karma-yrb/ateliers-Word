@@ -75,8 +75,13 @@ class AtelierView {
     this.exerciseStatusPill = document.getElementById("exercise-status-pill");
     this.exerciseTitle = document.getElementById("exercise-title");
     this.exerciseThemeLine = document.getElementById("exercise-theme-line");
+    this.exerciseDescription = document.getElementById("exercise-description");
+    this.exercisePreambleWrap = document.getElementById("exercise-preamble-wrap");
+    this.exerciseInstructionsWrap = document.getElementById("exercise-instructions-wrap");
+    this.exerciseCriteriaWrap = document.getElementById("exercise-criteria-wrap");
     this.exerciseSteps = document.getElementById("exercise-steps");
     this.exerciseStepsPreamble = document.getElementById("exercise-steps-preamble");
+    this.exerciseCriteria = document.getElementById("exercise-criteria");
     this.exerciseDocxBtn = document.getElementById("exercise-docx-btn");
     this.exerciseDownloadBtn = document.getElementById("exercise-download-btn");
     this.exercisePickWorkFileBtn = document.getElementById("exercise-pick-workfile-btn");
@@ -270,7 +275,15 @@ class AtelierView {
     this.exerciseStatusPill.classList.toggle("todo", !vm.done);
     this.exerciseToggleDoneBtn.setAttribute("data-id", vm.exercise.id);
 
+    if (this.exerciseDescription) {
+      this.exerciseDescription.textContent = vm.exercise.description || "";
+      this.exerciseDescription.style.display = vm.exercise.description ? "" : "none";
+    }
+
     const preamble = (vm.exercise && vm.exercise.preamble) ? vm.exercise.preamble : "";
+    if (this.exercisePreambleWrap) {
+      this.exercisePreambleWrap.style.display = preamble ? "" : "none";
+    }
     if (this.exerciseStepsPreamble) {
       this.exerciseStepsPreamble.textContent = preamble;
       this.exerciseStepsPreamble.style.display = preamble ? "" : "none";
@@ -364,6 +377,18 @@ class AtelierView {
       this.exerciseSteps.innerHTML = items.length
         ? items.join("")
         : "<li>Reproduisez le document en suivant l'énoncé.</li>";
+    }
+
+    if (this.exerciseInstructionsWrap) {
+      this.exerciseInstructionsWrap.style.display = (vm.steps || []).length ? "" : "none";
+    }
+
+    if (this.exerciseCriteria) {
+      const criteria = Array.isArray(vm.exercise.criteria) ? vm.exercise.criteria.filter(Boolean) : [];
+      this.exerciseCriteria.innerHTML = criteria.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      if (this.exerciseCriteriaWrap) {
+        this.exerciseCriteriaWrap.style.display = criteria.length ? "" : "none";
+      }
     }
 
     if (vm.exercise.docxUrl) {
