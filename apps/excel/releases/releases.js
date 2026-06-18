@@ -1,7 +1,68 @@
 window.RELEASES_DATA = {
-  "version": "0.1.2",
-  "updatedAt": "2026-06-17T12:41:13.170Z",
+  "version": "0.1.3",
+  "updatedAt": "2026-06-18T09:52:32.953Z",
   "releases": [
+    {
+      "version": "0.1.3",
+      "tag": "excel-v0.1.3",
+      "date": "2026-06-18",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.4.3",
+          "breaking": false,
+          "hash": "4c6bffa"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "3714274"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.4.2",
+          "breaking": false,
+          "hash": "304d57d"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "4552b6f"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 4,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 4
+      }
+    },
     {
       "version": "0.1.2",
       "tag": "excel-v0.1.2",
