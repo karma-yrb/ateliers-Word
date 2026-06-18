@@ -31,11 +31,7 @@
 
 ## Commandes de maintenance
 
-- `npm run scrape:data` -> enrichit `data/exercises.enriched.json`.
-- `npm run revise:data` -> applique les vagues 1 a 3 de revision (docx/images/contenu/coherence).
-- `npm run structure:data` -> transforme `data/exercises.enriched.json` en `data/exercises.structured.json`.
 - `npm run build:data` -> regenere `data/exercises.js` a partir de `data/exercises.structured.json`.
-- `npm run audit:data` -> genere `logs/audit-report.json`.
 - `npm test` -> execute les tests unitaires.
 - `npm run release` / `npm run release:first` -> versioning `standard-version` (depot git requis).
 - `npm run release:all` -> flux publication complet en Bash (tests + commit auto si worktree dirty + release + push tags).
@@ -52,9 +48,8 @@
 - Exemples valides: `feat(auth): ...`, `fix(ui): ...`, `docs: ...`, `refactor(data): ...`.
 - Marquage rupture: `feat(api)!: ...` ou footer `BREAKING CHANGE: ...`.
 
-## Documents d'audit
+## Source de contenu
 
-- `docs/AUDIT_GLOBAL.md`
-- `docs/REVISION_COHERENCE_EXERCICES.md`
-- `logs/audit-report.json`
-- `logs/revision-report.json`
+- La source editable des exercices Word est `data/exercises.structured.json`.
+- Apres modification, lancer `npm run build:data` pour regenerer `data/exercises.js`.
+- Le pipeline Word ne genere plus de fichiers de scraping, revision ou audit.

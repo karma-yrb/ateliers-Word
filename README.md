@@ -18,10 +18,8 @@ Monorepo des ateliers bureautiques.
 Depuis la racine :
 
 - `npm run word:test`
-- `npm run word:structure:data`
 - `npm run word:build:data`
 - `npm run word:sync:app`
-- `npm run word:audit:data`
 - `npm run word:release`
 - `npm run word:release:all`
 - `npm run excel:test`
@@ -30,6 +28,12 @@ Depuis la racine :
 - `npm run excel:audit:data`
 
 Depuis `apps/word` ou `apps/excel`, les commandes locales restent disponibles (`npm test`, `npm run build:data`, etc.).
+
+Pour Word, le flux de donnees a ete simplifie :
+
+- la source editable est `apps/word/data/exercises.structured.json`
+- `npm run word:build:data` regenere `apps/word/data/exercises.js`
+- les anciens scripts Word de scraping, revision et audit ont ete retires
 
 ## Organisation cible
 

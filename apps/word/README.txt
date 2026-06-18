@@ -13,7 +13,6 @@ Structure
 - js/controller.js
 - js/storage.js
 - js/app.js
-- data/exercises.enriched.json
 - data/exercises.structured.json
 - data/exercises.js
 - scripts/
@@ -30,11 +29,7 @@ Utilisation
    - "Reinitialiser profil local" oublie le prenom et le dossier utilisateur memorise sur l'appareil.
 
 Scripts npm
-- npm run scrape:data -> enrichit data/exercises.enriched.json et les logs de scraping.
-- npm run revise:data -> applique les vagues de revision pedagogique et structurelle.
-- npm run structure:data -> transforme data/exercises.enriched.json en data/exercises.structured.json.
 - npm run build:data -> regenere data/exercises.js pour le navigateur a partir de data/exercises.structured.json.
-- npm run audit:data -> genere logs/audit-report.json.
 - npm run repair:encoding -> corrige automatiquement les chaines en mojibake dans les donnees.
 - npm run validate:encoding -> verifie parse JSON/JS, absence BOM et absence de mojibake.
 - npm test -> lance les tests unitaires.
@@ -55,4 +50,5 @@ Conventions de commit (obligatoire pour release)
 
 Notes
 - La progression est conservee dans le dossier utilisateur via File System Access API.
+- Les contenus a modifier a la main se trouvent dans data/exercises.structured.json.
 - Le versioning automatique est configure via standard-version.

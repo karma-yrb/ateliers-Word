@@ -1,5 +1,5 @@
 window.WORD_ATELIER_DATA = {
-  "generatedAt": "2026-06-17T14:47:45.768Z",
+  "generatedAt": "2026-06-18T10:46:04.469Z",
   "source": "clic_formation_word_complet.md + live scrape",
   "totals": {
     "exercises": 213,
@@ -303,10 +303,8 @@ window.WORD_ATELIER_DATA = {
       "docxUrl": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/exo-01.docx",
       "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/ex-01.jpg",
       "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/ex-01.jpg",
-      "description": "Télécharger le fichier d'exemple sous Word",
-      "consignes": [
-        "Faites disparaître les règles supérieures et latérales"
-      ],
+      "description": "",
+      "consignes": [],
       "instructions": [
         "Faites disparaître les règles supérieures et latérales.",
         "Présentez le document sur deux feuilles côte à côte grâce au zoom en bas à droite.",
@@ -321,7 +319,7 @@ window.WORD_ATELIER_DATA = {
         "enonceImages": [],
         "resultImages": []
       },
-      "preamble": "Petit exercice de prise en main pour sortir de la présentation classique.",
+      "preamble": "",
       "criteria": [],
       "originalConsignes": [
         "Faites disparaître les règles supérieures et latérales"
@@ -346,13 +344,13 @@ window.WORD_ATELIER_DATA = {
       "pageUrl": "https://www.clic-formation.net/prise-en-main-word/exercice-2.html",
       "level": 1,
       "levelLabel": "Debutant",
-      "docxUrl": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-002/ex-002.docx",
+      "docxUrl": "",
       "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-002/ex-01.jpg",
       "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-002/ex-01-resultats.jpg",
-      "description": "Votre barre d'accès rapide ressemble à ceci :",
+      "description": "Ouvrez un document Word, puis personnalisez votre barre d'accès rapide pour qu'elle ressemble à l'image ci-dessous. Faites les manipulations nécessaires pour qu'elle ressemble à l'image de résultat attendu, vous pouvez ajouter d'autres raccourcis en cochant les options qui vous sont utiles.",
       "consignes": [],
       "instructions": [
-        "Faites les manipulations nécessaires pour qu'elle ressemble à ceci : (icône d'impression rapide), vous pouvez ajouter d'autres raccourcis en cochant les options qui vous sont utiles."
+        "Cliquez sur la petite flèche vers le bas à côté de la barre d'accès rapide pour accéder aux options de personnalisation.", "Sélectionnez les commandes que vous souhaitez ajouter à la barre d'accès rapide, telles que l'icône d'impression rapide.", "Vous pouvez également choisir d'autres commandes utiles en cochant les options disponibles."
       ],
       "scrape": {
         "ok": true,
@@ -368,7 +366,7 @@ window.WORD_ATELIER_DATA = {
         ],
         "resultImages": []
       },
-      "preamble": "Votre barre d'accès rapide ressemble à ceci : .",
+      "preamble": "Votre barre d'accès rapide ressemble à l'image de l'énoncé",
       "criteria": [],
       "originalConsignes": [],
       "originalInstructions": [
