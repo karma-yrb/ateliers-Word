@@ -236,7 +236,13 @@ function createAtelierFileStorage(config = {}) {
   }
 
   async loadUserProfile(rootHandle, initials, create = false) {
-    const progressDir = await this.ensureProgressDirectory(rootHandle, initials, create);
+    let progressDir = null;
+    try {
+      progressDir = await this.ensureProgressDirectory(rootHandle, initials, create);
+    } catch {
+      if (!create) return null;
+      throw new Error("ProgressionAtelier inaccessible");
+    }
     let fileHandle = null;
     try {
       fileHandle = await progressDir.getFileHandle(this.profileFileName);

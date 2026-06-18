@@ -135,6 +135,18 @@ test("scanDocumentsFolders returns resolved user folder and filters folders with
   assert.equal(scanned[0].hasProgressFolder, true);
 });
 
+test("loadUserProfile returns null for a new folder without ProgressionAtelier", async () => {
+  const storage = createStorage();
+  const newFolder = createDirectoryHandle("TE", {
+    hasProgress: false,
+    id: "te",
+  });
+
+  const profile = await storage.loadUserProfile(newFolder, "TE", false);
+
+  assert.equal(profile, null);
+});
+
 test("pickWorkFile opens a file picker, not a directory picker", async () => {
   const fileHandle = { kind: "file", name: "exercice.docx" };
   let filePickerOptions = null;
