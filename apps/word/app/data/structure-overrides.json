@@ -1,0 +1,28 @@
+{
+  "ex-002": {
+    "instructions": [
+      "Faites les manipulations nécessaires pour qu'elle ressemble à ceci : (icône d'impression rapide), vous pouvez ajouter d'autres raccourcis en cochant les options qui vous sont utiles."
+    ],
+    "criteria": []
+  },
+  "ex-008": {
+    "instructions": [
+      "Mettez les questions en gras et rouge et les réponses en vert."
+    ],
+    "criteria": []
+  },
+  "ex-015": {
+    "instructions": [
+      "Mettez les titres du texte ci-dessous en gras, centré, couleur verte, taille 20, souligné.",
+      "Reproduisez la même mise en forme sur l’ensemble des titres sans repasser par les outils du groupe « police ». Grâce au pinceau de reproduction de mise en forme."
+    ],
+    "criteria": []
+  },
+  "ex-169": {
+    "preamble": "",
+    "instructions": [
+      "Convertissez en un clic le texte en minuscules. Utilisez la fonction Modifier la casse dans le bloc Police, ou sélectionnez le texte puis faites Maj + F3."
+    ],
+    "criteria": []
+  }
+}

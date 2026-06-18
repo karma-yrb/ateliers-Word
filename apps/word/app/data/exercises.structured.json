@@ -1,4 +1,4 @@
-window.WORD_ATELIER_DATA = {
+{
   "generatedAt": "2026-06-17T14:47:45.768Z",
   "source": "clic_formation_word_complet.md + live scrape",
   "totals": {
@@ -10338,4 +10338,4 @@ window.WORD_ATELIER_DATA = {
     "instructions": "Actions à réaliser",
     "criteria": "Contraintes de rendu ou critères de réussite"
   }
-};
+}
