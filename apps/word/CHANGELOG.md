@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.6](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.4.5...word-v1.4.6) (2026-06-18)
+
 ### [1.4.5](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.4.4...word-v1.4.5) (2026-06-18)
 
 ### [1.4.4](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.4.3...word-v1.4.4) (2026-06-18)
