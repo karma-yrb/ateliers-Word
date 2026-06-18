@@ -1296,6 +1296,30 @@ select {
   box-shadow: 0 2px 16px #0002;
 }
 
+.user-setup-profiles-list {
+  display: grid;
+  gap: 10px;
+}
+
+.user-setup-profile-btn {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 14px 16px;
+}
+
+.user-setup-profile-label {
+  display: block;
+  font-weight: 700;
+}
+
+.user-setup-profile-folder {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .save-reminder-content {
   max-width: 620px;
   width: min(780px, calc(100vw - 28px));

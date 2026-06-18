@@ -1540,6 +1540,7 @@ function createAtelierController(config = {}) {
       const status = this.userModal.status;
       const savedFoldersWrap = this.userModal.savedFoldersWrap;
       const savedFoldersSelect = this.userModal.savedFoldersSelect;
+      const savedFoldersLabel = modal.querySelector('label[for="user-setup-saved-folders-select"]');
       const pickBtn = this.userModal.pickBtn;
       const firstNameInput = this.userModal.firstNameInput;
       const firstNameLabel = modal.querySelector('label[for="user-setup-firstname-input"]');
@@ -1557,6 +1558,17 @@ function createAtelierController(config = {}) {
       let savedFolders = Array.isArray(defaults.savedWorkFolders) ? defaults.savedWorkFolders.slice() : [];
       let selectedSavedId = "";
       let pickBtnMode = "hidden";
+      let detectedProfiles = [];
+      let profilesList = null;
+
+      if (savedFoldersWrap) {
+        profilesList = savedFoldersWrap.querySelector(".user-setup-profiles-list");
+        if (!profilesList) {
+          profilesList = document.createElement("div");
+          profilesList.className = "user-setup-profiles-list";
+          savedFoldersWrap.appendChild(profilesList);
+        }
+      }
 
       const closeModal = (result) => {
         modal.style.display = "none";
@@ -1586,6 +1598,12 @@ function createAtelierController(config = {}) {
         validate.style.display = visible ? "" : "none";
       };
 
+      const setProfilesVisibility = (visible) => {
+        if (savedFoldersWrap) savedFoldersWrap.style.display = visible ? "" : "none";
+        if (savedFoldersLabel) savedFoldersLabel.style.display = "none";
+        if (savedFoldersSelect) savedFoldersSelect.style.display = "none";
+      };
+
       const updateFolderStatus = () => {
         if (!rootHandle) {
           setValidateVisibility(false);
@@ -1603,7 +1621,7 @@ function createAtelierController(config = {}) {
 
         if (mode === "pick-folder") {
           pickBtn.style.display = "";
-          pickBtn.textContent = "Choisir votre dossier de travail";
+          pickBtn.textContent = "Ajouter un profil";
           pickBtn.setAttribute("data-icon", "📂");
           return;
         }
@@ -1715,6 +1733,105 @@ function createAtelierController(config = {}) {
         return savedFolders;
       };
 
+      const renderProfileButtons = () => {
+        if (!profilesList) return;
+        profilesList.innerHTML = "";
+        for (const entry of detectedProfiles) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "btn btn-soft user-setup-profile-btn";
+          button.innerHTML = `<span class="user-setup-profile-label">${this.#escapeHtml(entry.firstName)}</span><span class="user-setup-profile-folder">${this.#escapeHtml(entry.folderName)}</span>`;
+          button.onclick = async () => {
+            status.textContent = `Ouverture du profil ${entry.firstName}...`;
+            const buttons = profilesList.querySelectorAll("button");
+            for (const item of buttons) item.disabled = true;
+            try {
+              let selectedHandle = entry.handle;
+              let ok = await this.storage.ensureWritePermission(selectedHandle);
+              if (ok) {
+                selectedHandle = await this.storage.resolveUserRootHandle(selectedHandle, entry.initials || "");
+                ok = await this.storage.ensureWritePermission(selectedHandle);
+              }
+              if (!ok) {
+                status.textContent = "Permission refusee sur ce profil. Ajoutez-le a nouveau.";
+                for (const item of buttons) item.disabled = false;
+                return;
+              }
+
+              rootHandle = selectedHandle;
+              const profile = await this.storage.loadUserProfile(rootHandle, entry.initials || "", false);
+              if (!profile || !profile.firstName) {
+                status.textContent = "Ce profil n'est plus disponible sur cette machine. Ajoutez-le a nouveau.";
+                for (const item of buttons) item.disabled = false;
+                return;
+              }
+
+              resolvedInitials = this.storage.normalizeInitials(profile.initials) || this.#deriveInitials(rootHandle, entry.initials || "");
+              await mergeSavedFolders([{ id: entry.id, name: rootHandle.name || entry.folderName, handle: rootHandle }]);
+              await this.storage.setSavedWorkFolders(savedFolders);
+              closeModal({ rootHandle, initials: resolvedInitials, firstName: profile.firstName });
+            } catch {
+              status.textContent = "Impossible d'ouvrir ce profil.";
+              for (const item of buttons) item.disabled = false;
+            }
+          };
+          profilesList.appendChild(button);
+        }
+      };
+
+      const discoverSavedProfiles = async () => {
+        const orderedFolders = [...savedFolders].sort((a, b) => {
+          const left = Date.parse(a.lastUsedAt || "") || 0;
+          const right = Date.parse(b.lastUsedAt || "") || 0;
+          return right - left;
+        });
+        const profiles = [];
+        for (const folder of orderedFolders) {
+          const handle = folder.handle || null;
+          if (!handle) continue;
+          const folderInitials = this.#deriveInitials(handle, "");
+          try {
+            const profile = await this.storage.loadUserProfile(handle, folderInitials, false);
+            if (!profile || !profile.firstName) continue;
+            profiles.push({
+              id: folder.id,
+              handle,
+              folderName: handle.name || folder.name || "Dossier de travail",
+              firstName: profile.firstName,
+              initials: this.storage.normalizeInitials(profile.initials) || folderInitials,
+            });
+          } catch {
+            // Profil inaccessible pour l'instant : on ne l'affiche pas dans la liste rapide.
+          }
+        }
+        detectedProfiles = profiles;
+      };
+
+      const showProfileChooser = async () => {
+        rootHandle = initialRootHandle || null;
+        resolvedInitials = this.#deriveInitials(rootHandle, defaults.initials);
+        firstNameInput.value = "";
+        setFirstNameVisibility(false);
+        setValidateVisibility(false);
+        setFirstNameEditMode(false);
+        setProfilesVisibility(false);
+        setPickButtonMode("hidden");
+        status.textContent = "Recherche des profils enregistres sur cet appareil...";
+
+        await discoverSavedProfiles();
+
+        if (detectedProfiles.length) {
+          renderProfileButtons();
+          setProfilesVisibility(true);
+          setPickButtonMode("pick-folder");
+          status.textContent = "Choisissez un profil enregistre sur cette machine.";
+        } else {
+          setProfilesVisibility(false);
+          setPickButtonMode("pick-folder");
+          status.textContent = "Aucun profil n'existe encore sur cette machine.";
+        }
+      };
+
       const applySavedFolderSelection = async (folderId, options = {}) => {
         const requestPermission = options.requestPermission !== false;
         const folder = savedFolders.find((entry) => entry.id === folderId);
@@ -1757,6 +1874,7 @@ function createAtelierController(config = {}) {
 
           rootHandle = selectedHandle;
           resolvedInitials = this.#deriveInitials(rootHandle, "");
+          setProfilesVisibility(false);
           const profile = await this.storage.loadUserProfile(rootHandle, resolvedInitials, false);
           if (profile) {
             const profileInitials = this.storage.normalizeInitials(profile.initials);
@@ -1786,7 +1904,7 @@ function createAtelierController(config = {}) {
       };
 
       pickBtn.onclick = async () => {
-        const restoreMode = savedFolders.length ? "add-folder" : "pick-folder";
+        const restoreMode = pickBtnMode;
         setPickButtonMode("hidden");
         try {
           const handle = await this.storage.pickUserDirectory();
@@ -1866,12 +1984,6 @@ function createAtelierController(config = {}) {
         }
       };
 
-      if (savedFoldersSelect) {
-        savedFoldersSelect.onchange = async () => {
-          selectedSavedId = savedFoldersSelect.value;
-          await applySavedFolderSelection(selectedSavedId);
-        };
-      }
 
       const validateSelection = async () => {
         if (!rootHandle) {
@@ -1921,40 +2033,7 @@ function createAtelierController(config = {}) {
 
       modal.style.display = "flex";
       modal.setAttribute("aria-hidden", "false");
-      resolvedInitials = this.#deriveInitials(rootHandle, defaults.initials);
-      firstNameInput.value = "";
-      setFirstNameVisibility(false);
-      setValidateVisibility(false);
-      setFirstNameEditMode(false);
-      // Rendu immédiat sans accès au système de fichiers :
-      // les profils connus sont affichés depuis IndexedDB, la permission
-      // FS n'est demandée qu'au clic sur Valider (user gesture).
-      (async () => {
-        renderSavedFolders();
-        if (savedFolders.length > 0) {
-          setPickButtonMode("add-folder");
-          if (rootHandle) {
-            selectedSavedId = await findSavedFolderIdByHandle(rootHandle);
-          }
-          if (!selectedSavedId && savedFoldersSelect && savedFoldersSelect.value) {
-            selectedSavedId = savedFoldersSelect.value;
-          }
-          if (selectedSavedId) {
-            if (savedFoldersSelect) savedFoldersSelect.value = selectedSavedId;
-            // requestPermission: false → utilise le prénom caché dans IndexedDB,
-            // pas d'accès FS. La permission réelle est demandée sur clic Valider.
-            await applySavedFolderSelection(selectedSavedId, { requestPermission: false });
-          } else {
-            updateFolderStatus();
-          }
-        } else {
-          setPickButtonMode("pick-folder");
-          updateFolderStatus();
-        }
-        if (firstNameInput.style.display !== "none") {
-          firstNameInput.focus();
-        }
-      })();
+      showProfileChooser();
     });
   }
 }
