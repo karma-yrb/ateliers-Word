@@ -301,8 +301,8 @@
       "level": 0,
       "levelLabel": null,
       "docxUrl": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/exo-01.docx",
-      "imageEnonce": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/ex-01.jpg",
-      "imageResultat": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/ex-01.jpg",
+      "imageEnonce": "/data/ex-001.png",
+      "imageResultat": "/data/ex-001.png",
       "description": "",
       "consignes": [],
       "instructions": [
