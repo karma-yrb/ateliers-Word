@@ -19,40 +19,6 @@ function uniqueStrings(items) {
   return [...new Set(items.filter((v) => typeof v === "string" && v.trim()))];
 }
 
-function normalizeImageField(value) {
-  if (Array.isArray(value)) return uniqueStrings(value);
-  if (typeof value === "string" && value.trim()) return [value.trim()];
-  return [];
-}
-
-function normalizeVisualItems(value) {
-  const rawItems = Array.isArray(value) ? value : [value];
-  const seen = new Set();
-  const items = [];
-
-  for (const item of rawItems) {
-    if (typeof item === "string" && item.trim()) {
-      const src = item.trim();
-      if (seen.has(src)) continue;
-      seen.add(src);
-      items.push({ src, caption: "" });
-      continue;
-    }
-
-    if (item && typeof item === "object" && typeof item.src === "string" && item.src.trim()) {
-      const src = item.src.trim();
-      if (seen.has(src)) continue;
-      seen.add(src);
-      items.push({
-        src,
-        caption: cleanText(item.caption || ""),
-      });
-    }
-  }
-
-  return items;
-}
-
 function cleanText(value) {
   return String(value || "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
@@ -113,8 +79,8 @@ class AtelierModel {
         docxUrl: ex.docxUrl || null,
         downloadUrl: ex.downloadUrl || null,
         downloadLabel: cleanText(ex.downloadLabel || ""),
-        imageEnonce: normalizeVisualItems(ex.imageEnonce),
-        imageResultat: normalizeVisualItems(ex.imageResultat),
+        imageEnonce: ex.imageEnonce || null,
+        imageResultat: ex.imageResultat || null,
         imageEnonceCaption: cleanText(ex.imageEnonceCaption || ""),
         imageResultatCaption: cleanText(ex.imageResultatCaption || ""),
         scrapeEnonceImages: uniqueStrings(ex.scrape && ex.scrape.enonceImages),
@@ -440,28 +406,25 @@ class AtelierModel {
     let fallbackEnonceImages = [];
     let fallbackResultImages = [];
 
-    if (exercise.imageEnonce.length && exercise.imageResultat.length) {
-      if (
-        exercise.imageEnonce.length === exercise.imageResultat.length
-        && exercise.imageEnonce.every((item, index) => item.src === exercise.imageResultat[index].src)
-      ) {
-        fallbackResultImages = [...exercise.imageResultat];
+    if (exercise.imageEnonce && exercise.imageResultat) {
+      if (exercise.imageEnonce === exercise.imageResultat) {
+        fallbackResultImages = [exercise.imageResultat];
       } else {
-        fallbackEnonceImages = [...exercise.imageEnonce];
-        fallbackResultImages = [...exercise.imageResultat];
+        fallbackEnonceImages = [exercise.imageEnonce];
+        fallbackResultImages = [exercise.imageResultat];
       }
-    } else if (exercise.imageResultat.length) {
-      fallbackResultImages = [...exercise.imageResultat];
-    } else if (exercise.imageEnonce.length) {
+    } else if (exercise.imageResultat) {
+      fallbackResultImages = [exercise.imageResultat];
+    } else if (exercise.imageEnonce) {
       // Règle métier demandée: image unique => résultat attendu.
-      fallbackResultImages = [...exercise.imageEnonce];
+      fallbackResultImages = [exercise.imageEnonce];
     }
 
     const hasScrapeVisuals = scrapeEnonceImages.length > 0 || scrapeResultImages.length > 0;
     const enonceImages = hasScrapeVisuals ? (scrapeEnonceImages.length ? scrapeEnonceImages : fallbackEnonceImages) : fallbackEnonceImages;
     const resultImages = hasScrapeVisuals ? (scrapeResultImages.length ? scrapeResultImages : fallbackResultImages) : fallbackResultImages;
 
-    const used = new Set([...enonceImages, ...resultImages].map((item) => item.src));
+    const used = new Set([...enonceImages, ...resultImages]);
     const extraImages = uniqueStrings(exercise.extraImages).filter((url) => !used.has(url));
     return { enonceImages, resultImages, extraImages };
   }

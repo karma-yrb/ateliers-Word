@@ -301,14 +301,14 @@
       "level": 0,
       "levelLabel": null,
       "docxUrl": "https://www.clic-formation.net/images/02-word/word-competence-01/ex-001/exo-01.docx",
-      "imageEnonce": "data/ex-001.png",
-      "imageResultat": "data/ex-001.png",
+      "imageEnonce": "",
+      "imageResultat": ["data/ex-001a.png","data/ex-001b.png","data/ex-001c.png"],
       "description": "",
       "consignes": [],
       "instructions": [
-        "Faites disparaître les règles supérieures et latérales.",
-        "Présentez le document sur deux feuilles côte à côte grâce au zoom en bas à droite.",
-        "Affichez les marques de paragraphes (\"note de musique\" dans le groupe paragraphe), ceci vous permettra de mieux apprécier votre mise en page."
+        "Faites disparaître les règles supérieures et latérales (image 1).",
+        "Présentez le document sur deux feuilles côte à côte grâce au zoom en bas à droite (image 2).",
+        "Affichez les marques de paragraphes (\"note de musique\" dans le groupe paragraphe), ceci vous permettra de mieux apprécier votre mise en page (image 3)."
       ],
       "scrape": {
         "ok": true,
