@@ -1,7 +1,60 @@
 {
-  "version": "0.1.4",
-  "updatedAt": "2026-06-18T14:08:19.975Z",
+  "version": "0.1.5",
+  "updatedAt": "2026-06-19T06:57:53.949Z",
   "releases": [
+    {
+      "version": "0.1.5",
+      "tag": "excel-v0.1.5",
+      "date": "2026-06-19",
+      "releaseType": "patch",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités ou changements techniques structurants."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.0",
+          "breaking": false,
+          "hash": "5d8a9cf"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "81a74ec"
+        },
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "home",
+          "description": "ajouter les logos Word et Excel sur l'accueil bureautique",
+          "breaking": false,
+          "hash": "626c940"
+        }
+      ],
+      "counts": {
+        "feat": 1,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 3
+      }
+    },
     {
       "version": "0.1.4",
       "tag": "excel-v0.1.4",

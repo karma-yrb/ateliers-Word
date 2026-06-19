@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.4...excel-v0.1.5) (2026-06-19)
+
+
+### Features
+
+* **home:** ajouter les logos Word et Excel sur l'accueil bureautique ([626c940](https://github.com/karma-yrb/ateliers-Bureautique/commit/626c9406c638223aa3aa634dfa7f613d29441712))
+
 ### [0.1.4](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.3...excel-v0.1.4) (2026-06-18)
 
 
