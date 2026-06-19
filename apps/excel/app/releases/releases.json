@@ -1,7 +1,52 @@
 {
-  "version": "0.1.6",
-  "updatedAt": "2026-06-19T10:54:33.917Z",
+  "version": "0.1.7",
+  "updatedAt": "2026-06-19T11:01:08.633Z",
   "releases": [
+    {
+      "version": "0.1.7",
+      "tag": "excel-v0.1.7",
+      "date": "2026-06-19",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.5",
+          "breaking": false,
+          "hash": "3d68301"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "77a8b66"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 2
+      }
+    },
     {
       "version": "0.1.6",
       "tag": "excel-v0.1.6",
