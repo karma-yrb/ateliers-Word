@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.4.7...word-v1.5.0) (2026-06-19)
+
+
+### Features
+
+* **home:** ajouter les logos Word et Excel sur l'accueil bureautique ([626c940](https://github.com/karma-yrb/ateliers-Bureautique/commit/626c9406c638223aa3aa634dfa7f613d29441712))
+
 ### [1.4.7](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.4.6...word-v1.4.7) (2026-06-18)
 
 

@@ -1,7 +1,60 @@
 window.RELEASES_DATA = {
-  "version": "1.4.7",
-  "updatedAt": "2026-06-18T14:08:12.679Z",
+  "version": "1.5.0",
+  "updatedAt": "2026-06-19T06:57:47.659Z",
   "releases": [
+    {
+      "version": "1.5.0",
+      "tag": "word-v1.5.0",
+      "date": "2026-06-19",
+      "releaseType": "minor",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités ou changements techniques structurants."
+      },
+      "summary": "Version mineure avec nouvelles fonctionnalités et améliorations.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "81a74ec"
+        },
+        {
+          "type": "feat",
+          "typeLabel": "Fonctionnalité",
+          "scope": "home",
+          "description": "ajouter les logos Word et Excel sur l'accueil bureautique",
+          "breaking": false,
+          "hash": "626c940"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.4",
+          "breaking": false,
+          "hash": "44323f9"
+        }
+      ],
+      "counts": {
+        "feat": 1,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 3
+      }
+    },
     {
       "version": "1.4.7",
       "tag": "word-v1.4.7",
