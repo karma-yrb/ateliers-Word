@@ -1,7 +1,92 @@
 window.RELEASES_DATA = {
-  "version": "0.1.5",
-  "updatedAt": "2026-06-19T06:57:53.949Z",
+  "version": "0.1.6",
+  "updatedAt": "2026-06-19T10:54:33.917Z",
   "releases": [
+    {
+      "version": "0.1.6",
+      "tag": "excel-v0.1.6",
+      "date": "2026-06-19",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.4",
+          "breaking": false,
+          "hash": "31b308d"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.3",
+          "breaking": false,
+          "hash": "103e15f"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "8e661b6"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.2",
+          "breaking": false,
+          "hash": "83d4523"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "62a852c"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.1",
+          "breaking": false,
+          "hash": "d7ec50c"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "3936bf5"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 7,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 7
+      }
+    },
     {
       "version": "0.1.5",
       "tag": "excel-v0.1.5",
