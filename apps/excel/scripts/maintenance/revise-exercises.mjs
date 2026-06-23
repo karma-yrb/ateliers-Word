@@ -38,6 +38,15 @@ function normalizeTitleKey(value) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function slugify(value) {
+  return normalizeText(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function dedupe(items) {
   const out = [];
   const seen = new Set();
@@ -103,49 +112,49 @@ function clampText(value, maxLen = 90) {
 
 function getContextualAction(exercise) {
   const moduleName = normalizeTitleKey(exercise.moduleNameClean || exercise.moduleName);
-  if (moduleName.includes("smart art")) {
-    return "Inserez un SmartArt via Insertion > SmartArt puis ajustez les blocs.";
+  if (moduleName.includes("graphique")) {
+    return "Inserez ou ajustez le graphique puis harmonisez titres, series, axes et mise en forme.";
   }
-  if (moduleName.includes("affichage")) {
-    return "Ajustez les options de l'onglet Affichage (zoom, volets, fenetres) selon l'exemple.";
+  if (moduleName.includes("mise en forme conditionnelle")) {
+    return "Appliquez les regles de mise en forme conditionnelle puis verifiez les seuils et styles attendus.";
   }
-  if (moduleName.includes("format de page")) {
-    return "Appliquez les reglages de l'onglet Mise en page (marges, orientation, fond, bordures).";
+  if (moduleName.includes("trier") || moduleName.includes("filtrer")) {
+    return "Utilisez les outils de tri et de filtre pour reorganiser les donnees sans perdre leur coherence.";
   }
-  if (moduleName.includes("chercher et remplacer")) {
-    return "Utilisez Accueil > Remplacer pour automatiser les corrections demandees.";
+  if (moduleName.includes("format de cellule")) {
+    return "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.";
   }
-  if (moduleName.includes("section et saut")) {
-    return "Inserez les sauts via Mise en page > Sauts puis verifiez la structure du document.";
+  if (moduleName.includes("tableaux croises")) {
+    return "Construisez ou mettez a jour le tableau croise dynamique puis controlez champs, regroupements et calculs.";
   }
-  if (moduleName.includes("publipostage")) {
-    return "Configurez les etapes de l'onglet Publipostage (source, champs, apercu) jusqu'au rendu attendu.";
+  if (moduleName.includes("macro")) {
+    return "Enregistrez ou executez la macro demandee puis verifiez que l'automatisation produit bien le resultat attendu.";
   }
-  if (moduleName.includes("forme")) {
-    return "Ajoutez les formes via Insertion > Formes puis harmonisez style, taille et alignement.";
+  if (moduleName.includes("impression") || moduleName.includes("mise en page")) {
+    return "Ajustez les parametres de mise en page et d'impression pour obtenir un rendu conforme avant validation.";
   }
-  if (moduleName.includes("tableau")) {
-    return "Creez ou ajustez le tableau via Insertion > Tableau puis appliquez fusion, bordures et alignements.";
+  if (moduleName.includes("pourcentage") || moduleName.includes("addition") || moduleName.includes("soustraction") || moduleName.includes("multiplication") || moduleName.includes("division")) {
+    return "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.";
   }
-  return "Appliquez les reglages Word utiles (Accueil, Insertion, Mise en page) pour obtenir le rendu attendu.";
+  return "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.";
 }
 
 function buildStandardInstructions(exercise) {
   const objective = clampText(exercise.description || exercise.title || "l'exemple fourni", 90);
 
   const openStep = exercise.docxUrl
-    ? "Telechargez le fichier de travail puis ouvrez-le dans Word."
-    : "Creez un nouveau document Word et enregistrez-le avant de commencer.";
+    ? "Telechargez le fichier de travail puis ouvrez-le dans Excel."
+    : "Creez un nouveau classeur Excel et enregistrez-le avant de commencer.";
 
   const compareStep = exercise.imageResultat
-    ? "Comparez votre document avec l'image de resultat attendu puis corrigez les ecarts."
+    ? "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts."
     : exercise.imageEnonce
       ? "Verifiez votre rendu avec l'image fournie puis corrigez les differences."
-      : "Relisez le document et verifiez la coherence de la mise en page avant validation.";
+      : "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.";
 
   return dedupe([
     openStep,
-    `Construisez la structure principale du document a partir de cet objectif: ${objective}.`,
+    `Construisez la structure principale du classeur a partir de cet objectif: ${objective}.`,
     getContextualAction(exercise),
     compareStep,
     "Enregistrez votre travail puis marquez l'exercice comme termine.",
@@ -221,6 +230,43 @@ function removeEmptyModules(dataset) {
   }
 }
 
+function enrichSchema(dataset) {
+  const exercises = Array.isArray(dataset.exercises) ? dataset.exercises : [];
+  const modules = Array.isArray(dataset.modules) ? dataset.modules : [];
+  const moduleById = new Map(modules.map((module) => [module.id, module]));
+
+  dataset.totals = {
+    exercises: exercises.length,
+    modules: modules.length,
+  };
+
+  dataset.schema = {
+    description: "Objectif court de l'exercice",
+    preamble: "Contexte ou information avant de commencer",
+    instructions: "Actions a realiser",
+    criteria: "Contraintes de rendu ou criteres de reussite",
+  };
+
+  for (const module of modules) {
+    module.exerciseCount = exercises.filter((exercise) => exercise.moduleId === module.id).length;
+  }
+
+  for (const exercise of exercises) {
+    const module = moduleById.get(exercise.moduleId);
+    const originalInstructions = Array.isArray(exercise.instructions) ? exercise.instructions.slice() : [];
+    const originalConsignes = Array.isArray(exercise.consignes) ? exercise.consignes.slice() : [];
+    const canonicalSteps = originalInstructions.length ? originalInstructions.slice() : originalConsignes.slice();
+
+    exercise.section = exercise.section || module?.section || "";
+    exercise.moduleSlug = exercise.moduleSlug || slugify(exercise.moduleNameClean || exercise.moduleName || module?.cleanName || module?.name || exercise.moduleId);
+    exercise.consignes = canonicalSteps;
+    exercise.criteria = Array.isArray(exercise.criteria) ? exercise.criteria : [];
+    exercise.originalConsignes = originalConsignes.length ? originalConsignes : canonicalSteps.slice();
+    exercise.originalInstructions = Array.isArray(exercise.originalInstructions) ? exercise.originalInstructions : canonicalSteps.slice();
+    exercise.paragraphMode = exercise.paragraphMode === true;
+  }
+}
+
 function applyWaveRevisions(enriched, auditReport) {
   const shortIds = getShortInstructionIds(auditReport, enriched.exercises || []);
   const previouslyRewritten = getPreviouslyRewrittenIds(enriched.exercises || []);
@@ -276,6 +322,7 @@ function applyWaveRevisions(enriched, auditReport) {
   }
 
   removeEmptyModules(enriched);
+  enrichSchema(enriched);
   enriched.generatedAt = new Date().toISOString();
 
   if (enriched.scrapeSummary) {
@@ -306,6 +353,7 @@ function syncToBaseDataset(baseDataset, enrichedDataset) {
   }
 
   removeEmptyModules(baseDataset);
+  enrichSchema(baseDataset);
   baseDataset.generatedAt = new Date().toISOString();
 }
 

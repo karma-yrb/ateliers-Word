@@ -16,8 +16,14 @@ const guard = createEncodingGuard({
   root: ROOT,
   globalName: "EXCEL_ATELIER_DATA",
   dataFileRelativePaths: [
+    "data/exercises.enriched.json",
+    "data/exercises.json",
     "data/exercises.structured.json",
     "data/exercises.js",
+    "app/data/exercises.enriched.json",
+    "app/data/exercises.json",
+    "app/data/exercises.structured.json",
+    "app/data/exercises.js",
   ],
 });
 
