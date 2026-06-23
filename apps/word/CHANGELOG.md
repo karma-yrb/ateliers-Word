@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.8](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.7...word-v1.5.8) (2026-06-23)
+
+
+### Bug Fixes
+
+* **excel:** align exercise schema and normalize encoding ([7375b9b](https://github.com/karma-yrb/ateliers-Bureautique/commit/7375b9bdea2fc072629c5b79ec0f233f9bc5124d))
+* **word:** support multi-image exercise visuals ([b29e104](https://github.com/karma-yrb/ateliers-Bureautique/commit/b29e104ef32d18cd61b3be44166cd3cdd80e3d2b))
+
+
+### Tests
+
+* **word:** stabilize visuals model assertions ([d973a30](https://github.com/karma-yrb/ateliers-Bureautique/commit/d973a3052c39948ce27abd7a1de3938b1f1e2d0b))
+* **word:** update visuals model expectations ([7a68a97](https://github.com/karma-yrb/ateliers-Bureautique/commit/7a68a9761c4bda3d3aed309d6bca9b12729fec06))
+
+
+### Refactoring
+
+* **excel:** align structured exercise source with word workflow ([2c500c4](https://github.com/karma-yrb/ateliers-Bureautique/commit/2c500c462917a1cadb6579c0737155835523aa7b))
+
 ### [1.5.7](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.6...word-v1.5.7) (2026-06-19)
 
 ### [1.5.6](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.5...word-v1.5.6) (2026-06-19)

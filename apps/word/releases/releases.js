@@ -1,7 +1,92 @@
 window.RELEASES_DATA = {
-  "version": "1.5.7",
-  "updatedAt": "2026-06-19T13:43:22.187Z",
+  "version": "1.5.8",
+  "updatedAt": "2026-06-23T14:20:19.957Z",
   "releases": [
+    {
+      "version": "1.5.8",
+      "tag": "word-v1.5.8",
+      "date": "2026-06-23",
+      "releaseType": "patch",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalités ou changements techniques structurants."
+      },
+      "summary": "Version corrective orientée stabilité.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "16c74bc"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel",
+          "description": "align exercise schema and normalize encoding",
+          "breaking": false,
+          "hash": "7375b9b"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "excel",
+          "description": "align structured exercise source with word workflow",
+          "breaking": false,
+          "hash": "2c500c4"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "2e63ca1"
+        },
+        {
+          "type": "test",
+          "typeLabel": "Test",
+          "scope": "word",
+          "description": "stabilize visuals model assertions",
+          "breaking": false,
+          "hash": "d973a30"
+        },
+        {
+          "type": "test",
+          "typeLabel": "Test",
+          "scope": "word",
+          "description": "update visuals model expectations",
+          "breaking": false,
+          "hash": "7a68a97"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "word",
+          "description": "support multi-image exercise visuals",
+          "breaking": false,
+          "hash": "b29e104"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 2,
+        "perf": 0,
+        "refactor": 1,
+        "docs": 0,
+        "test": 2,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 7
+      }
+    },
     {
       "version": "1.5.7",
       "tag": "word-v1.5.7",
