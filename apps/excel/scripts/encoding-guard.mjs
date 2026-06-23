@@ -15,6 +15,10 @@ const ROOT = path.resolve(SCRIPT_DIR, "..");
 const guard = createEncodingGuard({
   root: ROOT,
   globalName: "EXCEL_ATELIER_DATA",
+  dataFileRelativePaths: [
+    "data/exercises.structured.json",
+    "data/exercises.js",
+  ],
 });
 
 export const DATA_FILES = guard.DATA_FILES;

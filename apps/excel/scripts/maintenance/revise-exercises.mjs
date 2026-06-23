@@ -3,9 +3,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(SCRIPT_DIR, "..");
+const ROOT = path.resolve(SCRIPT_DIR, "..", "..");
 
-const ENRICHED_PATH = path.join(ROOT, "data", "exercises.enriched.json");
+const ENRICHED_PATH = path.join(ROOT, "data", "exercises.structured.json");
 const BASE_PATH = path.join(ROOT, "data", "exercises.json");
 const AUDIT_PATH = path.join(ROOT, "logs", "audit-report.json");
 const REPORT_PATH = path.join(ROOT, "logs", "revision-report.json");

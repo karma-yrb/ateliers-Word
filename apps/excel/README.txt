@@ -9,4 +9,11 @@ Commandes principales depuis la racine :
 - npm run excel:test
 - npm run excel:build:data
 - npm run excel:sync:app
-- npm run excel:audit:data
+
+Source editable des exercices :
+- data/exercises.structured.json
+
+Flux standard :
+- modifier data/exercises.structured.json
+- npm run excel:build:data -> regenere data/exercises.js pour le navigateur
+- npm run excel:sync:app -> recopie les donnees vers app/data

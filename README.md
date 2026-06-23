@@ -5,7 +5,7 @@ Monorepo des ateliers bureautiques.
 ## Applications
 
 - `apps/word` : atelier Word actuel, versionne independamment.
-- `apps/excel` : atelier Excel initialise avec un dataset temporaire minimal.
+- `apps/excel` : atelier Excel aligne maintenant son flux de donnees sur Word.
 
 ## URLs publiees
 
@@ -25,7 +25,6 @@ Depuis la racine :
 - `npm run excel:test`
 - `npm run excel:build:data`
 - `npm run excel:sync:app`
-- `npm run excel:audit:data`
 
 Depuis `apps/word` ou `apps/excel`, les commandes locales restent disponibles (`npm test`, `npm run build:data`, etc.).
 
@@ -34,6 +33,12 @@ Pour Word, le flux de donnees a ete simplifie :
 - la source editable est `apps/word/data/exercises.structured.json`
 - `npm run word:build:data` regenere `apps/word/data/exercises.js`
 - les anciens scripts Word de scraping, revision et audit ont ete retires
+
+Pour Excel, le flux standard suit maintenant la meme logique :
+
+- la source editable est `apps/excel/data/exercises.structured.json`
+- `npm run excel:build:data` regenere `apps/excel/data/exercises.js`
+- `npm run excel:sync:app` copie les donnees et fichiers distribues vers `apps/excel/app`
 
 ## Organisation cible
 

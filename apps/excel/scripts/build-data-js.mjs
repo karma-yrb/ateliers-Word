@@ -8,4 +8,5 @@ const ROOT = path.resolve(SCRIPT_DIR, "..");
 await buildDataJs({
   root: ROOT,
   globalName: "EXCEL_ATELIER_DATA",
+  source: "data/exercises.structured.json",
 });
