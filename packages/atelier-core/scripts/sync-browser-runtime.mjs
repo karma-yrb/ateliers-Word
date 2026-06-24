@@ -9,6 +9,7 @@ export const DEFAULT_BROWSER_RUNTIME_FILES = [
   { src: "browser/storage.js", dst: "js/core/storage.js" },
   { src: "browser/persistence.js", dst: "js/core/persistence.js" },
   { src: "browser/session.js", dst: "js/core/session.js" },
+  { src: "browser/workfile.js", dst: "js/core/workfile.js" },
   { src: "browser/view.js", dst: "js/core/view.js" },
   { src: "browser/controller.js", dst: "js/core/controller.js" },
 ];

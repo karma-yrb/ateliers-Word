@@ -42,6 +42,15 @@ function createAtelierController(config = {}) {
       progressFileName: settings.progressFileName,
       persistUserSnapshot: (snapshot) => this.persistenceRuntime.persistUserSnapshot(snapshot),
     });
+    this.workFileRuntime = window.createAtelierWorkFileRuntime({
+      storage: this.storage,
+      view: this.view,
+      model: this.model,
+      officeAppName: settings.officeAppName,
+      completedFileExtension: settings.completedFileExtension,
+      getUserSession: () => this.userSession,
+      getCurrentExerciseIdFromView: () => this.#getCurrentExerciseIdFromView(),
+    });
 
     this.userModal = {
       root: document.getElementById("user-setup-modal"),
@@ -923,46 +932,13 @@ function createAtelierController(config = {}) {
   }
 
   #buildWorkFileProfileKey() {
-    if (!this.userSession || !this.userSession.initials) return "USER";
-    if (!this.storage || !this.storage.normalizeProfileKey) return String(this.userSession.initials).trim() || "USER";
-    return this.storage.normalizeProfileKey(this.userSession.initials);
+    return this.workFileRuntime.buildWorkFileProfileKey();
   }
 
   async #refreshExerciseWorkFileState(exerciseId, options = {}) {
-    if (!this.view || !this.view.setExerciseWorkFileState) return;
     const token = ++this.exerciseWorkFileToken;
-    const filePickerSupported = Boolean(
-      this.storage
-      && this.storage.supportsWorkFilePicker
-      && this.storage.supportsWorkFilePicker(),
-    );
-
-    if (!exerciseId || !this.userSession || !filePickerSupported) {
-      this.view.setExerciseWorkFileState({
-        pickerSupported: filePickerSupported,
-        openVisible: false,
-        statusText: filePickerSupported ? "" : "S\u00e9lection du fichier indisponible sur ce navigateur.",
-      });
-      return;
-    }
-
-    const profileKey = this.#buildWorkFileProfileKey();
-    const entry = await this.storage.getSavedExerciseDownload(profileKey, exerciseId);
-    const selectedFile = this.storage.getSavedExerciseFile
-      ? await this.storage.getSavedExerciseFile(profileKey, exerciseId)
-      : null;
+    await this.workFileRuntime.refreshExerciseWorkFileState(exerciseId, options);
     if (token !== this.exerciseWorkFileToken) return;
-
-    const fileName = selectedFile && selectedFile.fileName
-      ? selectedFile.fileName
-      : entry && entry.fileName ? entry.fileName : "";
-
-    this.view.setExerciseWorkFileState({
-      pickerSupported: filePickerSupported,
-      openVisible: Boolean(fileName),
-      fileName,
-      statusText: options.statusText || "",
-    });
   }
 
   async #pickWorkFileForCurrentExercise() {
@@ -1037,35 +1013,11 @@ function createAtelierController(config = {}) {
   }
 
   #getCanonicalExerciseDownloadFileName(exerciseId, downloadUrl) {
-    const exercise = exerciseId ? this.model.getExerciseById(exerciseId) : null;
-    const exerciseNumber = Number(exercise && exercise.num);
-    const exerciseFileStem = Number.isFinite(exerciseNumber) && exerciseNumber > 0
-      ? `ex-${String(exerciseNumber).padStart(3, "0")}`
-      : String(exerciseId || "")
-        .trim()
-        .toLowerCase()
-        .replace(/^excel-ex-(\d{1,3})$/, (_match, value) => `ex-${String(value).padStart(3, "0")}`)
-        .replace(/^ex-(\d{1,3})$/, (_match, value) => `ex-${String(value).padStart(3, "0")}`)
-        .replace(/[^a-z0-9_-]+/g, "-")
-        .replace(/^-+|-+$/g, "") || "fichier-telecharge";
-    let extension = "";
-
-    try {
-      const parsed = new URL(String(downloadUrl || ""), window.location.href);
-      const lastSegment = decodeURIComponent(parsed.pathname.split("/").filter(Boolean).pop() || "");
-      const extensionMatch = lastSegment.match(/\.[a-z0-9]{2,8}$/i);
-      if (extensionMatch) extension = extensionMatch[0].toLowerCase();
-    } catch {
-      // conserve l'extension vide si l'URL est invalide
-    }
-
-    return `${exerciseFileStem}${extension}`;
+    return this.workFileRuntime.getCanonicalExerciseDownloadFileName(exerciseId, downloadUrl);
   }
 
   #getDownloadFileNameFromLink(linkEl) {
-    if (!linkEl) return "fichier-telecharge";
-    const exerciseId = this.#getCurrentExerciseIdFromView();
-    return this.#getCanonicalExerciseDownloadFileName(exerciseId, linkEl.getAttribute("href"));
+    return this.workFileRuntime.getDownloadFileNameFromLink(linkEl);
   }
 
   async #handleExerciseDownloadClick(event, linkEl) {
@@ -1108,81 +1060,29 @@ function createAtelierController(config = {}) {
       .replace(/'/g, "&#039;");
   }
 
-  async #fileExistsInDirectory(directoryHandle, fileName) {
-    if (!directoryHandle || directoryHandle.kind !== "directory" || !fileName) return null;
-    try {
-      if (this.storage && this.storage.queryDirectoryPermission) {
-        const allowed = await this.storage.queryDirectoryPermission(directoryHandle, "read");
-        if (!allowed) return null;
-      }
-      await directoryHandle.getFileHandle(fileName, { create: false });
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
   async #buildDownloadExistingStatus(fileName) {
-    const folderLabel = this.#getSaveReminderFolderLabel();
-    const userFolderExists = await this.#fileExistsInDirectory(
-      this.userSession && this.userSession.rootHandle,
-      fileName,
-    );
-
-    if (userFolderExists !== true) {
-      return {
-        important: false,
-        html: "",
-      };
-    }
-
-    return {
-      important: true,
-      html: `
-        <strong>Attention</strong><br>
-        ${this.#escapeHtml(`Le fichier existe d\u00e9j\u00e0 dans votre dossier ${folderLabel}.`)}
-      `,
-    };
+    return this.workFileRuntime.buildDownloadExistingStatus(fileName);
   }
 
   async #trackExerciseDownloadFromLink(linkEl) {
-    if (!this.isReady || !this.userSession || !this.storage || !linkEl) return;
-    const exerciseId = this.#getCurrentExerciseIdFromView();
-    const href = linkEl.getAttribute("href");
-    if (!exerciseId || !href) return;
-
-    const fileName = this.#getDownloadFileNameFromLink(linkEl);
-    await this.storage.setSavedExerciseDownload(this.#buildWorkFileProfileKey(), exerciseId, fileName, href);
-    await this.#refreshExerciseWorkFileState(exerciseId, {
-      statusText: `T\u00e9l\u00e9chargement lanc\u00e9. Ouvrez le document dans ${settings.officeAppName}, cliquez sur "Activer la modification", enregistrez ${fileName} dans votre dossier utilisateur, puis cliquez sur "S\u00e9lectionner mon fichier".`,
-    });
+    if (!this.isReady) return;
+    await this.workFileRuntime.trackExerciseDownloadFromLink(linkEl);
   }
 
   #getSaveReminderFolderLabel() {
-    if (!this.userSession || !this.userSession.rootHandle) {
-      return "Dossier utilisateur";
-    }
-    return this.userSession.rootHandle.name || "Dossier utilisateur";
+    return this.workFileRuntime.getSaveReminderFolderLabel();
   }
 
   #getDefaultSaveReminderFileName() {
-    return `exercice-termine.${settings.completedFileExtension}`;
+    return this.workFileRuntime.getDefaultSaveReminderFileName();
   }
 
   #getNumberedSaveReminderFileName(exerciseNumber) {
-    return `ex-${String(exerciseNumber).padStart(3, "0")}-termine.${settings.completedFileExtension}`;
+    return this.workFileRuntime.getNumberedSaveReminderFileName(exerciseNumber);
   }
 
   #getSaveReminderFileName(exerciseId) {
-    if (!exerciseId) return this.#getDefaultSaveReminderFileName();
-    const normalized = String(exerciseId).trim().toLowerCase();
-    const normalizedMatch = normalized.match(/^ex-(\d+)$/);
-    if (normalizedMatch) {
-      return `ex-${String(normalizedMatch[1]).padStart(3, "0")}-termine.${settings.completedFileExtension}`;
-    }
-    const exercise = this.model.getExerciseById(exerciseId);
-    if (!exercise || typeof exercise.num !== "number") return this.#getDefaultSaveReminderFileName();
-    return this.#getNumberedSaveReminderFileName(exercise.num);
+    return this.workFileRuntime.getSaveReminderFileName(exerciseId);
   }
 
   #setSaveReminderContent({
