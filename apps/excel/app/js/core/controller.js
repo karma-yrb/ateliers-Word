@@ -115,10 +115,7 @@ function createAtelierController(config = {}) {
       return;
     }
 
-    this.userSession = session;
-    await this.#loadProgressForSession(session);
-    this.isReady = true;
-    this.#renderFromHash();
+    await this.#activateSession(session, { render: true });
   }
 
   #bindStaticEvents() {
@@ -255,10 +252,7 @@ function createAtelierController(config = {}) {
       changeBtn.addEventListener("click", async () => {
         const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
         if (!session) return;
-        this.userSession = session;
-        this.pendingPermissionSession = null;
-        await this.#loadProgressForSession(session);
-        if (this.isReady) this.#renderFromHash();
+        await this.#activateSession(session, { render: this.isReady });
       });
     }
 
@@ -302,11 +296,7 @@ function createAtelierController(config = {}) {
           return;
         }
 
-        this.userSession = session;
-        this.pendingPermissionSession = null;
-        await this.#loadProgressForSession(session);
-        this.isReady = true;
-        this.#renderFromHash();
+        await this.#activateSession(session, { render: true });
       });
     }
 
@@ -336,10 +326,7 @@ function createAtelierController(config = {}) {
           closeUserMenu();
           const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
           if (!session) return;
-          this.userSession = session;
-          this.pendingPermissionSession = null;
-          await this.#loadProgressForSession(session);
-          if (this.isReady) this.#renderFromHash();
+          await this.#activateSession(session, { render: this.isReady });
         });
       }
       const headerProfileBtn = document.getElementById("header-user-profile-btn");
@@ -833,6 +820,16 @@ function createAtelierController(config = {}) {
     return "USER";
   }
 
+  async #activateSession(session, options = {}) {
+    this.userSession = session;
+    this.pendingPermissionSession = null;
+    await this.#loadProgressForSession(session);
+    this.isReady = true;
+    if (options.render) {
+      this.#renderFromHash();
+    }
+  }
+
   async #resumePendingSessionFromUserGesture() {
     if (!this.pendingPermissionSession) return false;
     if (!this.pendingPermissionSession.rootHandle) {
@@ -842,10 +839,7 @@ function createAtelierController(config = {}) {
         this.view.setProgressStatus("Configuration utilisateur annulee.");
         return false;
       }
-      this.userSession = session;
-      await this.#loadProgressForSession(session);
-      this.isReady = true;
-      this.#renderFromHash();
+      await this.#activateSession(session, { render: true });
       return true;
     }
 
@@ -870,11 +864,7 @@ function createAtelierController(config = {}) {
       return false;
     }
 
-    this.pendingPermissionSession = null;
-    this.userSession = session;
-    await this.#loadProgressForSession(session);
-    this.isReady = true;
-    this.#renderFromHash();
+    await this.#activateSession(session, { render: true });
     return true;
   }
 
@@ -891,10 +881,7 @@ function createAtelierController(config = {}) {
       return false;
     }
 
-    this.userSession = session;
-    this.pendingPermissionSession = null;
-    await this.#loadProgressForSession(session);
-    this.isReady = true;
+    await this.#activateSession(session);
     return true;
   }
 
