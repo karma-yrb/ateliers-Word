@@ -183,3 +183,30 @@ Les consignes courtes ne sont pas forcement mauvaises, mais elles signalent souv
 3. Renommer progressivement `docxUrl` en `workFileUrl` dans le modele commun.
 4. Ajouter un rapport dedie `missing-work-files.md` si la correction manuelle devient volumineuse.
 5. Extraire ensuite les scripts communs Word/Excel vers `packages/scraper-clic`.
+
+## Audit runtime Word vs Excel - 2026-06-24
+
+### Constats
+
+- Le comportement de reprise apres rafraichissement et de changement d'utilisateur est centralise dans `packages/atelier-core/browser/controller.js`.
+- Word et Excel embarquent pourtant chacun une copie locale du runtime commun dans `apps/*/js/core` puis une seconde copie dans `apps/*/app/js/core`.
+- Excel avait un contrat HTML divergent sur le bouton principal de fichier de travail: `exercise-xlsx-btn` au lieu de `exercise-docx-btn`, alors que le runtime mutualise attend `exercise-docx-btn`.
+- Cette divergence casse le contrat du socle partage et peut provoquer des erreurs de rendu ou des comportements partiels selon la page rechargee.
+
+### Risques identifies
+
+1. Une correction faite dans `packages/atelier-core` peut ne pas etre visible en production si `sync:app` ou `sync-browser-runtime` n'est pas relance.
+2. Les copies multiples rendent les regressions silencieuses probables: un atelier peut "sembler" aligne alors que son HTML ou son CSS diverge encore.
+3. Les noms techniques herites de Word (`docxUrl`, `exercise-docx-btn`) rendent l'intention moins claire pour Excel et favorisent les contournements locaux.
+
+### Solutions proposees
+
+1. Court terme: imposer un contrat DOM strict commun entre ateliers.
+   Les ids attendus par `AtelierView` et `AtelierController` doivent etre identiques partout.
+2. Court terme: ajouter des tests de contrat UI/DOM par atelier.
+   Exemple: verifier les ids critiques utilises par le runtime partage.
+3. Moyen terme: renommer le vocabulaire transverse.
+   Remplacer progressivement `docxUrl` par `workFileUrl` et `exercise-docx-btn` par `exercise-workfile-btn` dans le core et dans les deux ateliers.
+4. Moyen terme: supprimer les copies versionnees inutiles comme source primaire.
+   Garder `packages/atelier-core/browser/*` comme seule source du runtime, puis regenerer les copies distribuees automatiquement.
+5. Moyen terme: ajouter une verification CI qui compare `packages/atelier-core/browser/*` avec `apps/*/js/core/*` pour detecter toute derive.

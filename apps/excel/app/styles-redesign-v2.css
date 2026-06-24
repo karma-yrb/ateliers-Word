@@ -302,8 +302,8 @@
   margin-bottom: 8px;
 }
 
-/* Bouton téléchargement xlsx : couleur bleue forte */
-#exercise-xlsx-btn {
+/* Bouton principal de téléchargement du fichier de travail */
+#exercise-docx-btn {
   background: var(--ex-blue);
   border-color: #144fa0;
   color: #fff;
@@ -312,7 +312,7 @@
   flex: 1;
 }
 
-#exercise-xlsx-btn:hover { background: #1550a8; }
+#exercise-docx-btn:hover { background: #1550a8; }
 
 /* Hint sous le bouton */
 .exercise-xlsx-hint,
