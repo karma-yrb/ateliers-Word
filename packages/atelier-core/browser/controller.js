@@ -436,38 +436,28 @@ function createAtelierController(config = {}) {
     this.#renderHomePage();
   }
 
-  #persistCurrentHash() {
+  #writeLocalStorage(key, value) {
     try {
-      const currentHash = String(window.location.hash || "").trim();
-      if (!currentHash) return;
-      window.localStorage.setItem(this.routeStorageKey, currentHash);
+      if (!key) return false;
+      window.localStorage.setItem(key, value);
+      return true;
     } catch {
-      // LocalStorage indisponible: on continue sans persistance de navigation
+      return false;
     }
   }
 
-  #getPersistedHash() {
+  #readLocalStorageText(key) {
     try {
-      const stored = String(window.localStorage.getItem(this.routeStorageKey) || "").trim();
-      if (!stored.startsWith("#")) return "";
-      return stored;
+      if (!key) return "";
+      return String(window.localStorage.getItem(key) || "").trim();
     } catch {
       return "";
     }
   }
 
-  #persistUiState(state) {
+  #readLocalStorageJson(key) {
     try {
-      if (!state || typeof state !== "object") return;
-      window.localStorage.setItem(this.uiStateStorageKey, JSON.stringify(state));
-    } catch {
-      // LocalStorage indisponible: on continue sans persistance de vue
-    }
-  }
-
-  #getPersistedUiState() {
-    try {
-      const raw = window.localStorage.getItem(this.uiStateStorageKey);
+      const raw = this.#readLocalStorageText(key);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       return parsed && typeof parsed === "object" ? parsed : null;
@@ -476,34 +466,48 @@ function createAtelierController(config = {}) {
     }
   }
 
-  #persistUserSnapshot(snapshot) {
-    try {
-      if (!snapshot || typeof snapshot !== "object") return;
-      window.localStorage.setItem(this.userSnapshotStorageKey, JSON.stringify({
-        firstName: String(snapshot.firstName || "").trim(),
-        initials: String(snapshot.initials || "").trim(),
-        folderName: String(snapshot.folderName || "").trim(),
-      }));
-    } catch {
-      // LocalStorage indisponible: on continue sans snapshot utilisateur
+  #persistCurrentHash() {
+    const currentHash = String(window.location.hash || "").trim();
+    if (!currentHash) return;
+    this.#writeLocalStorage(this.routeStorageKey, currentHash);
+  }
+
+  #getPersistedHash() {
+    const stored = this.#readLocalStorageText(this.routeStorageKey);
+    if (!stored.startsWith("#")) {
+      return "";
     }
+    return stored;
+  }
+
+  #persistUiState(state) {
+    if (!state || typeof state !== "object") return;
+    this.#writeLocalStorage(this.uiStateStorageKey, JSON.stringify(state));
+  }
+
+  #getPersistedUiState() {
+    return this.#readLocalStorageJson(this.uiStateStorageKey);
+  }
+
+  #persistUserSnapshot(snapshot) {
+    if (!snapshot || typeof snapshot !== "object") return;
+    this.#writeLocalStorage(this.userSnapshotStorageKey, JSON.stringify({
+      firstName: String(snapshot.firstName || "").trim(),
+      initials: String(snapshot.initials || "").trim(),
+      folderName: String(snapshot.folderName || "").trim(),
+    }));
   }
 
   #getPersistedUserSnapshot() {
-    try {
-      const raw = window.localStorage.getItem(this.userSnapshotStorageKey);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      return parsed && typeof parsed === "object"
-        ? {
-            firstName: String(parsed.firstName || "").trim(),
-            initials: String(parsed.initials || "").trim(),
-            folderName: String(parsed.folderName || "").trim(),
-          }
-        : null;
-    } catch {
+    const parsed = this.#readLocalStorageJson(this.userSnapshotStorageKey);
+    if (!parsed) {
       return null;
     }
+    return {
+      firstName: String(parsed.firstName || "").trim(),
+      initials: String(parsed.initials || "").trim(),
+      folderName: String(parsed.folderName || "").trim(),
+    };
   }
 
   #buildFallbackHashFromUiState() {
