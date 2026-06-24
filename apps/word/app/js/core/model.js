@@ -92,9 +92,28 @@ class AtelierModel {
         title: cleanText(ex.title || `Exercice ${ex.num || ""}`),
         level: toInt(ex.level, 0),
         description: cleanText(ex.description || ""),
-        docxUrl: ex.docxUrl || null,
+        workFileUrl: ex.workFileUrl || ex.docxUrl || null,
+        docxUrl: ex.docxUrl || ex.workFileUrl || null,
         downloadUrl: ex.downloadUrl || null,
         downloadLabel: cleanText(ex.downloadLabel || ""),
+        extraDownloadUrls: Array.isArray(ex.extraDownloadUrls)
+          ? ex.extraDownloadUrls
+            .map((item, index) => {
+              if (typeof item === "string") {
+                return {
+                  url: item.trim(),
+                  label: `Telecharger le ${index + 3}e fichier`,
+                };
+              }
+              const url = String(item && item.url || "").trim();
+              if (!url) return null;
+              return {
+                url,
+                label: cleanText(item.label || `Telecharger le ${index + 3}e fichier`),
+              };
+            })
+            .filter(Boolean)
+          : [],
         imageEnonce: ex.imageEnonce || null,
         imageResultat: ex.imageResultat || null,
         imageEnonceCaption: cleanText(ex.imageEnonceCaption || ""),

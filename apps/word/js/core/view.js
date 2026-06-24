@@ -82,8 +82,11 @@ class AtelierView {
     this.exerciseSteps = document.getElementById("exercise-steps");
     this.exerciseStepsPreamble = document.getElementById("exercise-steps-preamble");
     this.exerciseCriteria = document.getElementById("exercise-criteria");
-    this.exerciseDocxBtn = document.getElementById("exercise-docx-btn");
+    this.exerciseWorkFileBtn = document.getElementById("exercise-workfile-btn")
+      || document.getElementById("exercise-docx-btn");
+    this.exerciseDocxBtn = this.exerciseWorkFileBtn;
     this.exerciseDownloadBtn = document.getElementById("exercise-download-btn");
+    this.exerciseFilesActions = this.exerciseWorkFileBtn ? this.exerciseWorkFileBtn.parentElement : null;
     this.exercisePickWorkFileBtn = document.getElementById("exercise-pick-workfile-btn");
     this.exerciseOpenWorkFileBtn = document.getElementById("exercise-open-workfile-btn");
     this.exerciseWorkFileStatus = document.getElementById("exercise-workfile-status");
@@ -391,25 +394,31 @@ class AtelierView {
       }
     }
 
-    if (vm.exercise.docxUrl) {
-      this.exerciseDocxBtn.href = vm.exercise.docxUrl;
-      this.exerciseDocxBtn.download = this.#getExerciseDownloadFileName(vm.exercise, vm.exercise.docxUrl);
-      this.exerciseDocxBtn.style.display = "";
-    } else {
-      this.exerciseDocxBtn.removeAttribute("href");
-      this.exerciseDocxBtn.removeAttribute("download");
-      this.exerciseDocxBtn.style.display = "none";
+    const workFileUrl = vm.exercise.workFileUrl || vm.exercise.docxUrl || "";
+    if (this.exerciseWorkFileBtn && workFileUrl) {
+      this.exerciseWorkFileBtn.href = workFileUrl;
+      this.exerciseWorkFileBtn.download = this.#getExerciseDownloadFileName(vm.exercise, workFileUrl);
+      this.exerciseWorkFileBtn.style.display = "";
+    } else if (this.exerciseWorkFileBtn) {
+      this.exerciseWorkFileBtn.removeAttribute("href");
+      this.exerciseWorkFileBtn.removeAttribute("download");
+      this.exerciseWorkFileBtn.style.display = "none";
     }
     if (vm.exercise.downloadUrl) {
       this.exerciseDownloadBtn.href = vm.exercise.downloadUrl;
-      this.exerciseDownloadBtn.textContent = vm.exercise.downloadLabel || "Télécharger le 2ᵉ fichier";
+      this.exerciseDownloadBtn.textContent = vm.exercise.downloadLabel || "Telecharger le 2e fichier";
       this.exerciseDownloadBtn.style.display = "";
     } else {
       this.exerciseDownloadBtn.removeAttribute("href");
       this.exerciseDownloadBtn.style.display = "none";
     }
+    this.#renderExtraDownloadButtons(vm.exercise.extraDownloadUrls || []);
 
-    const hasFiles = Boolean(vm.exercise.docxUrl || vm.exercise.downloadUrl);
+    const hasFiles = Boolean(
+      workFileUrl
+      || vm.exercise.downloadUrl
+      || ((vm.exercise.extraDownloadUrls || []).length > 0),
+    );
     const filesCard = document.getElementById("exercise-files-card");
     if (filesCard) filesCard.style.display = hasFiles ? "" : "none";
 
@@ -582,6 +591,25 @@ class AtelierView {
           this.openImageModal(src, "Image illustrative");
         }
       });
+    }
+  }
+
+  #renderExtraDownloadButtons(downloads) {
+    if (!this.exerciseFilesActions) return;
+
+    const oldButtons = this.exerciseFilesActions.querySelectorAll(".exercise-extra-download");
+    for (const node of oldButtons) node.remove();
+
+    const items = Array.isArray(downloads) ? downloads.filter((item) => item && item.url) : [];
+    for (const item of items) {
+      const link = document.createElement("a");
+      link.className = "btn has-icon exercise-extra-download";
+      link.dataset.icon = "⬇";
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.href = item.url;
+      link.textContent = item.label || "Telecharger un fichier";
+      this.exerciseFilesActions.insertBefore(link, this.exercisePickWorkFileBtn || null);
     }
   }
 

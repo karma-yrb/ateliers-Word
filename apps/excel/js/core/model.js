@@ -92,7 +92,8 @@ class AtelierModel {
         title: cleanText(ex.title || `Exercice ${ex.num || ""}`),
         level: toInt(ex.level, 0),
         description: cleanText(ex.description || ""),
-        docxUrl: ex.docxUrl || null,
+        workFileUrl: ex.workFileUrl || ex.docxUrl || null,
+        docxUrl: ex.docxUrl || ex.workFileUrl || null,
         downloadUrl: ex.downloadUrl || null,
         downloadLabel: cleanText(ex.downloadLabel || ""),
         extraDownloadUrls: Array.isArray(ex.extraDownloadUrls)

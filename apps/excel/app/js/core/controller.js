@@ -238,9 +238,9 @@ function createAtelierController(config = {}) {
       });
     }
 
-    if (this.view.exerciseDocxBtn) {
-      this.view.exerciseDocxBtn.addEventListener("click", (event) => {
-        this.#handleExerciseDownloadClick(event, this.view.exerciseDocxBtn);
+    if (this.view.exerciseWorkFileBtn) {
+      this.view.exerciseWorkFileBtn.addEventListener("click", (event) => {
+        this.#handleExerciseDownloadClick(event, this.view.exerciseWorkFileBtn);
       });
     }
 
