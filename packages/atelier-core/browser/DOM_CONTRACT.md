@@ -51,7 +51,8 @@ Ce document liste les éléments HTML minimaux attendus par le runtime partagé 
 
 ## Ordre de chargement des scripts partages
 
- - `js/core/home.js`
+- `js/core/home.js`
+- `js/core/themes.js`
 - `js/core/persistence.js`
 - `js/core/session.js`
 - `js/core/workfile.js`

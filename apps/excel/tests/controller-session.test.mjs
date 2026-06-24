@@ -12,6 +12,7 @@ const CORE_SESSION_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "ses
 const CORE_WORKFILE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "workfile.js"), "utf8");
 const CORE_REMINDER_MODAL_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "reminder-modal.js"), "utf8");
 const CORE_HOME_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "home.js"), "utf8");
+const CORE_THEMES_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "themes.js"), "utf8");
 const CORE_USER_SETUP_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "user-setup.js"), "utf8");
 const CORE_PROGRESS_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "progress.js"), "utf8");
 const CORE_PROFILE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "profile.js"), "utf8");
@@ -273,6 +274,8 @@ function createView() {
     renderedExerciseId: "",
     renderedProgressVm: null,
     renderedHomeVm: null,
+    renderedAffinityOverviewVm: null,
+    renderedAffinityVm: null,
     setHeaderUser(firstName, initials) {
       this.headerUser = { firstName, initials };
     },
@@ -298,8 +301,14 @@ function createView() {
       this.renderedProgressVm = vm;
       this.shownPage = "progress";
     },
-    renderAffinityOverview() {},
-    renderAffinityPage() {},
+    renderAffinityOverview(vm) {
+      this.renderedAffinityOverviewVm = vm;
+      this.shownPage = "themes";
+    },
+    renderAffinityPage(vm) {
+      this.renderedAffinityVm = vm;
+      this.shownPage = "affinity";
+    },
     setExerciseWorkFileState() {},
   };
 }
@@ -433,6 +442,7 @@ function createHarness(options = {}) {
   vm.runInContext(CORE_WORKFILE_SOURCE, context, { filename: "js/core/workfile.js" });
   vm.runInContext(CORE_REMINDER_MODAL_SOURCE, context, { filename: "js/core/reminder-modal.js" });
   vm.runInContext(CORE_HOME_SOURCE, context, { filename: "js/core/home.js" });
+  vm.runInContext(CORE_THEMES_SOURCE, context, { filename: "js/core/themes.js" });
   vm.runInContext(CORE_USER_SETUP_SOURCE, context, { filename: "js/core/user-setup.js" });
   vm.runInContext(CORE_PROGRESS_SOURCE, context, { filename: "js/core/progress.js" });
   vm.runInContext(CORE_PROFILE_SOURCE, context, { filename: "js/core/profile.js" });
@@ -714,5 +724,59 @@ test("controller renders the shared home view model", async () => {
     startTheme: "Theme 1",
     startExercise: "Exercice 2 - Exercice 2",
     startHelp: "Exercice 2 (Theme 1)",
+  });
+});
+
+test("controller renders the shared affinity view model", async () => {
+  const aliceHandle = createHandle("alice-folder", "Alice");
+  const harness = createHarness({
+    savedRootHandle: aliceHandle,
+    savedInitials: "AL",
+    savedFirstName: "Alice",
+    savedWorkFolders: [
+      { id: "alice-folder", name: "Alice", handle: aliceHandle, lastUsedAt: "2026-06-24T09:00:00.000Z" },
+    ],
+    profiles: new Map([["alice-folder", { initials: "AL", firstName: "Alice" }]]),
+    progressByInitials: new Map([["AL", { done: [] }]]),
+  });
+
+  harness.model.getThemeAffinityGroups = () => [{
+    id: "aff-1",
+    label: "Affinite",
+    subtitle: "Bureautique",
+    themes: [{ id: "theme-1", name: "Theme 1" }],
+  }];
+  harness.model.getExercisesByTheme = () => [
+    { id: "ex-001", num: 1, title: "Exercice 1" },
+    { id: "ex-002", num: 2, title: "Exercice 2" },
+  ];
+  harness.model.getIsDone = (id) => id === "ex-001";
+
+  harness.controller.init();
+  await flushAsyncWork();
+
+  harness.window.location.hash = "#affinity/aff-1/theme-1";
+  harness.triggerWindowEvent("hashchange");
+  await flushAsyncWork();
+
+  assert.equal(harness.view.shownPage, "affinity");
+  assert.deepEqual(JSON.parse(JSON.stringify(harness.view.renderedAffinityVm)), {
+    affinity: {
+      id: "aff-1",
+      label: "Affinite",
+      subtitle: "Bureautique",
+    },
+    cards: [{
+      id: "theme-1",
+      name: "Theme 1",
+      rows: [
+        { id: "ex-001", num: 1, title: "Exercice 1", done: true },
+        { id: "ex-002", num: 2, title: "Exercice 2", done: false },
+      ],
+      done: 1,
+      total: 2,
+      percent: 50,
+      open: true,
+    }],
   });
 });

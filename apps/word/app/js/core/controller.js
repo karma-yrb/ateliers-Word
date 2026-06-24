@@ -35,6 +35,18 @@ function createAtelierController(config = {}) {
       view: this.view,
       model: this.model,
     });
+    this.themesRuntime = window.createAtelierThemesRuntime({
+      persistenceRuntime: this.persistenceRuntime,
+      view: this.view,
+      model: this.model,
+      getCurrentThemeId: () => this.currentThemeId,
+      setCurrentThemeId: (themeId) => {
+        this.currentThemeId = themeId;
+      },
+      setCurrentAffinityId: (affinityId) => {
+        this.currentAffinityId = affinityId;
+      },
+    });
     this.sessionRuntime = window.createAtelierSessionRuntime({
       storage: this.storage,
       view: this.view,
@@ -488,6 +500,7 @@ function createAtelierController(config = {}) {
     this.homeRuntime.render();
   }
   #renderThemesOverview() {
+    return this.themesRuntime.renderOverview();
     this.persistenceRuntime.persistUiState({ page: "themes" });
     this.view.showPage("themes");
     const groups = this.model.getThemeAffinityGroups().map((group) => {
@@ -515,6 +528,7 @@ function createAtelierController(config = {}) {
   }
 
   #renderAffinityPage(affinityId, themeId) {
+    return this.themesRuntime.renderAffinityPage(affinityId, themeId);
     const groups = this.model.getThemeAffinityGroups();
     if (!groups.length) {
       this.view.showPage("affinity");
