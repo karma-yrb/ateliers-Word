@@ -9,7 +9,7 @@
     "sync:app": "node scripts/sync-app.mjs",
     "repair:encoding": "node scripts/repair-encoding.mjs",
     "validate:encoding": "node scripts/validate-encoding.mjs",
-    "test": "node scripts/validate-encoding.mjs && node --test \"tests/**/*.test.mjs\"",
+    "test": "node ../../packages/atelier-core/scripts/validate-browser-runtime-sync.mjs --app-root . && node scripts/validate-encoding.mjs && node --test \"tests/**/*.test.mjs\"",
     "release": "standard-version",
     "release:first": "standard-version --first-release",
     "release:all": "if exist \"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" (\"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" scripts/release-all.sh) else (bash scripts/release-all.sh)",

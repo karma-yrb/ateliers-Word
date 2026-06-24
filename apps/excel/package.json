@@ -12,7 +12,7 @@
     "scrape:data": "node scripts/maintenance/scrape-exercises.mjs",
     "revise:data": "node scripts/maintenance/revise-exercises.mjs",
     "audit:data": "node scripts/maintenance/audit-exercises.mjs",
-    "test": "node scripts/validate-encoding.mjs && node --test \"tests/**/*.test.mjs\"",
+    "test": "node ../../packages/atelier-core/scripts/validate-browser-runtime-sync.mjs --app-root . && node scripts/validate-encoding.mjs && node --test \"tests/**/*.test.mjs\"",
     "release": "standard-version",
     "release:first": "standard-version --first-release",
     "release:all": "if exist \"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" (\"%LOCALAPPDATA%\\Programs\\Git\\bin\\bash.exe\" scripts/release-all.sh) else (bash scripts/release-all.sh)",

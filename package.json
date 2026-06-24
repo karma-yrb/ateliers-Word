@@ -25,6 +25,9 @@
     "excel:revise:data": "npm --prefix apps/excel run revise:data",
     "excel:audit:data": "npm --prefix apps/excel run audit:data",
     "excel:test": "npm --prefix apps/excel test",
+    "runtime:validate:word": "node packages/atelier-core/scripts/validate-browser-runtime-sync.mjs --app-root apps/word",
+    "runtime:validate:excel": "node packages/atelier-core/scripts/validate-browser-runtime-sync.mjs --app-root apps/excel",
+    "runtime:validate": "npm run runtime:validate:word && npm run runtime:validate:excel",
     "excel:release": "npm --prefix apps/excel run release",
     "excel:release:all": "npm --prefix apps/excel run release:all"
   }
