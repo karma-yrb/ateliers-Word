@@ -29,6 +29,12 @@ function createAtelierController(config = {}) {
     this.routeStorageKey = `atelier:last-hash:${settings.progressFileName}`;
     this.uiStateStorageKey = `atelier:last-ui-state:${settings.progressFileName}`;
     this.userSnapshotStorageKey = `atelier:last-user:${settings.progressFileName}`;
+    this.sessionRuntime = window.createAtelierSessionRuntime({
+      storage: this.storage,
+      view: this.view,
+      progressFileName: settings.progressFileName,
+      persistUserSnapshot: (snapshot) => this.#persistUserSnapshot(snapshot),
+    });
 
     this.userModal = {
       root: document.getElementById("user-setup-modal"),
@@ -510,36 +516,6 @@ function createAtelierController(config = {}) {
     };
   }
 
-  #getSessionFolderName(rootHandle) {
-    return rootHandle && rootHandle.name ? rootHandle.name : "Dossier choisi";
-  }
-
-  #persistSessionSnapshot(session) {
-    if (!session) return;
-    this.#persistUserSnapshot({
-      firstName: session.firstName,
-      initials: session.initials,
-      folderName: this.#getSessionFolderName(session.rootHandle),
-    });
-  }
-
-  async #persistResolvedSession(session) {
-    await this.storage.ensureProgressDirectory(session.rootHandle, session.initials, true);
-    await this.storage.saveUserProfile(session.rootHandle, session.initials, session.firstName);
-    await this.storage.addSavedWorkFolder(session.rootHandle);
-    await this.storage.setSavedRootHandle(session.rootHandle);
-    await this.storage.setSavedInitials(session.initials);
-    await this.storage.setSavedFirstName(session.firstName);
-    this.#persistSessionSnapshot(session);
-  }
-
-  #syncSessionIdentity(session) {
-    this.view.setHeaderUser(session.firstName, session.initials);
-    const folderName = this.#getSessionFolderName(session.rootHandle);
-    this.view.setProgressUserPath(`Fichier: ${folderName} > ProgressionAtelier > ${settings.progressFileName}`);
-    this.#persistSessionSnapshot(session);
-  }
-
   #buildFallbackHashFromUiState() {
     const state = this.#getPersistedUiState();
     if (!state) return "";
@@ -847,11 +823,7 @@ function createAtelierController(config = {}) {
   }
 
   #deriveInitials(rootHandle, fallback = "") {
-    const fromFallback = this.storage.normalizeInitials(fallback);
-    if (fromFallback) return fromFallback;
-    const fromFolderName = this.storage.normalizeInitials(rootHandle && rootHandle.name ? rootHandle.name : "");
-    if (fromFolderName) return fromFolderName;
-    return "USER";
+    return this.sessionRuntime.deriveInitials(rootHandle, fallback);
   }
 
   async #activateSession(session, options = {}) {
@@ -920,71 +892,15 @@ function createAtelierController(config = {}) {
   }
 
   #getMostRecentSavedFolder(savedWorkFolders) {
-    if (!Array.isArray(savedWorkFolders) || !savedWorkFolders.length) return null;
-    const orderedFolders = [...savedWorkFolders].sort((a, b) => {
-      const left = Date.parse(a.lastUsedAt || "") || 0;
-      const right = Date.parse(b.lastUsedAt || "") || 0;
-      return right - left;
-    });
-    return orderedFolders[0] || null;
+    return this.sessionRuntime.getMostRecentSavedFolder(savedWorkFolders);
   }
 
   async #resolveExistingRootHandle(rootHandle, initials, allowPermissionPrompt) {
-    if (!rootHandle) {
-      return { rootHandle: null, accessible: false, savedWorkFolders: null };
-    }
-
-    let resolvedRootHandle = rootHandle;
-    let ok = allowPermissionPrompt
-      ? await this.storage.ensureWritePermission(resolvedRootHandle)
-      : await this.storage.queryDirectoryPermission(resolvedRootHandle, "readwrite");
-
-    if (ok) {
-      resolvedRootHandle = await this.storage.resolveUserRootHandle(resolvedRootHandle, initials);
-      ok = allowPermissionPrompt
-        ? await this.storage.ensureWritePermission(resolvedRootHandle)
-        : await this.storage.queryDirectoryPermission(resolvedRootHandle, "readwrite");
-    }
-
-    if (!ok && !allowPermissionPrompt) {
-      return { rootHandle: resolvedRootHandle, accessible: false, savedWorkFolders: null };
-    }
-    if (!ok) {
-      return { rootHandle: null, accessible: false, savedWorkFolders: null };
-    }
-
-    const savedWorkFolders = await this.storage.addSavedWorkFolder(resolvedRootHandle);
-    return { rootHandle: resolvedRootHandle, accessible: true, savedWorkFolders };
+    return this.sessionRuntime.resolveExistingRootHandle(rootHandle, initials, allowPermissionPrompt);
   }
 
   async #hydrateExistingProfile(rootHandle, initials, firstName) {
-    let resolvedInitials = initials;
-    let resolvedFirstName = firstName;
-
-    if (rootHandle && (!resolvedInitials || !resolvedFirstName)) {
-      const profile = await this.storage.loadUserProfile(
-        rootHandle,
-        this.#deriveInitials(rootHandle, resolvedInitials),
-        false,
-      );
-      if (profile) {
-        if (!resolvedInitials && profile.initials) {
-          resolvedInitials = this.storage.normalizeInitials(profile.initials);
-        }
-        if (!resolvedFirstName && profile.firstName) {
-          resolvedFirstName = this.storage.normalizeFirstName(profile.firstName);
-        }
-      }
-    }
-
-    if (rootHandle && !resolvedInitials) {
-      resolvedInitials = this.#deriveInitials(rootHandle, "");
-    }
-
-    return {
-      initials: resolvedInitials,
-      firstName: resolvedFirstName,
-    };
+    return this.sessionRuntime.hydrateExistingProfile(rootHandle, initials, firstName);
   }
 
   async #resolveUserSession(forcePrompt, options = {}) {
@@ -1051,7 +967,7 @@ function createAtelierController(config = {}) {
     initials = this.#deriveInitials(rootHandle, initials);
 
     const session = { rootHandle, initials, firstName, permissionRequired: false };
-    await this.#persistResolvedSession(session);
+    await this.sessionRuntime.persistResolvedSession(session);
     return session;
   }
 
@@ -1066,7 +982,7 @@ function createAtelierController(config = {}) {
       await this.#saveProgress();
     }
 
-    this.#syncSessionIdentity(session);
+    this.sessionRuntime.syncSessionIdentity(session);
 
     const currentHash = String(window.location.hash || "").trim();
     if (!currentHash || currentHash === "#home") {

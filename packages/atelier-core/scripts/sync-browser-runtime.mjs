@@ -7,6 +7,7 @@ const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 
 export const DEFAULT_BROWSER_RUNTIME_FILES = [
   { src: "browser/model.js", dst: "js/core/model.js" },
   { src: "browser/storage.js", dst: "js/core/storage.js" },
+  { src: "browser/session.js", dst: "js/core/session.js" },
   { src: "browser/view.js", dst: "js/core/view.js" },
   { src: "browser/controller.js", dst: "js/core/controller.js" },
 ];
