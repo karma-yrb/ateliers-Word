@@ -18,3 +18,25 @@ test("Word HTML exposes the shared runtime DOM contract", async () => {
   assert.match(html, /id="save-reminder-modal"/);
   assert.doesNotMatch(html, /id="exercise-docx-btn"/);
 });
+
+test("Word HTML loads shared runtime scripts in dependency order", async () => {
+  const html = await fs.readFile(path.join(ROOT, "index.html"), "utf8");
+  const persistenceIndex = html.indexOf('src="js/core/persistence.js"');
+  const sessionIndex = html.indexOf('src="js/core/session.js"');
+  const workfileIndex = html.indexOf('src="js/core/workfile.js"');
+  const reminderModalIndex = html.indexOf('src="js/core/reminder-modal.js"');
+  const userSetupIndex = html.indexOf('src="js/core/user-setup.js"');
+  const controllerIndex = html.indexOf('src="js/core/controller.js"');
+
+  assert.notEqual(persistenceIndex, -1);
+  assert.notEqual(sessionIndex, -1);
+  assert.notEqual(workfileIndex, -1);
+  assert.notEqual(reminderModalIndex, -1);
+  assert.notEqual(userSetupIndex, -1);
+  assert.notEqual(controllerIndex, -1);
+  assert.ok(persistenceIndex < sessionIndex);
+  assert.ok(sessionIndex < workfileIndex);
+  assert.ok(workfileIndex < reminderModalIndex);
+  assert.ok(reminderModalIndex < userSetupIndex);
+  assert.ok(userSetupIndex < controllerIndex);
+});

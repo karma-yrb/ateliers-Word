@@ -49,6 +49,15 @@ Ce document liste les éléments HTML minimaux attendus par le runtime partagé 
 - `save-reminder-cancel-btn`
 - `save-reminder-continue-btn`
 
+## Ordre de chargement des scripts partages
+
+- `js/core/persistence.js`
+- `js/core/session.js`
+- `js/core/workfile.js`
+- `js/core/reminder-modal.js`
+- `js/core/user-setup.js`
+- `js/core/controller.js`
+
 ## Règle d'évolution
 
 Toute modification d'un de ces IDs doit être répercutée dans `packages/atelier-core/browser/*`, synchronisée vers les apps, puis couverte par les tests de contrat HTML de chaque atelier.
