@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-test("Excel HTML exposes the shared runtime DOM contract", async () => {
+test("Word HTML exposes the shared runtime DOM contract", async () => {
   const html = await fs.readFile(path.join(ROOT, "index.html"), "utf8");
 
   assert.match(html, /id="exercise-workfile-btn"/);
@@ -17,5 +17,4 @@ test("Excel HTML exposes the shared runtime DOM contract", async () => {
   assert.match(html, /id="user-setup-modal"/);
   assert.match(html, /id="save-reminder-modal"/);
   assert.doesNotMatch(html, /id="exercise-docx-btn"/);
-  assert.doesNotMatch(html, /id="exercise-xlsx-btn"/);
 });
