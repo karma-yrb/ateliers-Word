@@ -885,6 +885,74 @@ function createAtelierController(config = {}) {
     return true;
   }
 
+  #getMostRecentSavedFolder(savedWorkFolders) {
+    if (!Array.isArray(savedWorkFolders) || !savedWorkFolders.length) return null;
+    const orderedFolders = [...savedWorkFolders].sort((a, b) => {
+      const left = Date.parse(a.lastUsedAt || "") || 0;
+      const right = Date.parse(b.lastUsedAt || "") || 0;
+      return right - left;
+    });
+    return orderedFolders[0] || null;
+  }
+
+  async #resolveExistingRootHandle(rootHandle, initials, allowPermissionPrompt) {
+    if (!rootHandle) {
+      return { rootHandle: null, accessible: false, savedWorkFolders: null };
+    }
+
+    let resolvedRootHandle = rootHandle;
+    let ok = allowPermissionPrompt
+      ? await this.storage.ensureWritePermission(resolvedRootHandle)
+      : await this.storage.queryDirectoryPermission(resolvedRootHandle, "readwrite");
+
+    if (ok) {
+      resolvedRootHandle = await this.storage.resolveUserRootHandle(resolvedRootHandle, initials);
+      ok = allowPermissionPrompt
+        ? await this.storage.ensureWritePermission(resolvedRootHandle)
+        : await this.storage.queryDirectoryPermission(resolvedRootHandle, "readwrite");
+    }
+
+    if (!ok && !allowPermissionPrompt) {
+      return { rootHandle: resolvedRootHandle, accessible: false, savedWorkFolders: null };
+    }
+    if (!ok) {
+      return { rootHandle: null, accessible: false, savedWorkFolders: null };
+    }
+
+    const savedWorkFolders = await this.storage.addSavedWorkFolder(resolvedRootHandle);
+    return { rootHandle: resolvedRootHandle, accessible: true, savedWorkFolders };
+  }
+
+  async #hydrateExistingProfile(rootHandle, initials, firstName) {
+    let resolvedInitials = initials;
+    let resolvedFirstName = firstName;
+
+    if (rootHandle && (!resolvedInitials || !resolvedFirstName)) {
+      const profile = await this.storage.loadUserProfile(
+        rootHandle,
+        this.#deriveInitials(rootHandle, resolvedInitials),
+        false,
+      );
+      if (profile) {
+        if (!resolvedInitials && profile.initials) {
+          resolvedInitials = this.storage.normalizeInitials(profile.initials);
+        }
+        if (!resolvedFirstName && profile.firstName) {
+          resolvedFirstName = this.storage.normalizeFirstName(profile.firstName);
+        }
+      }
+    }
+
+    if (rootHandle && !resolvedInitials) {
+      resolvedInitials = this.#deriveInitials(rootHandle, "");
+    }
+
+    return {
+      initials: resolvedInitials,
+      firstName: resolvedFirstName,
+    };
+  }
+
   async #resolveUserSession(forcePrompt, options = {}) {
     const allowPermissionPrompt = options.allowPermissionPrompt !== false;
     let rootHandle = null;
@@ -905,25 +973,17 @@ function createAtelierController(config = {}) {
       }
 
       if (!rootHandle && savedWorkFolders.length) {
-        const orderedFolders = [...savedWorkFolders].sort((a, b) => {
-          const left = Date.parse(a.lastUsedAt || "") || 0;
-          const right = Date.parse(b.lastUsedAt || "") || 0;
-          return right - left;
-        });
-        rootHandle = orderedFolders[0].handle || null;
+        const latestFolder = this.#getMostRecentSavedFolder(savedWorkFolders);
+        rootHandle = latestFolder && latestFolder.handle ? latestFolder.handle : null;
       }
 
       if (rootHandle) {
-        let ok = allowPermissionPrompt
-          ? await this.storage.ensureWritePermission(rootHandle)
-          : await this.storage.queryDirectoryPermission(rootHandle, "readwrite");
-        if (ok) {
-          rootHandle = await this.storage.resolveUserRootHandle(rootHandle, initials);
-          ok = allowPermissionPrompt
-            ? await this.storage.ensureWritePermission(rootHandle)
-            : await this.storage.queryDirectoryPermission(rootHandle, "readwrite");
+        const resolvedRoot = await this.#resolveExistingRootHandle(rootHandle, initials, allowPermissionPrompt);
+        rootHandle = resolvedRoot.rootHandle;
+        if (resolvedRoot.savedWorkFolders) {
+          savedWorkFolders = resolvedRoot.savedWorkFolders;
         }
-        if (!ok && !allowPermissionPrompt) {
+        if (!resolvedRoot.accessible && !allowPermissionPrompt) {
           return {
             rootHandle,
             initials: this.#deriveInitials(rootHandle, initials),
@@ -931,31 +991,10 @@ function createAtelierController(config = {}) {
             permissionRequired: true,
           };
         }
-        if (!ok) rootHandle = null;
-        if (ok && rootHandle) {
-          savedWorkFolders = await this.storage.addSavedWorkFolder(rootHandle);
-        }
       }
-
-      if (rootHandle && (!initials || !firstName)) {
-        const profile = await this.storage.loadUserProfile(
-          rootHandle,
-          this.#deriveInitials(rootHandle, initials),
-          false,
-        );
-        if (profile) {
-          if (!initials && profile.initials) {
-            initials = this.storage.normalizeInitials(profile.initials);
-          }
-          if (!firstName && profile.firstName) {
-            firstName = this.storage.normalizeFirstName(profile.firstName);
-          }
-        }
-      }
-
-      if (rootHandle && !initials) {
-        initials = this.#deriveInitials(rootHandle, "");
-      }
+      const hydratedProfile = await this.#hydrateExistingProfile(rootHandle, initials, firstName);
+      initials = hydratedProfile.initials;
+      firstName = hydratedProfile.firstName;
 
       if (!rootHandle && (firstName || initials)) {
         return {
