@@ -82,6 +82,16 @@ function createAtelierController(config = {}) {
       deriveInitials: (rootHandle, fallback) => this.#deriveInitials(rootHandle, fallback),
       documentRef: document,
     });
+    this.profileRuntime = window.createAtelierProfileRuntime({
+      documentRef: document,
+      persistenceRuntime: this.persistenceRuntime,
+      view: this.view,
+      storage: this.storage,
+      getUserSession: () => this.userSession,
+      setUserSession: (session) => {
+        this.userSession = session;
+      },
+    });
   }
 
   init() {
@@ -660,94 +670,7 @@ function createAtelierController(config = {}) {
   // FIX 2 — Page Profil : affiche les infos utilisateur et permet de modifier le prénom inline.
   // Prérequis HTML : <div id="profile-user-section"></div> dans #page-profile.
   #renderProfilePage() {
-    this.persistenceRuntime.persistUiState({ page: "profile" });
-    this.view.showPage("profile");
-    if (!this.userSession) return;
-
-    const profileSection = document.getElementById("profile-user-section");
-    if (!profileSection) return;
-
-    const folderName = this.userSession.rootHandle && this.userSession.rootHandle.name
-      ? this.userSession.rootHandle.name
-      : "Dossier utilisateur";
-    let currentFirstName = this.userSession.firstName || "";
-    const initials = this.userSession.initials || "";
-
-    const esc = (v) => String(v || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;");
-
-    profileSection.innerHTML = `
-      <p class="profile-info-line"><strong>Prénom :</strong> <span id="profile-firstname-display">${esc(currentFirstName)}</span></p>
-      <p class="profile-info-line"><strong>Initiales :</strong> ${esc(initials)}</p>
-      <p class="profile-info-line"><strong>Dossier :</strong> ${esc(folderName)}</p>
-      <div id="profile-rename-wrap" style="display:none;margin-top:0.75rem;">
-        <label for="profile-firstname-input" style="display:block;margin-bottom:0.35rem;font-size:0.9rem;">Nouveau prénom :</label>
-        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
-          <input id="profile-firstname-input" type="text" maxlength="30" placeholder="Ex: Alice"
-            style="flex:1;min-width:140px;padding:0.4rem 0.6rem;border:1px solid #bbb;border-radius:6px;font-size:0.95rem;">
-          <button id="profile-firstname-save-btn" class="btn" type="button">Enregistrer</button>
-          <button id="profile-firstname-cancel-btn" class="btn btn-secondary" type="button">Annuler</button>
-        </div>
-        <p id="profile-rename-status" style="margin-top:0.4rem;font-size:0.85rem;color:#555;"></p>
-      </div>
-      <button id="profile-edit-firstname-btn" class="btn" type="button" style="margin-top:0.75rem;">Modifier le prénom</button>
-    `;
-
-    const editBtn      = document.getElementById("profile-edit-firstname-btn");
-    const renameWrap   = document.getElementById("profile-rename-wrap");
-    const input        = document.getElementById("profile-firstname-input");
-    const saveBtn      = document.getElementById("profile-firstname-save-btn");
-    const cancelBtn    = document.getElementById("profile-firstname-cancel-btn");
-    const renameStatus = document.getElementById("profile-rename-status");
-    const display      = document.getElementById("profile-firstname-display");
-
-    editBtn.addEventListener("click", () => {
-      input.value = currentFirstName;
-      renameWrap.style.display = "";
-      editBtn.style.display = "none";
-      renameStatus.textContent = "";
-      input.focus();
-      input.select();
-    });
-
-    cancelBtn.addEventListener("click", () => {
-      renameWrap.style.display = "none";
-      editBtn.style.display = "";
-    });
-
-    const doSave = async () => {
-      const newName = this.storage.normalizeFirstName(input.value);
-      if (!newName) {
-        renameStatus.textContent = "Le prénom ne peut pas être vide.";
-        input.focus();
-        return;
-      }
-      try {
-        await this.storage.saveUserProfile(
-          this.userSession.rootHandle,
-          this.userSession.initials,
-          newName,
-        );
-        await this.storage.setSavedFirstName(newName);
-        this.userSession = { ...this.userSession, firstName: newName };
-        currentFirstName = newName;
-        this.view.setHeaderUser(newName, this.userSession.initials);
-        display.textContent = newName;
-        renameWrap.style.display = "none";
-        editBtn.style.display = "";
-      } catch {
-        renameStatus.textContent = "Erreur lors de l'enregistrement.";
-      }
-    };
-
-    saveBtn.addEventListener("click", doSave);
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter")  { e.preventDefault(); doSave(); }
-      if (e.key === "Escape") { e.preventDefault(); cancelBtn.click(); }
-    });
+    this.profileRuntime.render();
   }
 
   #deriveInitials(rootHandle, fallback = "") {

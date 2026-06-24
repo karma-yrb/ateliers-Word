@@ -12,6 +12,7 @@ export const DEFAULT_BROWSER_RUNTIME_FILES = [
   { src: "browser/workfile.js", dst: "js/core/workfile.js" },
   { src: "browser/reminder-modal.js", dst: "js/core/reminder-modal.js" },
   { src: "browser/user-setup.js", dst: "js/core/user-setup.js" },
+  { src: "browser/profile.js", dst: "js/core/profile.js" },
   { src: "browser/view.js", dst: "js/core/view.js" },
   { src: "browser/controller.js", dst: "js/core/controller.js" },
 ];

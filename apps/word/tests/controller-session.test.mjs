@@ -12,6 +12,7 @@ const CORE_SESSION_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "ses
 const CORE_WORKFILE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "workfile.js"), "utf8");
 const CORE_REMINDER_MODAL_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "reminder-modal.js"), "utf8");
 const CORE_USER_SETUP_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "user-setup.js"), "utf8");
+const CORE_PROFILE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "profile.js"), "utf8");
 const CONTROLLER_SOURCE = await fs.readFile(path.join(ROOT, "js", "controller.js"), "utf8");
 
 class FakeElement {}
@@ -55,6 +56,8 @@ class FakeNode extends FakeElement {
   }
 
   focus() {}
+
+  select() {}
 
   setAttribute(name, value) {
     this.attributes.set(name, String(value));
@@ -133,6 +136,14 @@ function createDocument() {
     "header-user-menu",
     "header-user-switch-btn",
     "header-user-profile-btn",
+    "profile-user-section",
+    "profile-edit-firstname-btn",
+    "profile-rename-wrap",
+    "profile-firstname-input",
+    "profile-firstname-save-btn",
+    "profile-firstname-cancel-btn",
+    "profile-rename-status",
+    "profile-firstname-display",
   ];
 
   const elements = new Map(ids.map((id) => [id, new FakeNode(id)]));
@@ -413,6 +424,7 @@ function createHarness(options = {}) {
   vm.runInContext(CORE_WORKFILE_SOURCE, context, { filename: "js/core/workfile.js" });
   vm.runInContext(CORE_REMINDER_MODAL_SOURCE, context, { filename: "js/core/reminder-modal.js" });
   vm.runInContext(CORE_USER_SETUP_SOURCE, context, { filename: "js/core/user-setup.js" });
+  vm.runInContext(CORE_PROFILE_SOURCE, context, { filename: "js/core/profile.js" });
   vm.runInContext(CORE_CONTROLLER_SOURCE, context, { filename: "js/core/controller.js" });
   vm.runInContext(CONTROLLER_SOURCE, context, { filename: "js/controller.js" });
 
@@ -437,6 +449,10 @@ function createHarness(options = {}) {
     storageState,
     window: windowObject,
     document,
+    triggerWindowEvent(type) {
+      const handlers = windowListeners.get(type) || [];
+      for (const handler of handlers) handler();
+    },
   };
 }
 
@@ -568,4 +584,36 @@ test("controller restores the switched user after refresh", async () => {
   assert.equal(refreshed.window.location.hash, "#exercise/ex-002");
   assert.deepEqual(refreshed.model.importedProgress, { done: ["ex-002"] });
   assert.match(refreshed.view.progressUserPath, /Bob/);
+});
+
+test("controller updates the shared profile view and saved first name", async () => {
+  const aliceHandle = createHandle("alice-folder", "Alice");
+  const harness = createHarness({
+    savedRootHandle: aliceHandle,
+    savedInitials: "AL",
+    savedFirstName: "Alice",
+    savedWorkFolders: [
+      { id: "alice-folder", name: "Alice", handle: aliceHandle, lastUsedAt: "2026-06-24T09:00:00.000Z" },
+    ],
+    profiles: new Map([["alice-folder", { initials: "AL", firstName: "Alice" }]]),
+    progressByInitials: new Map([["AL", { done: [] }]]),
+  });
+
+  harness.controller.init();
+  await flushAsyncWork();
+
+  harness.window.location.hash = "#profile";
+  harness.triggerWindowEvent("hashchange");
+  await flushAsyncWork();
+
+  harness.document.getElementById("profile-edit-firstname-btn").click();
+  const input = harness.document.getElementById("profile-firstname-input");
+  input.value = "Alicia";
+  harness.document.getElementById("profile-firstname-save-btn").click();
+  await flushAsyncWork();
+
+  assert.deepEqual(harness.view.headerUser, { firstName: "Alicia", initials: "AL" });
+  assert.equal(harness.storageState.savedFirstName, "Alicia");
+  assert.equal(harness.storageState.profiles.get("alice-folder").firstName, "Alicia");
+  assert.equal(harness.document.getElementById("profile-firstname-display").textContent, "Alicia");
 });

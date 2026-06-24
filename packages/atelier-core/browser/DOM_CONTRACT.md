@@ -56,6 +56,7 @@ Ce document liste les éléments HTML minimaux attendus par le runtime partagé 
 - `js/core/workfile.js`
 - `js/core/reminder-modal.js`
 - `js/core/user-setup.js`
+- `js/core/profile.js`
 - `js/core/controller.js`
 
 ## Règle d'évolution
