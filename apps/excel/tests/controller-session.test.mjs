@@ -753,6 +753,30 @@ test("controller renders the shared home view model", async () => {
   });
 });
 
+test("controller handles shared home start navigation", async () => {
+  const aliceHandle = createHandle("alice-folder", "Alice");
+  const harness = createHarness({
+    savedRootHandle: aliceHandle,
+    savedInitials: "AL",
+    savedFirstName: "Alice",
+    savedWorkFolders: [
+      { id: "alice-folder", name: "Alice", handle: aliceHandle, lastUsedAt: "2026-06-24T09:00:00.000Z" },
+    ],
+    profiles: new Map([["alice-folder", { initials: "AL", firstName: "Alice" }]]),
+    progressByInitials: new Map([["AL", { done: [] }]]),
+  });
+
+  harness.model.getResumeExercise = () => ({ id: "ex-001" });
+
+  harness.controller.init();
+  await flushAsyncWork();
+
+  harness.document.getElementById("home-start-btn").click();
+  await flushAsyncWork();
+
+  assert.equal(harness.window.location.hash, "#exercise/ex-001");
+});
+
 test("controller renders the shared affinity view model", async () => {
   const aliceHandle = createHandle("alice-folder", "Alice");
   const harness = createHarness({

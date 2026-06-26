@@ -79,8 +79,14 @@ function createAtelierController(config = {}) {
       ensureReady: () => this.#ensureReadyFromUserGesture(),
       getCurrentAffinityId: () => this.currentAffinityId,
       getCurrentThemeId: () => this.currentThemeId,
+      getDefaultThemeId: () => this.model.getDefaultThemeId(),
       saveProgress: () => this.#saveProgress(),
       renderFromHash: () => this.#renderFromHash(),
+      renderExercise: (exerciseId) => this.#renderExercisePage(exerciseId),
+      showSaveReminder: (trigger, exerciseId) => this.#showSaveReminderModal(trigger, exerciseId),
+      pickWorkFile: () => this.#pickWorkFileForCurrentExercise(),
+      openWorkFile: () => this.#openWorkFileForCurrentExercise(),
+      handleDownloadClick: (event, linkEl) => this.#handleExerciseDownloadClick(event, linkEl),
     });
     this.sessionRuntime = window.createAtelierSessionRuntime({
       storage: this.storage,
@@ -214,133 +220,7 @@ function createAtelierController(config = {}) {
   }
 
   #bindStaticEvents() {
-    for (const btn of this.view.navButtons) {
-      btn.addEventListener("click", async () => {
-        const page = btn.getAttribute("data-nav");
-        if (!this.isReady && page !== "home") {
-          const ready = await this.#ensureReadyFromUserGesture();
-          if (!ready) {
-            window.location.hash = "#home";
-            return;
-          }
-        }
-        if (page === "home") window.location.hash = "#home";
-        if (page === "themes") window.location.hash = "#themes";
-        if (page === "progress") window.location.hash = "#progress";
-        if (page === "profile") window.location.hash = "#profile";
-      });
-    }
-
-    document.getElementById("home-start-btn").addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const resume = this.model.getResumeExercise();
-      if (resume) {
-        window.location.hash = `#exercise/${resume.id}`;
-      } else {
-        const preferredThemeId = this.currentThemeId || this.model.getDefaultThemeId();
-        const first = preferredThemeId ? this.model.getExercisesByTheme(preferredThemeId)[0] : null;
-        if (first) {
-          window.location.hash = `#exercise/${first.id}`;
-        } else {
-          window.location.hash = "#themes";
-        }
-      }
-    });
-
-    document.getElementById("exercise-back-btn").addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      if (this.currentAffinityId) {
-        window.location.hash = `#affinity/${this.currentAffinityId}/${this.currentThemeId || ""}`;
-      } else {
-        window.location.hash = "#themes";
-      }
-    });
-
-    document.getElementById("affinity-back-btn").addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      window.location.hash = "#themes";
-    });
-
-    this.view.exercisePrevBtn.addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const targetId = this.view.exercisePrevBtn.getAttribute("data-target-id");
-      if (targetId) window.location.hash = `#exercise/${targetId}`;
-    });
-
-    this.view.exerciseNextBtn.addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const currentId = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
-      const wasDone = currentId ? this.model.getIsDone(currentId) : false;
-      if (currentId && !wasDone) {
-        const canContinue = await this.#showSaveReminderModal("next", currentId);
-        if (!canContinue) return;
-      }
-
-      if (currentId && !wasDone) {
-        this.model.markExerciseDone(currentId, true);
-        this.#saveProgress();
-      }
-      const targetId = this.view.exerciseNextBtn.getAttribute("data-target-id");
-      if (targetId) window.location.hash = `#exercise/${targetId}`;
-    });
-
-    this.view.exerciseToggleDoneBtn.addEventListener("click", async () => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const id = this.view.exerciseToggleDoneBtn.getAttribute("data-id");
-      if (!id) return;
-      const isDone = this.model.getIsDone(id);
-
-      if (!isDone) {
-        const canContinue = await this.#showSaveReminderModal("done", id);
-        if (!canContinue) return;
-      }
-
-      this.model.markExerciseDone(id, !isDone);
-      this.#saveProgress();
-      this.#renderExercisePage(id);
-    });
-
-    if (this.view.exercisePickWorkFileBtn) {
-      this.view.exercisePickWorkFileBtn.addEventListener("click", async () => {
-        await this.#pickWorkFileForCurrentExercise();
-      });
-    }
-
-    if (this.view.exerciseOpenWorkFileBtn) {
-      this.view.exerciseOpenWorkFileBtn.addEventListener("click", async () => {
-        await this.#openWorkFileForCurrentExercise();
-      });
-    }
-
-    if (this.view.exerciseWorkFileBtn) {
-      this.view.exerciseWorkFileBtn.addEventListener("click", (event) => {
-        this.#handleExerciseDownloadClick(event, this.view.exerciseWorkFileBtn);
-      });
-    }
-
-    if (this.view.exerciseDownloadBtn) {
-      this.view.exerciseDownloadBtn.addEventListener("click", (event) => {
-        this.#handleExerciseDownloadClick(event, this.view.exerciseDownloadBtn);
-      });
-    }
+    this.uiEventsRuntime.bindExerciseNavigationEvents();
 
     const changeBtn = document.getElementById("progress-change-user-btn");
     if (changeBtn) {
