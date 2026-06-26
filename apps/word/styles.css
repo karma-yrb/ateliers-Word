@@ -976,11 +976,10 @@ select {
 }
 
 .images-grid.single-image-block .single-image-card .image-stack {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+  width: 100%;
 }
 
 .extra-wrap {
@@ -1031,7 +1030,7 @@ select {
 
 .image-stack {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 8px;
   align-items: start;
 }
@@ -1044,6 +1043,9 @@ select {
   cursor: zoom-in;
   position: relative;
   width: 100%;
+  min-width: 0;
+  break-inside: avoid;
+  margin-bottom: 8px;
   overflow: hidden;
 }
 
@@ -1054,6 +1056,10 @@ select {
   height: auto;
   object-fit: contain;
   display: block;
+}
+
+.images-grid.single-image-block .single-image-card .image-thumb img {
+  max-height: 190px;
 }
 
 .image-thumb-count {
@@ -1363,6 +1369,12 @@ select {
   }
 }
 
+@media (max-width: 1180px) {
+  .images-grid.single-image-block .single-image-card .image-stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .image-thumb-hint {
   display: block;
   font-size: 0.78rem;
@@ -1483,6 +1495,14 @@ select {
   .images-grid,
   .exercise-actions-row,
   .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .image-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .images-grid.single-image-block .single-image-card .image-stack {
     grid-template-columns: 1fr;
   }
 
