@@ -33,7 +33,7 @@ function createDataset() {
 test("Excel browser globals match app bootstrap contract", async () => {
   const context = vm.createContext({ window: {}, console });
 
-  for (const file of ["js/core/model.js", "js/model.js", "js/core/view.js", "js/view.js", "js/core/storage.js", "js/core/home.js", "js/core/themes.js", "js/core/exercise.js", "js/core/route.js", "js/storage.js", "js/core/persistence.js", "js/core/session.js", "js/core/workfile.js", "js/core/reminder-modal.js", "js/core/user-setup.js", "js/core/progress.js", "js/core/profile.js", "js/core/controller.js", "js/controller.js"]) {
+  for (const file of ["js/core/model.js", "js/model.js", "js/core/view.js", "js/view.js", "js/core/storage.js", "js/core/home.js", "js/core/themes.js", "js/core/exercise.js", "js/core/route.js", "js/core/ui-events.js", "js/storage.js", "js/core/persistence.js", "js/core/session.js", "js/core/workfile.js", "js/core/reminder-modal.js", "js/core/user-setup.js", "js/core/progress.js", "js/core/profile.js", "js/core/controller.js", "js/controller.js"]) {
     vm.runInContext(await readSource(file), context, { filename: file });
   }
 

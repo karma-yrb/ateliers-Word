@@ -15,6 +15,7 @@ const CORE_HOME_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "home.j
 const CORE_THEMES_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "themes.js"), "utf8");
 const CORE_EXERCISE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "exercise.js"), "utf8");
 const CORE_ROUTE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "route.js"), "utf8");
+const CORE_UI_EVENTS_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "ui-events.js"), "utf8");
 const CORE_USER_SETUP_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "user-setup.js"), "utf8");
 const CORE_PROGRESS_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "progress.js"), "utf8");
 const CORE_PROFILE_SOURCE = await fs.readFile(path.join(ROOT, "js", "core", "profile.js"), "utf8");
@@ -37,6 +38,9 @@ class FakeNode extends FakeElement {
     this.attributes = new Map();
     this.listeners = new Map();
     this.parentElement = null;
+    this.classList = {
+      contains: (className) => String(this.attributes.get("class") || "").split(/\s+/).includes(className),
+    };
     this.onclick = null;
     this.onchange = null;
     this.onkeydown = null;
@@ -58,6 +62,13 @@ class FakeNode extends FakeElement {
       return this.firstNameLabel || null;
     }
     return null;
+  }
+
+  closest(selector) {
+    if (selector === "[data-action]" && this.attributes.has("data-action")) return this;
+    return this.parentElement && typeof this.parentElement.closest === "function"
+      ? this.parentElement.closest(selector)
+      : null;
   }
 
   focus() {}
@@ -192,6 +203,7 @@ function createModel() {
   return {
     importedProgress: null,
     resetCount: 0,
+    markedDone: [],
     getDefaultThemeId() {
       return "theme-1";
     },
@@ -228,6 +240,9 @@ function createModel() {
     },
     markExerciseOpened() {
       return false;
+    },
+    markExerciseDone(id, done) {
+      this.markedDone.push({ id, done });
     },
     getIsDone() {
       return false;
@@ -452,6 +467,7 @@ function createHarness(options = {}) {
   vm.runInContext(CORE_THEMES_SOURCE, context, { filename: "js/core/themes.js" });
   vm.runInContext(CORE_EXERCISE_SOURCE, context, { filename: "js/core/exercise.js" });
   vm.runInContext(CORE_ROUTE_SOURCE, context, { filename: "js/core/route.js" });
+  vm.runInContext(CORE_UI_EVENTS_SOURCE, context, { filename: "js/core/ui-events.js" });
   vm.runInContext(CORE_USER_SETUP_SOURCE, context, { filename: "js/core/user-setup.js" });
   vm.runInContext(CORE_PROGRESS_SOURCE, context, { filename: "js/core/progress.js" });
   vm.runInContext(CORE_PROFILE_SOURCE, context, { filename: "js/core/profile.js" });
@@ -831,4 +847,36 @@ test("controller renders the shared exercise view model", async () => {
     nextId: "ex-002",
     workFile: { pickerSupported: true },
   });
+});
+
+test("controller handles shared dynamic exercise actions", async () => {
+  const aliceHandle = createHandle("alice-folder", "Alice");
+  const harness = createHarness({
+    savedRootHandle: aliceHandle,
+    savedInitials: "AL",
+    savedFirstName: "Alice",
+    savedWorkFolders: [
+      { id: "alice-folder", name: "Alice", handle: aliceHandle, lastUsedAt: "2026-06-24T09:00:00.000Z" },
+    ],
+    profiles: new Map([["alice-folder", { initials: "AL", firstName: "Alice" }]]),
+    progressByInitials: new Map([["AL", { done: [] }]]),
+  });
+
+  harness.controller.init();
+  await flushAsyncWork();
+
+  const openRow = new FakeNode("open-row");
+  openRow.setAttribute("data-action", "open-exercise");
+  openRow.setAttribute("data-id", "ex-001");
+  harness.view.affinityThemeList.dispatchEvent({ type: "click", target: openRow });
+
+  assert.equal(harness.window.location.hash, "#exercise/ex-001");
+
+  const doneRow = new FakeNode("done-row");
+  doneRow.setAttribute("data-action", "toggle-done");
+  doneRow.setAttribute("data-id", "ex-001");
+  harness.view.affinityThemeList.dispatchEvent({ type: "click", target: doneRow });
+  await flushAsyncWork();
+
+  assert.deepEqual(harness.model.markedDone, [{ id: "ex-001", done: true }]);
 });

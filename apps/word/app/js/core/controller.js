@@ -72,6 +72,16 @@ function createAtelierController(config = {}) {
       renderProgress: () => this.#renderProgressPage(),
       renderProfile: () => this.#renderProfilePage(),
     });
+    this.uiEventsRuntime = window.createAtelierUiEventsRuntime({
+      view: this.view,
+      model: this.model,
+      isReady: () => this.isReady,
+      ensureReady: () => this.#ensureReadyFromUserGesture(),
+      getCurrentAffinityId: () => this.currentAffinityId,
+      getCurrentThemeId: () => this.currentThemeId,
+      saveProgress: () => this.#saveProgress(),
+      renderFromHash: () => this.#renderFromHash(),
+    });
     this.sessionRuntime = window.createAtelierSessionRuntime({
       storage: this.storage,
       view: this.view,
@@ -429,66 +439,7 @@ function createAtelierController(config = {}) {
   }
 
   #bindDynamicEvents() {
-    const onAction = async (event) => {
-      if (!this.isReady) {
-        const ready = await this.#ensureReadyFromUserGesture();
-        if (!ready) return;
-      }
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-      const actionEl = target.closest("[data-action]");
-      if (!actionEl) return;
-      const action = actionEl.getAttribute("data-action");
-
-      if (action === "open-affinity") {
-        const affinityId = actionEl.getAttribute("data-affinity-id");
-        if (!affinityId) return;
-        window.location.hash = `#affinity/${affinityId}`;
-        return;
-      }
-
-      if (action === "toggle-theme") {
-        const themeId = actionEl.getAttribute("data-theme-id");
-        const affinityId = actionEl.getAttribute("data-affinity-id") || this.currentAffinityId;
-        if (!themeId || !affinityId) return;
-        const sameThemeOpen = this.currentThemeId === themeId;
-        const nextHash = sameThemeOpen ? `#affinity/${affinityId}` : `#affinity/${affinityId}/${themeId}`;
-        window.location.hash = nextHash;
-        return;
-      }
-
-      const id = actionEl.getAttribute("data-id");
-      if (!id) return;
-
-      if (action === "open-exercise") {
-        window.location.hash = `#exercise/${id}`;
-        return;
-      }
-
-      if (action === "toggle-done") {
-        const isDone = this.model.getIsDone(id);
-        this.model.markExerciseDone(id, !isDone);
-        this.#saveProgress();
-        this.#renderFromHash();
-      }
-    };
-
-    const onActionKeydown = (event) => {
-      if (!this.isReady) return;
-      if (event.key !== "Enter" && event.key !== " ") return;
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-      if (!target.classList.contains("exercise-row")) return;
-      const action = target.getAttribute("data-action");
-      const id = target.getAttribute("data-id");
-      if (action !== "open-exercise" || !id) return;
-      event.preventDefault();
-      window.location.hash = `#exercise/${id}`;
-    };
-
-    this.view.themesAffinityList.addEventListener("click", onAction);
-    this.view.affinityThemeList.addEventListener("click", onAction);
-    this.view.affinityThemeList.addEventListener("keydown", onActionKeydown);
+    this.uiEventsRuntime.bindDynamicEvents();
   }
 
   #renderFromHash() {
