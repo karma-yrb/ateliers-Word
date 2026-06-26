@@ -500,94 +500,11 @@ function createAtelierController(config = {}) {
     this.homeRuntime.render();
   }
   #renderThemesOverview() {
-    return this.themesRuntime.renderOverview();
-    this.persistenceRuntime.persistUiState({ page: "themes" });
-    this.view.showPage("themes");
-    const groups = this.model.getThemeAffinityGroups().map((group) => {
-      const totalExercises = group.themes.reduce(
-        (sum, theme) => sum + this.model.getExercisesByTheme(theme.id).length,
-        0,
-      );
-      const completedExercises = group.themes.reduce((sum, theme) => {
-        const themeDone = this.model
-          .getExercisesByTheme(theme.id)
-          .filter((exercise) => this.model.getIsDone(exercise.id)).length;
-        return sum + themeDone;
-      }, 0);
-      return {
-        id: group.id,
-        label: group.label,
-        subtitle: group.subtitle,
-        totalExercises,
-        completedExercises,
-        percent: totalExercises ? Math.round((completedExercises / totalExercises) * 100) : 0,
-      };
-    });
-
-    this.view.renderAffinityOverview({ groups });
+    this.themesRuntime.renderOverview();
   }
 
   #renderAffinityPage(affinityId, themeId) {
-    return this.themesRuntime.renderAffinityPage(affinityId, themeId);
-    const groups = this.model.getThemeAffinityGroups();
-    if (!groups.length) {
-      this.view.showPage("affinity");
-      this.view.renderAffinityPage({
-        affinity: { id: "", label: "Catégorie", subtitle: "" },
-        cards: [],
-      });
-      return;
-    }
-
-    let affinity = groups.find((g) => g.id === affinityId) || null;
-    if (!affinity) {
-      affinity = groups[0];
-    }
-    this.currentAffinityId = affinity.id;
-
-    const themeIds = new Set(affinity.themes.map((theme) => theme.id));
-    if (themeId && themeIds.has(themeId)) {
-      this.currentThemeId = themeId;
-    } else if (!themeId) {
-      this.currentThemeId = null;
-    } else if (!this.currentThemeId || !themeIds.has(this.currentThemeId)) {
-      this.currentThemeId = null;
-    }
-
-    const cards = affinity.themes.map((theme) => {
-      const exercises = this.model.getExercisesByTheme(theme.id);
-      const rows = exercises.map((ex) => ({
-        id: ex.id,
-        num: ex.num,
-        title: ex.title,
-        done: this.model.getIsDone(ex.id),
-      }));
-      const done = rows.filter((row) => row.done).length;
-      return {
-        id: theme.id,
-        name: theme.name,
-        rows,
-        done,
-        total: rows.length,
-        percent: rows.length ? Math.round((done / rows.length) * 100) : 0,
-        open: theme.id === this.currentThemeId,
-      };
-    });
-
-    this.persistenceRuntime.persistUiState({
-      page: "affinity",
-      affinityId: affinity.id,
-      themeId: this.currentThemeId || "",
-    });
-    this.view.showPage("affinity");
-    this.view.renderAffinityPage({
-      affinity: {
-        id: affinity.id,
-        label: affinity.label,
-        subtitle: affinity.subtitle,
-      },
-      cards,
-    });
+    this.themesRuntime.renderAffinityPage(affinityId, themeId);
   }
 
   #renderExercisePage(exerciseId) {
