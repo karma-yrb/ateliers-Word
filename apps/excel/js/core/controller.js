@@ -87,6 +87,16 @@ function createAtelierController(config = {}) {
       pickWorkFile: () => this.#pickWorkFileForCurrentExercise(),
       openWorkFile: () => this.#openWorkFileForCurrentExercise(),
       handleDownloadClick: (event, linkEl) => this.#handleExerciseDownloadClick(event, linkEl),
+      storage: this.storage,
+      getUserSession: () => this.userSession,
+      setUserSession: (session) => {
+        this.userSession = session;
+      },
+      setReady: (ready) => {
+        this.isReady = ready;
+      },
+      resolveUserSession: (forcePrompt, options) => this.#resolveUserSession(forcePrompt, options),
+      activateSession: (session, options) => this.#activateSession(session, options),
     });
     this.sessionRuntime = window.createAtelierSessionRuntime({
       storage: this.storage,
@@ -221,101 +231,7 @@ function createAtelierController(config = {}) {
 
   #bindStaticEvents() {
     this.uiEventsRuntime.bindExerciseNavigationEvents();
-
-    const changeBtn = document.getElementById("progress-change-user-btn");
-    if (changeBtn) {
-      changeBtn.addEventListener("click", async () => {
-        const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
-        if (!session) return;
-        await this.#activateSession(session, { render: this.isReady });
-      });
-    }
-
-    const resetBtn = document.getElementById("progress-reset-btn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        if (!this.isReady) return;
-        const ok = window.confirm("Réinitialiser toute la progression de cet utilisateur ?");
-        if (!ok) return;
-        this.model.resetProgress();
-        this.#saveProgress();
-        this.view.setProgressStatus("Progression réinitialisée (profil conservé).");
-        this.#renderFromHash();
-      });
-    }
-
-    const resetProfileBtn = document.getElementById("progress-reset-profile-btn");
-    if (resetProfileBtn) {
-      resetProfileBtn.addEventListener("click", async () => {
-        if (!this.userSession) return;
-        const ok = window.confirm(
-          "Supprimer le prénom et le dossier de référence sur cet appareil ? La progression enregistrée dans le dossier utilisateur ne sera pas supprimée.",
-        );
-        if (!ok) return;
-
-        const previousSession = this.userSession;
-        await this.storage.deleteUserProfile(previousSession.rootHandle, previousSession.initials);
-        await this.storage.clearSavedSession();
-
-        this.userSession = null;
-        this.isReady = false;
-        this.model.resetProgress();
-        this.view.setHeaderUser("", "");
-        this.view.setProgressUserPath("Aucun utilisateur sélectionné.");
-        this.view.setProgressStatus("Profil local supprimé. Reconfiguration en cours...");
-
-        const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
-        if (!session) {
-          this.view.setProgressStatus("Profil local supprimé. Configuration utilisateur annulée.");
-          this.view.showPage("home");
-          return;
-        }
-
-        await this.#activateSession(session, { render: true });
-      });
-    }
-
-    const headerUserBtn = document.getElementById("header-user-badge");
-    const headerUserMenu = document.getElementById("header-user-menu");
-    const closeUserMenu = () => {
-      if (!headerUserMenu) return;
-      headerUserMenu.hidden = true;
-      if (headerUserBtn) headerUserBtn.setAttribute("aria-expanded", "false");
-    };
-    if (headerUserBtn && headerUserMenu) {
-      headerUserBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const isOpen = !headerUserMenu.hidden;
-        if (isOpen) {
-          closeUserMenu();
-        } else {
-          headerUserMenu.hidden = false;
-          headerUserBtn.setAttribute("aria-expanded", "true");
-        }
-      });
-      document.addEventListener("click", closeUserMenu);
-      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeUserMenu(); });
-      const headerSwitchBtn = document.getElementById("header-user-switch-btn");
-      if (headerSwitchBtn) {
-        headerSwitchBtn.addEventListener("click", async () => {
-          closeUserMenu();
-          const session = await this.#resolveUserSession(true, { allowPermissionPrompt: true });
-          if (!session) return;
-          await this.#activateSession(session, { render: this.isReady });
-        });
-      }
-      const headerProfileBtn = document.getElementById("header-user-profile-btn");
-      if (headerProfileBtn) {
-        headerProfileBtn.addEventListener("click", async () => {
-          closeUserMenu();
-          if (!this.isReady) {
-            const ready = await this.#ensureReadyFromUserGesture();
-            if (!ready) return;
-          }
-          window.location.hash = "#profile";
-        });
-      }
-    }
+    this.uiEventsRuntime.bindUserAccountEvents();
   }
 
   #bindDynamicEvents() {

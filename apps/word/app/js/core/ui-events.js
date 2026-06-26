@@ -20,6 +20,14 @@ function createAtelierUiEventsRuntime(config = {}) {
   const handleDownloadClick = typeof config.handleDownloadClick === "function"
     ? config.handleDownloadClick
     : () => {};
+  const getUserSession = typeof config.getUserSession === "function" ? config.getUserSession : () => null;
+  const setUserSession = typeof config.setUserSession === "function" ? config.setUserSession : () => {};
+  const setReady = typeof config.setReady === "function" ? config.setReady : () => {};
+  const resolveUserSession = typeof config.resolveUserSession === "function"
+    ? config.resolveUserSession
+    : async () => null;
+  const activateSession = typeof config.activateSession === "function" ? config.activateSession : async () => {};
+  const storage = config.storage;
   const setHash = typeof config.setHash === "function"
     ? config.setHash
     : (hash) => {
@@ -151,6 +159,105 @@ function createAtelierUiEventsRuntime(config = {}) {
         view.exerciseDownloadBtn.addEventListener("click", (event) => {
           handleDownloadClick(event, view.exerciseDownloadBtn);
         });
+      }
+    },
+
+    bindUserAccountEvents() {
+      const changeBtn = document.getElementById("progress-change-user-btn");
+      if (changeBtn) {
+        changeBtn.addEventListener("click", async () => {
+          const session = await resolveUserSession(true, { allowPermissionPrompt: true });
+          if (!session) return;
+          await activateSession(session, { render: isReady() });
+        });
+      }
+
+      const resetBtn = document.getElementById("progress-reset-btn");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          if (!isReady()) return;
+          const ok = window.confirm("Reinitialiser toute la progression de cet utilisateur ?");
+          if (!ok) return;
+          model.resetProgress();
+          saveProgress();
+          view.setProgressStatus("Progression reinitialisee (profil conserve).");
+          renderFromHash();
+        });
+      }
+
+      const resetProfileBtn = document.getElementById("progress-reset-profile-btn");
+      if (resetProfileBtn) {
+        resetProfileBtn.addEventListener("click", async () => {
+          const userSession = getUserSession();
+          if (!userSession) return;
+          const ok = window.confirm(
+            "Supprimer le prenom et le dossier de reference sur cet appareil ? La progression enregistree dans le dossier utilisateur ne sera pas supprimee.",
+          );
+          if (!ok) return;
+
+          await storage.deleteUserProfile(userSession.rootHandle, userSession.initials);
+          await storage.clearSavedSession();
+
+          setUserSession(null);
+          setReady(false);
+          model.resetProgress();
+          view.setHeaderUser("", "");
+          view.setProgressUserPath("Aucun utilisateur selectionne.");
+          view.setProgressStatus("Profil local supprime. Reconfiguration en cours...");
+
+          const session = await resolveUserSession(true, { allowPermissionPrompt: true });
+          if (!session) {
+            view.setProgressStatus("Profil local supprime. Configuration utilisateur annulee.");
+            view.showPage("home");
+            return;
+          }
+
+          await activateSession(session, { render: true });
+        });
+      }
+
+      const headerUserBtn = document.getElementById("header-user-badge");
+      const headerUserMenu = document.getElementById("header-user-menu");
+      const closeUserMenu = () => {
+        if (!headerUserMenu) return;
+        headerUserMenu.hidden = true;
+        if (headerUserBtn) headerUserBtn.setAttribute("aria-expanded", "false");
+      };
+      if (headerUserBtn && headerUserMenu) {
+        headerUserBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const isOpen = !headerUserMenu.hidden;
+          if (isOpen) {
+            closeUserMenu();
+          } else {
+            headerUserMenu.hidden = false;
+            headerUserBtn.setAttribute("aria-expanded", "true");
+          }
+        });
+        document.addEventListener("click", closeUserMenu);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeUserMenu();
+        });
+        const headerSwitchBtn = document.getElementById("header-user-switch-btn");
+        if (headerSwitchBtn) {
+          headerSwitchBtn.addEventListener("click", async () => {
+            closeUserMenu();
+            const session = await resolveUserSession(true, { allowPermissionPrompt: true });
+            if (!session) return;
+            await activateSession(session, { render: isReady() });
+          });
+        }
+        const headerProfileBtn = document.getElementById("header-user-profile-btn");
+        if (headerProfileBtn) {
+          headerProfileBtn.addEventListener("click", async () => {
+            closeUserMenu();
+            if (!isReady()) {
+              const ready = await ensureReady();
+              if (!ready) return;
+            }
+            setHash("#profile");
+          });
+        }
       }
     },
 
