@@ -118,7 +118,12 @@ class AtelierView {
     this.imageModal = document.getElementById("image-modal");
     this.imageModalImg = document.getElementById("image-modal-img");
     this.imageModalClose = document.getElementById("image-modal-close");
+    this.imageModalPrev = document.getElementById("image-modal-prev");
+    this.imageModalNext = document.getElementById("image-modal-next");
+    this.imageModalCounter = document.getElementById("image-modal-counter");
     this.imageModalStage = null;
+    this.modalGalleryItems = [];
+    this.modalGalleryIndex = 0;
     this.modalZoom = 1;
     this.modalBaseWidth = 0;
     this.isModalDragging = false;
@@ -544,17 +549,19 @@ class AtelierView {
       )
       .join("");
 
-    const buttons = containerEl.querySelectorAll("button[data-zoom-src]");
-    for (const btn of buttons) {
+    const buttons = Array.from(containerEl.querySelectorAll("button[data-zoom-src]"));
+    const galleryItems = unique.map((image, idx) => ({
+      src: image.src,
+      alt: image.caption || `${altPrefix} ${idx + 1}`,
+    }));
+    for (const [index, btn] of buttons.entries()) {
       btn.addEventListener("click", () => {
-        const src = btn.getAttribute("data-zoom-src");
-        this.openImageModal(src, altPrefix);
+        this.openImageModal(galleryItems[index].src, galleryItems[index].alt, galleryItems, index);
       });
       btn.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          const src = btn.getAttribute("data-zoom-src");
-          this.openImageModal(src, altPrefix);
+          this.openImageModal(galleryItems[index].src, galleryItems[index].alt, galleryItems, index);
         }
       });
     }
@@ -578,17 +585,19 @@ class AtelierView {
       `,
       )
       .join("");
-    const buttons = this.exerciseExtraImages.querySelectorAll("button[data-zoom-src]");
-    for (const btn of buttons) {
+    const buttons = Array.from(this.exerciseExtraImages.querySelectorAll("button[data-zoom-src]"));
+    const galleryItems = unique.map((src, idx) => ({
+      src,
+      alt: `Image illustrative ${idx + 1}`,
+    }));
+    for (const [index, btn] of buttons.entries()) {
       btn.addEventListener("click", () => {
-        const src = btn.getAttribute("data-zoom-src");
-        this.openImageModal(src, "Image illustrative");
+        this.openImageModal(galleryItems[index].src, galleryItems[index].alt, galleryItems, index);
       });
       btn.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          const src = btn.getAttribute("data-zoom-src");
-          this.openImageModal(src, "Image illustrative");
+          this.openImageModal(galleryItems[index].src, galleryItems[index].alt, galleryItems, index);
         }
       });
     }
@@ -788,6 +797,8 @@ class AtelierView {
   #bindModalEvents() {
     if (!this.imageModal || !this.imageModalImg || !this.imageModalClose || !this.imageModalStage) return;
     this.imageModalClose.addEventListener("click", () => this.closeImageModal());
+    if (this.imageModalPrev) this.imageModalPrev.addEventListener("click", () => this.showPreviousModalImage());
+    if (this.imageModalNext) this.imageModalNext.addEventListener("click", () => this.showNextModalImage());
     this.imageModalImg.addEventListener("load", () => {
       this.#setModalZoom(this.modalZoom);
     });
@@ -837,6 +848,14 @@ class AtelierView {
     document.addEventListener("keydown", (event) => {
       if (this.imageModal.hidden) return;
       if (event.key === "Escape") this.closeImageModal();
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        this.showPreviousModalImage();
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        this.showNextModalImage();
+      }
       if (event.key === "+" || event.key === "=") {
         event.preventDefault();
         this.#setModalZoom(Math.min(8, this.modalZoom + 1));
@@ -848,13 +867,29 @@ class AtelierView {
     });
   }
 
-  openImageModal(src, altText) {
+  openImageModal(src, altText, galleryItems = null, galleryIndex = 0) {
     if (!src || !this.imageModal || !this.imageModalImg) return;
-    this.imageModalImg.src = src;
-    this.imageModalImg.alt = altText || "Aperçu";
-    this.#setModalZoom(1);
+    const normalizedItems = Array.isArray(galleryItems) && galleryItems.length
+      ? galleryItems.filter((item) => item && item.src)
+      : [{ src, alt: altText || "Aperçu" }];
+    const maxIndex = normalizedItems.length - 1;
+    this.modalGalleryItems = normalizedItems;
+    this.modalGalleryIndex = Math.max(0, Math.min(maxIndex, Number(galleryIndex) || 0));
+    this.#renderModalImage();
     this.imageModal.hidden = false;
     this.imageModal.setAttribute("aria-hidden", "false");
+  }
+
+  showPreviousModalImage() {
+    if (this.modalGalleryIndex <= 0) return;
+    this.modalGalleryIndex -= 1;
+    this.#renderModalImage();
+  }
+
+  showNextModalImage() {
+    if (this.modalGalleryIndex >= this.modalGalleryItems.length - 1) return;
+    this.modalGalleryIndex += 1;
+    this.#renderModalImage();
   }
 
   closeImageModal() {
@@ -863,8 +898,37 @@ class AtelierView {
     this.imageModal.setAttribute("aria-hidden", "true");
     this.imageModalImg.removeAttribute("src");
     this.imageModalImg.alt = "";
+    this.modalGalleryItems = [];
+    this.modalGalleryIndex = 0;
+    this.#updateModalNavigation();
     this.isModalDragging = false;
     this.#setModalZoom(1);
+  }
+
+  #renderModalImage() {
+    const item = this.modalGalleryItems[this.modalGalleryIndex];
+    if (!item || !this.imageModalImg) return;
+    this.imageModalImg.src = item.src;
+    this.imageModalImg.alt = item.alt || "Aperçu";
+    this.#setModalZoom(1);
+    this.#updateModalNavigation();
+  }
+
+  #updateModalNavigation() {
+    const total = this.modalGalleryItems.length;
+    const hasMultiple = total > 1;
+    if (this.imageModalPrev) {
+      this.imageModalPrev.hidden = !hasMultiple;
+      this.imageModalPrev.disabled = !hasMultiple || this.modalGalleryIndex <= 0;
+    }
+    if (this.imageModalNext) {
+      this.imageModalNext.hidden = !hasMultiple;
+      this.imageModalNext.disabled = !hasMultiple || this.modalGalleryIndex >= total - 1;
+    }
+    if (this.imageModalCounter) {
+      this.imageModalCounter.hidden = !hasMultiple;
+      this.imageModalCounter.textContent = hasMultiple ? `${this.modalGalleryIndex + 1} / ${total}` : "";
+    }
   }
 
   #setModalZoom(value) {

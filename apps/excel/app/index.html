@@ -238,8 +238,11 @@
   </main>
 
   <div id="image-modal" class="image-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Aperçu de l'image">
+    <button id="image-modal-prev" class="image-modal-action-btn image-modal-nav image-modal-prev" type="button" aria-label="Image précédente" hidden>‹</button>
     <button id="image-modal-close" class="image-modal-action-btn image-modal-close" type="button" aria-label="Fermer l'aperçu (Échap)">×</button>
+    <button id="image-modal-next" class="image-modal-action-btn image-modal-nav image-modal-next" type="button" aria-label="Image suivante" hidden>›</button>
     <img id="image-modal-img" alt="" draggable="false">
+    <p id="image-modal-counter" class="image-modal-counter" hidden></p>
   </div>
 
   <div id="user-setup-modal" class="image-modal" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Configuration utilisateur">
