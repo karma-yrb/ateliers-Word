@@ -47,6 +47,23 @@ function createAtelierController(config = {}) {
         this.currentAffinityId = affinityId;
       },
     });
+    this.exerciseRuntime = window.createAtelierExerciseRuntime({
+      persistenceRuntime: this.persistenceRuntime,
+      view: this.view,
+      model: this.model,
+      storage: this.storage,
+      getCurrentAffinityId: () => this.currentAffinityId,
+      setCurrentThemeId: (themeId) => {
+        this.currentThemeId = themeId;
+      },
+      setCurrentAffinityId: (affinityId) => {
+        this.currentAffinityId = affinityId;
+      },
+      saveProgress: () => this.#saveProgress(),
+      refreshWorkFileState: (exerciseId) => this.#refreshExerciseWorkFileState(exerciseId),
+      renderAffinityFallback: () => this.#renderAffinityPage(this.currentAffinityId, this.currentThemeId),
+      renderThemesFallback: () => this.#renderThemesOverview(),
+    });
     this.sessionRuntime = window.createAtelierSessionRuntime({
       storage: this.storage,
       view: this.view,
@@ -508,49 +525,7 @@ function createAtelierController(config = {}) {
   }
 
   #renderExercisePage(exerciseId) {
-    const exercise = this.model.getExerciseById(exerciseId);
-    if (!exercise) {
-      if (this.currentAffinityId) {
-        this.#renderAffinityPage(this.currentAffinityId, this.currentThemeId);
-      } else {
-        this.#renderThemesOverview();
-      }
-      return;
-    }
-    this.currentThemeId = exercise.moduleId;
-    this.currentAffinityId = this.model.getAffinityIdForTheme(exercise.moduleId) || this.currentAffinityId;
-    this.persistenceRuntime.persistUiState({
-      page: "exercise",
-      exerciseId: exercise.id,
-      affinityId: this.currentAffinityId || "",
-      themeId: this.currentThemeId || "",
-    });
-    if (this.model.markExerciseOpened(exercise.id)) {
-      this.#saveProgress();
-    }
-    this.view.showPage("exercise");
-
-    const done = this.model.getIsDone(exercise.id);
-    const stepsVm = this.model.getExerciseStepsView
-      ? this.model.getExerciseStepsView(exercise)
-      : { preamble: "", steps: this.model.getStepsForExercise(exercise) };
-    const visuals = this.model.getVisualsForExercise(exercise);
-    const { prevId, nextId } = this.model.getNeighbors(exercise.id);
-    this.view.renderExercise({
-      exercise: {
-        ...exercise,
-        preamble: stepsVm.preamble || "",
-      },
-      done,
-      steps: stepsVm.steps || [],
-      visuals,
-      prevId,
-      nextId,
-      workFile: {
-        pickerSupported: this.storage && this.storage.supportsWorkFilePicker && this.storage.supportsWorkFilePicker(),
-      },
-    });
-    this.#refreshExerciseWorkFileState(exercise.id);
+    this.exerciseRuntime.render(exerciseId);
   }
 
   #renderProgressPage() {
