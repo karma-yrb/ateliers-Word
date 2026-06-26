@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.10](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.9...word-v1.5.10) (2026-06-26)
+
+
+### Bug Fixes
+
+* **excel:** align theme category labels with excel module ([bcec087](https://github.com/karma-yrb/ateliers-Bureautique/commit/bcec087db19f96ee4920a0aebed6c5ec9601b7ff))
+
 ### [1.5.9](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.8...word-v1.5.9) (2026-06-26)
 
 
