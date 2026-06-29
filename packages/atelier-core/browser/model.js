@@ -477,10 +477,12 @@ class AtelierModel {
           : { src: item.src, caption: item.caption || exercise.imageResultatCaption || "" }
       )),
     );
+    const resultSrcSet = new Set(resultImages.map((image) => image.src));
+    const dedupedEnonceImages = enonceImages.filter((image) => !resultSrcSet.has(image.src));
 
-    const used = new Set([...enonceImages, ...resultImages].map((image) => image.src));
+    const used = new Set([...dedupedEnonceImages, ...resultImages].map((image) => image.src));
     const extraImages = uniqueStrings(exercise.extraImages).filter((url) => !used.has(url));
-    return { enonceImages, resultImages, extraImages };
+    return { enonceImages: dedupedEnonceImages, resultImages, extraImages };
   }
 
   markExerciseDone(exerciseId, done) {

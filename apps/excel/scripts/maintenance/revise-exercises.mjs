@@ -276,8 +276,26 @@ function applyWaveRevisions(enriched, auditReport) {
   let splitLong = 0;
   let fixedDocx = 0;
   let fixedResultImage = 0;
+  let normalizedSingleDownload = 0;
+  let clearedDuplicateEnonceImage = 0;
 
   for (const exercise of enriched.exercises || []) {
+    const extraDownloads = Array.isArray(exercise.extraDownloadUrls)
+      ? exercise.extraDownloadUrls.filter((item) => item && item.url)
+      : [];
+    if (!exercise.docxUrl && exercise.downloadUrl && extraDownloads.length === 0) {
+      exercise.docxUrl = exercise.downloadUrl;
+      exercise.downloadUrl = null;
+      exercise.downloadLabel = "";
+      normalizedSingleDownload += 1;
+    }
+
+    if (exercise.imageEnonce && exercise.imageResultat && exercise.imageEnonce === exercise.imageResultat) {
+      exercise.imageEnonce = null;
+      exercise.imageEnonceCaption = "";
+      clearedDuplicateEnonceImage += 1;
+    }
+
     if (!exercise.docxUrl && FALLBACK_DOCX_BY_ID[exercise.id]) {
       exercise.docxUrl = FALLBACK_DOCX_BY_ID[exercise.id];
       fixedDocx += 1;
@@ -335,6 +353,8 @@ function applyWaveRevisions(enriched, auditReport) {
     splitLong,
     fixedDocx,
     fixedResultImage,
+    normalizedSingleDownload,
+    clearedDuplicateEnonceImage,
     renamedDuplicateTitles,
   };
 }
