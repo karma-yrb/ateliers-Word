@@ -347,7 +347,11 @@ function syncToBaseDataset(baseDataset, enrichedDataset) {
     if (!updated) continue;
     baseExercise.title = updated.title;
     baseExercise.description = updated.description || baseExercise.description || null;
+    baseExercise.preamble = updated.preamble || "";
     baseExercise.docxUrl = updated.docxUrl || null;
+    baseExercise.downloadUrl = updated.downloadUrl || null;
+    baseExercise.downloadLabel = updated.downloadLabel || "";
+    baseExercise.imageEnonce = updated.imageEnonce || null;
     baseExercise.imageResultat = updated.imageResultat || null;
     baseExercise.consignes = Array.isArray(updated.instructions) ? updated.instructions.slice() : [];
   }

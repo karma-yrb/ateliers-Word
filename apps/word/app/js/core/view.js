@@ -120,6 +120,7 @@ class AtelierView {
     this.imageModalClose = document.getElementById("image-modal-close");
     this.imageModalPrev = document.getElementById("image-modal-prev");
     this.imageModalNext = document.getElementById("image-modal-next");
+    this.imageModalCaption = document.getElementById("image-modal-caption");
     this.imageModalCounter = document.getElementById("image-modal-counter");
     this.imageModalStage = null;
     this.modalGalleryItems = [];
@@ -553,6 +554,7 @@ class AtelierView {
     const galleryItems = unique.map((image, idx) => ({
       src: image.src,
       alt: image.caption || `${altPrefix} ${idx + 1}`,
+      caption: image.caption || "",
     }));
     for (const [index, btn] of buttons.entries()) {
       btn.addEventListener("click", () => {
@@ -589,6 +591,7 @@ class AtelierView {
     const galleryItems = unique.map((src, idx) => ({
       src,
       alt: `Image illustrative ${idx + 1}`,
+      caption: "",
     }));
     for (const [index, btn] of buttons.entries()) {
       btn.addEventListener("click", () => {
@@ -898,6 +901,10 @@ class AtelierView {
     this.imageModal.setAttribute("aria-hidden", "true");
     this.imageModalImg.removeAttribute("src");
     this.imageModalImg.alt = "";
+    if (this.imageModalCaption) {
+      this.imageModalCaption.textContent = "";
+      this.imageModalCaption.hidden = true;
+    }
     this.modalGalleryItems = [];
     this.modalGalleryIndex = 0;
     this.#updateModalNavigation();
@@ -910,6 +917,11 @@ class AtelierView {
     if (!item || !this.imageModalImg) return;
     this.imageModalImg.src = item.src;
     this.imageModalImg.alt = item.alt || "Aperçu";
+    if (this.imageModalCaption) {
+      const caption = String(item.caption || "").trim();
+      this.imageModalCaption.textContent = caption;
+      this.imageModalCaption.hidden = !caption;
+    }
     this.#setModalZoom(1);
     this.#updateModalNavigation();
   }

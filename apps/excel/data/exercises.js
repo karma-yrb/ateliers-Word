@@ -427,7 +427,7 @@ window.EXCEL_ATELIER_DATA = {
       "imageEnonceCaption": null,
       "imageResultatCaption": null,
       "description": "Prise en main Excel",
-      "preamble": "",
+      "preamble": "Par défaut, Excel vous propose 3 feuilles par classeur, l'exercice suivant vous les fait manipuler. Reproduisez les trois étapes dans votre tableur.",
       "instructions": [
         "Creez un nouveau classeur Excel et enregistrez-le avant de commencer.",
         "Construisez la structure principale du classeur a partir de cet objectif: Prise en main Excel.",
@@ -487,17 +487,18 @@ window.EXCEL_ATELIER_DATA = {
       "level": 1,
       "pageUrl": "https://www.clic-formation.net/interface-excel/exercice-2.html",
       "docxUrl": null,
-      "downloadUrl": "https://www.clic-formation.net/images/01-excel/excel-competence-13/ex-002/ex-002.xlsx",
-      "downloadLabel": "Télécharger le 2ᵉ fichier",
+      "downloadUrl": null,
+      "downloadLabel": "",
       "imageEnonce": null,
       "imageResultat": null,
       "imageEnonceCaption": "",
       "imageResultatCaption": "",
       "description": "Gérer les feuilles dans excel",
-      "preamble": "",
+      "preamble": "Par défaut, Excel vous propose 3 feuilles par classeur, l'exercice suivant vous les fait manipuler. Reproduisez les trois étapes dans votre tableur.",
       "instructions": [
-        "Par défaut, Excel vous propose 3 feuilles par classeur. L'exercice suivant vous les fait manipuler.",
-        "Reproduisez les trois étapes dans votre tableur."
+        "Renommez les feuilles comme dans l'exemple et ajoutez des couleurs si votre version d'Excel le permet. Pour ajouter une feuille, cliquez sur le petit +.",
+        "Déplacez le week-end en fin de ligne. Pour déplacer une feuille, placez la souris sur le nom de la feuille, cliquez, gardez le clic et glissez-déposez.",
+        "Supprimez les deux jours du week-end. Pour supprimer une feuille, placez la souris sur le nom de la feuille, faites un clic droit puis choisissez Supprimer."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -508,25 +509,33 @@ window.EXCEL_ATELIER_DATA = {
         "extraImages": [],
         "enonceImages": [],
         "resultImages": [
-          "https://www.clic-formation.net/images/01-excel/excel-competence-03/ex-001/competence-02-ex-011.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-03/ex-001/competence-02-ex-012.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-03/ex-001/competence-02-ex-013.jpg"
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-03/ex-001/competence-02-ex-011.jpg",
+            "caption": "Étape 1 : Renommer les feuilles comme dans l'exemple et ajouter des couleurs si possible."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-03/ex-001/competence-02-ex-012.jpg",
+            "caption": "Étape 2 : Déplacer le week-end en fin de ligne par glisser-déposer."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-03/ex-001/competence-02-ex-013.jpg",
+            "caption": "Étape 3 : Supprimer les deux jours du week-end avec clic droit puis Supprimer."
+          }
         ]
       },
       "section": "bases",
       "moduleSlug": "prise-en-main",
       "consignes": [
-        "Par défaut, Excel vous propose 3 feuilles par classeur. L'exercice suivant vous les fait manipuler.",
-        "Reproduisez les trois étapes dans votre tableur."
+        "Renommez les feuilles comme dans l'exemple et ajoutez des couleurs si votre version d'Excel le permet. Pour ajouter une feuille, cliquez sur le petit +.",
+        "Déplacez le week-end en fin de ligne. Pour déplacer une feuille, placez la souris sur le nom de la feuille, cliquez, gardez le clic et glissez-déposez.",
+        "Supprimez les deux jours du week-end. Pour supprimer une feuille, placez la souris sur le nom de la feuille, faites un clic droit puis choisissez Supprimer."
       ],
       "criteria": [],
       "originalConsignes": [
-        "Par défaut, Excel vous propose 3 feuilles par classeur. L'exercice suivant vous les fait manipuler.",
-        "Reproduisez les trois étapes dans votre tableur."
+        "Par défaut, Excel vous propose 3 feuilles par classeur, l'exercice suivant vous les fait manipuler.", "Reproduisez les trois étapes dans votre tableur."
       ],
       "originalInstructions": [
-        "Par défaut, Excel vous propose 3 feuilles par classeur. L'exercice suivant vous les fait manipuler.",
-        "Reproduisez les trois étapes dans votre tableur."
+        "Par défaut, Excel vous propose 3 feuilles par classeur, l'exercice suivant vous les fait manipuler.", "Reproduisez les trois étapes dans votre tableur."
       ],
       "paragraphMode": false
     },
@@ -548,10 +557,14 @@ window.EXCEL_ATELIER_DATA = {
       "imageEnonceCaption": null,
       "imageResultatCaption": null,
       "description": "Gérer l'affichage du classeur",
-      "preamble": "",
+      "preamble": "Cet exercice vous fera découvrir quelques réglages de l'onglet \"Affichage\".",
       "instructions": [
-        "T éléchargez ce fichier, il sera valable pour les exercices de cette série.",
-        "Cet exercice vous fera découvrir quelques réglages de l'onglet \"Affichage\"."
+        "Figer les colonnes et/ou les lignes : Présentez le fichier de façon à figer la ligne supérieure. Remarquez dans l'exemple le numéro des deux premières lignes.",
+        "Figer les colonnes et/ou les lignes : Même exercice que le précédent en figeant la première colonne.",
+        "Fractionner la page : Fractionnez la page de façon à avoir deux fois le même affichage comme ci-dessous.",
+        "Le zoom : Augmentez le zoom du fichier exemple à 180%.",
+        "Mode d'affichage : Affichez votre feuille en mode \"Saut de page\" et \"Mise en page\".",
+        "Mode d'affichage : Affichez votre feuille en mode \"Saut de page\" et \"Mise en page\"."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -562,27 +575,47 @@ window.EXCEL_ATELIER_DATA = {
         "extraImages": [],
         "enonceImages": [],
         "resultImages": [
-          "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-01/figer-ligne.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-02/figer-colonne.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-03/fractionner.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-04/zoom-180.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-05/mode-mise-en-page.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-05/mode-saut-de-page.jpg"
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-01/figer-ligne.jpg",
+            "caption": "Figer les colonnes et/ou les lignes : Présentez le fichier de façon à figer la ligne supérieure. Remarquez dans l'exemple le numéro des deux premières lignes."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-02/figer-colonne.jpg",
+            "caption": "Figer les colonnes et/ou les lignes : Même exercice que le précédent en figeant la première colonne."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-03/fractionner.jpg",
+            "caption": "Fractionner la page : Fractionnez la page de façon à avoir deux fois le même affichage comme ci-dessous."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-04/zoom-180.jpg",
+            "caption": "Le zoom : Augmentez le zoom du fichier exemple à 180%."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-05/mode-mise-en-page.jpg",
+            "caption": "Mode d'affichage : Affichez votre feuille en mode \"Saut de page\" et \"Mise en page\"."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-10/ex-05/mode-saut-de-page.jpg",
+            "caption": "Mode d'affichage : Affichez votre feuille en mode \"Saut de page\" et \"Mise en page\"."
+          }
         ]
       },
       "section": "bases",
       "moduleSlug": "prise-en-main",
       "consignes": [
-        "T éléchargez ce fichier, il sera valable pour les exercices de cette série.",
-        "Cet exercice vous fera découvrir quelques réglages de l'onglet \"Affichage\"."
+        "Figer les colonnes et/ou les lignes : Présentez le fichier de façon à figer la ligne supérieure. Remarquez dans l'exemple le numéro des deux premières lignes.",
+        "Figer les colonnes et/ou les lignes : Même exercice que le précédent en figeant la première colonne.",
+        "Fractionner la page : Fractionnez la page de façon à avoir deux fois le même affichage comme ci-dessous.",
+        "Le zoom : Augmentez le zoom du fichier exemple à 180%.",
+        "Mode d'affichage : Affichez votre feuille en mode \"Saut de page\" et \"Mise en page\".",
+        "Mode d'affichage : Affichez votre feuille en mode \"Saut de page\" et \"Mise en page\"."
       ],
       "criteria": [],
       "originalConsignes": [
-        "T éléchargez ce fichier, il sera valable pour les exercices de cette série.",
         "Cet exercice vous fera découvrir quelques réglages de l'onglet \"Affichage\"."
       ],
       "originalInstructions": [
-        "T éléchargez ce fichier, il sera valable pour les exercices de cette série.",
         "Cet exercice vous fera découvrir quelques réglages de l'onglet \"Affichage\"."
       ],
       "paragraphMode": false,
@@ -609,7 +642,6 @@ window.EXCEL_ATELIER_DATA = {
       "description": "Gérer l'affichage des feuilles",
       "preamble": "",
       "instructions": [
-        "V ous téléchargez le fichier de travail ici.",
         "Dans le groupe \"Afficher\" vous retirez le Quadrillage, la Barre de Formules et les En-têtes."
       ],
       "levelLabel": "Debutant",
@@ -627,16 +659,13 @@ window.EXCEL_ATELIER_DATA = {
       "section": "bases",
       "moduleSlug": "prise-en-main",
       "consignes": [
-        "V ous téléchargez le fichier de travail ici.",
         "Dans le groupe \"Afficher\" vous retirez le Quadrillage, la Barre de Formules et les En-têtes."
       ],
       "criteria": [],
       "originalConsignes": [
-        "V ous téléchargez le fichier de travail ici.",
         "Dans le groupe \"Afficher\" vous retirez le Quadrillage, la Barre de Formules et les En-têtes."
       ],
       "originalInstructions": [
-        "V ous téléchargez le fichier de travail ici.",
         "Dans le groupe \"Afficher\" vous retirez le Quadrillage, la Barre de Formules et les En-têtes."
       ],
       "paragraphMode": false
@@ -659,13 +688,14 @@ window.EXCEL_ATELIER_DATA = {
       "imageEnonceCaption": null,
       "imageResultatCaption": null,
       "description": "Saisir des données dans Excel",
-      "preamble": "",
+      "preamble": "6 séries d'exercices de saisie dans votre tableur.",
       "instructions": [
-        "Creez un nouveau classeur Excel et enregistrez-le avant de commencer.",
-        "Construisez la structure principale du classeur a partir de cet objectif: Saisir des données dans Excel.",
-        "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
-        "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
-        "Enregistrez votre travail puis marquez l'exercice comme termine."
+        "Saisissez cette série de préfectures en utilisant uniquement la touche Entrée pour changer de cellule, sans utiliser la souris.",
+        "Saisissez cette série de départements en utilisant uniquement la touche Tabulation pour changer de cellule, sans utiliser la souris.",
+        "Saisissez au moins une fois chaque signe qui vous sera utile dans Excel.",
+        "Saisissez cette liste puis supprimez un mois sur deux, soit un à un, soit d'un seul coup en faisant une sélection multiple avec Ctrl + clic sur les numéros de lignes. Pour cette manipulation, la touche Suppr du clavier sera inopérante.",
+        "Incrémentez la liste des jours de la semaine.",
+        "Supprimez mardi et jeudi en une seule action."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -676,22 +706,41 @@ window.EXCEL_ATELIER_DATA = {
         "extraImages": [],
         "enonceImages": [],
         "resultImages": [
-          "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/ex-002-02.gif",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/ex-002-01.gif",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/serie-3-signes.gif",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/ex-002-resultat.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/003-initiale.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/003-resultat.jpg"
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/ex-002-02.gif",
+            "caption": "Série 1 : Saisissez cette série de préfectures en utilisant uniquement la touche Entrée pour changer de cellule, sans utiliser la souris."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/ex-002-01.gif",
+            "caption": "Série 2 : Saisissez cette série de départements en utilisant uniquement la touche Tabulation pour changer de cellule, sans utiliser la souris."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/serie-3-signes.gif",
+            "caption": "Série 3 : Saisissez au moins une fois chaque signe qui vous sera utile dans Excel."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/ex-002-resultat.jpg",
+            "caption": "Série 4 : Saisissez cette liste puis supprimez un mois sur deux, soit un à un, soit d'un seul coup en faisant une sélection multiple avec Ctrl + clic sur les numéros de lignes. Pour cette manipulation, la touche Suppr du clavier sera inopérante."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/003-initiale.jpg",
+            "caption": "Série 5 : Incrémentez la liste des jours de la semaine."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-02/ex-002/003-resultat.jpg",
+            "caption": "Série 5 : Supprimez mardi et jeudi en une seule action."
+          }
         ]
       },
       "section": "bases",
       "moduleSlug": "saisir-des-donnees",
       "consignes": [
-        "Creez un nouveau classeur Excel et enregistrez-le avant de commencer.",
-        "Construisez la structure principale du classeur a partir de cet objectif: Saisir des données dans Excel.",
-        "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
-        "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
-        "Enregistrez votre travail puis marquez l'exercice comme termine."
+        "Série 1 : Saisissez cette série de préfectures en utilisant uniquement la touche Entrée pour changer de cellule, sans utiliser la souris.",
+        "Série 2 : Saisissez cette série de départements en utilisant uniquement la touche Tabulation pour changer de cellule, sans utiliser la souris.",
+        "Série 3 : Saisissez au moins une fois chaque signe qui vous sera utile dans Excel.",
+        "Série 4 : Saisissez cette liste puis supprimez un mois sur deux, soit un à un, soit d'un seul coup en faisant une sélection multiple avec Ctrl + clic sur les numéros de lignes. Pour cette manipulation, la touche Suppr du clavier sera inopérante.",
+        "Série 5 : Incrémentez la liste des jours de la semaine.",
+        "Série 5 : Supprimez mardi et jeudi en une seule action."
       ],
       "criteria": [],
       "originalConsignes": [

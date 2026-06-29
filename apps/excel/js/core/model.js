@@ -35,6 +35,11 @@ function uniqueImageObjects(items) {
   return out;
 }
 
+function normalizeImageList(items) {
+  if (!Array.isArray(items)) return [];
+  return uniqueImageObjects(items);
+}
+
 function cleanText(value) {
   return String(value || "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
@@ -118,8 +123,8 @@ class AtelierModel {
         imageResultat: ex.imageResultat || null,
         imageEnonceCaption: cleanText(ex.imageEnonceCaption || ""),
         imageResultatCaption: cleanText(ex.imageResultatCaption || ""),
-        scrapeEnonceImages: uniqueStrings(ex.scrape && ex.scrape.enonceImages),
-        scrapeResultImages: uniqueStrings(ex.scrape && ex.scrape.resultImages),
+        scrapeEnonceImages: normalizeImageList(ex.scrape && ex.scrape.enonceImages),
+        scrapeResultImages: normalizeImageList(ex.scrape && ex.scrape.resultImages),
         criteria: Array.isArray(ex.criteria) ? ex.criteria.map((s) => cleanStepText(s)).filter(Boolean) : [],
         extraImages: uniqueStrings(
           Array.isArray(ex.extraImages)
@@ -436,8 +441,8 @@ class AtelierModel {
   getVisualsForExercise(exercise) {
     if (!exercise) return { enonceImages: [], resultImages: [], extraImages: [] };
 
-    const scrapeEnonceImages = uniqueStrings(exercise.scrapeEnonceImages);
-    const scrapeResultImages = uniqueStrings(exercise.scrapeResultImages);
+    const scrapeEnonceImages = uniqueImageObjects(exercise.scrapeEnonceImages);
+    const scrapeResultImages = uniqueImageObjects(exercise.scrapeResultImages);
     let fallbackEnonceImages = [];
     let fallbackResultImages = [];
 
@@ -458,8 +463,20 @@ class AtelierModel {
     const hasScrapeVisuals = scrapeEnonceImages.length > 0 || scrapeResultImages.length > 0;
     const enonceImagesRaw = hasScrapeVisuals ? (scrapeEnonceImages.length ? scrapeEnonceImages : fallbackEnonceImages) : fallbackEnonceImages;
     const resultImagesRaw = hasScrapeVisuals ? (scrapeResultImages.length ? scrapeResultImages : fallbackResultImages) : fallbackResultImages;
-    const enonceImages = uniqueImageObjects(enonceImagesRaw.map((src) => ({ src, caption: exercise.imageEnonceCaption || "" })));
-    const resultImages = uniqueImageObjects(resultImagesRaw.map((src) => ({ src, caption: exercise.imageResultatCaption || "" })));
+    const enonceImages = uniqueImageObjects(
+      enonceImagesRaw.map((item) => (
+        typeof item === "string"
+          ? { src: item, caption: exercise.imageEnonceCaption || "" }
+          : { src: item.src, caption: item.caption || exercise.imageEnonceCaption || "" }
+      )),
+    );
+    const resultImages = uniqueImageObjects(
+      resultImagesRaw.map((item) => (
+        typeof item === "string"
+          ? { src: item, caption: exercise.imageResultatCaption || "" }
+          : { src: item.src, caption: item.caption || exercise.imageResultatCaption || "" }
+      )),
+    );
 
     const used = new Set([...enonceImages, ...resultImages].map((image) => image.src));
     const extraImages = uniqueStrings(exercise.extraImages).filter((url) => !used.has(url));

@@ -259,6 +259,70 @@ function extractInstructions(enonceHtml) {
   return [...new Set(paragraphSteps)];
 }
 
+function buildImageAwareExerciseContent(enonceHtml) {
+  const blocks = [];
+  const blockRegex = /<(h3|h4|p|img)\b[^>]*>([\s\S]*?)<\/\1>|<img\b[^>]*>/gi;
+  let match;
+  while ((match = blockRegex.exec(enonceHtml)) !== null) {
+    const full = match[0];
+    const tag = (match[1] || "img").toLowerCase();
+    blocks.push({ tag, html: full });
+  }
+
+  const preambleParts = [];
+  const instructions = [];
+  const resultImageCaptions = [];
+  let currentHeading = "";
+  let currentParagraphs = [];
+  let sawInstructionHeading = false;
+
+  const flushStepForImage = () => {
+    const text = normalizeSpace(currentParagraphs.join(" "));
+    if (!text) return;
+    const step = currentHeading ? `${currentHeading} : ${text}` : text;
+    instructions.push(step);
+    resultImageCaptions.push(step);
+    currentParagraphs = [];
+  };
+
+  for (const block of blocks) {
+    if (block.tag === "h3" || block.tag === "h4") {
+      const heading = cleanInstructionLine(htmlToText(block.html).replace(/\s*:+\s*$/, ""));
+      if (!heading || /^r[ée]sultat attendu\b/i.test(heading)) continue;
+      currentHeading = heading;
+      sawInstructionHeading = true;
+      currentParagraphs = [];
+      continue;
+    }
+
+    if (block.tag === "p") {
+      const text = cleanInstructionLine(htmlToText(block.html));
+      if (!text) continue;
+      if (/^t\s*[ée]l[ée]chargez ce fichier\b/i.test(text)) continue;
+      if (/^v\s*ous t[ée]l[ée]chargez le fichier de travail ici\b/i.test(text)) continue;
+      if (/^clics\s*:/i.test(text)) continue;
+      if (/^niveau de difficult[ée]/i.test(text)) continue;
+
+      if (!sawInstructionHeading) {
+        preambleParts.push(text);
+      } else {
+        currentParagraphs.push(text);
+      }
+      continue;
+    }
+
+    if (block.tag === "img" && sawInstructionHeading) {
+      flushStepForImage();
+    }
+  }
+
+  return {
+    preamble: normalizeSpace(preambleParts.join(" ")),
+    instructions: [...new Set(instructions.filter(Boolean))],
+    resultImageCaptions,
+  };
+}
+
 function findDocxUrl(html) {
   const matches = [...html.matchAll(/https?:\/\/[^"' >]+\.(?:xlsx|xls|xlsm|zip|docx)/gi)].map((m) => m[0]);
   if (!matches.length) return null;
@@ -536,7 +600,10 @@ async function scrapeOne(exercise) {
     explicitEnonceImage = explicitResultImage;
   }
 
-  const instructions = extractInstructions(enonceSection.html);
+  const imageAwareContent = buildImageAwareExerciseContent(enonceSection.html);
+  const instructions = imageAwareContent.instructions.length
+    ? imageAwareContent.instructions
+    : extractInstructions(enonceSection.html);
   const description = (() => {
     const text = htmlToText(enonceSection.html);
     const firstLine = text.split("\n").find((line) => line.length > 4);
@@ -555,12 +622,16 @@ async function scrapeOne(exercise) {
     level,
     levelLabel: level ? LEVEL_MAP[level] : null,
     docxUrl,
+    preamble: imageAwareContent.preamble || "",
     instructions,
     description,
     imageEnonce: explicitEnonceImage ? explicitEnonceImage.src : null,
     imageResultat: explicitResultImage ? explicitResultImage.src : null,
     enonceImages: enonceImages.map((img) => img.src),
-    resultImages: resultImages.map((img) => img.src),
+    resultImages: resultImages.map((img, index) => ({
+      src: img.src,
+      caption: imageAwareContent.resultImageCaptions[index] || "",
+    })),
     extraImages: enonceImages
       .map((img) => img.src)
       .filter((src) => src !== (explicitEnonceImage && explicitEnonceImage.src)),
@@ -647,6 +718,7 @@ async function main() {
       level: ex.level || scraped.level || 0,
       levelLabel: ex.levelLabel || scraped.levelLabel || null,
       docxUrl: scraped.docxUrl || ex.docxUrl || null,
+      preamble: scraped.preamble || ex.preamble || "",
       imageEnonce: scraped.imageEnonce || ex.imageEnonce || null,
       imageResultat: scraped.imageResultat || ex.imageResultat || null,
       description: ex.description || scraped.description || null,
