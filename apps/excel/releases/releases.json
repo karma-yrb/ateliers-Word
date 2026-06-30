@@ -1,7 +1,44 @@
 {
-  "version": "0.1.14",
-  "updatedAt": "2026-06-29T15:04:51.422Z",
+  "version": "0.1.15",
+  "updatedAt": "2026-06-30T07:57:58.733Z",
   "releases": [
+    {
+      "version": "0.1.15",
+      "tag": "excel-v0.1.15",
+      "date": "2026-06-30",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "67e6193"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 1,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 1
+      }
+    },
     {
       "version": "0.1.14",
       "tag": "excel-v0.1.14",

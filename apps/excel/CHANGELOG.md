@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.14...excel-v0.1.15) (2026-06-30)
+
 ### [0.1.14](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.13...excel-v0.1.14) (2026-06-29)
 
 ### [0.1.13](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.12...excel-v0.1.13) (2026-06-29)
