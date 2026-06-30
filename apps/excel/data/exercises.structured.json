@@ -1467,7 +1467,7 @@
       "imageEnonceCaption": "",
       "imageResultatCaption": "",
       "description": "Histoire de bordure et de couleur de fond",
-      "preamble": "",
+      "preamble": "Modifiez le fichier téléchargé afin d'obtenir la même mise en forme que le modèle plus bas.",
       "instructions": [
         "Pensez à insérer une ligne au-dessus du modèle.",
         "La bordure interne des cellules n'est pas de la même épaisseur que le cadre.",
