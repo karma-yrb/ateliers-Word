@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.16](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.15...excel-v0.1.16) (2026-06-30)
+
+
+### Bug Fixes
+
+* **excel:** align exercise instruction text ([630c8f2](https://github.com/karma-yrb/ateliers-Bureautique/commit/630c8f2d07fdffce1a7e46674da3ac20e9364e04))
+* **excel:** restore original instructions for ex-016 ([b56c8f1](https://github.com/karma-yrb/ateliers-Bureautique/commit/b56c8f177bc22554ea6d1e1a6ca957309178206b))
+
 ### [0.1.15](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.14...excel-v0.1.15) (2026-06-30)
 
 ### [0.1.14](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.13...excel-v0.1.14) (2026-06-29)
