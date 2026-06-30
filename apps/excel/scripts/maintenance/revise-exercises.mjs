@@ -143,7 +143,7 @@ function buildStandardInstructions(exercise) {
   const objective = clampText(exercise.description || exercise.title || "l'exemple fourni", 90);
 
   const openStep = exercise.docxUrl
-    ? "Telechargez le fichier de travail puis ouvrez-le dans Excel."
+    ? ""
     : "Creez un nouveau classeur Excel et enregistrez-le avant de commencer.";
 
   const compareStep = exercise.imageResultat

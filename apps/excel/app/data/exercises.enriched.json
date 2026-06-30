@@ -378,13 +378,14 @@
       "downloadUrl": null,
       "downloadLabel": "",
       "imageEnonce": "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-001/ex-001.jpg",
-      "imageResultat": "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-002/ex-002.jpg",
+      "imageResultat": "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-001/ex-001.jpg",
       "imageEnonceCaption": "",
       "imageResultatCaption": "",
       "description": "Prise en main Excel",
-      "preamble": "",
+      "preamble": "La prise en main du logiciel concerne en premier lieu l'enregistrement de votre travail.",
       "instructions": [
-        "Pour ce premier exercice, vous enregistrez deux classeurs sur le bureau de votre ordinateur, le premier fichier s'appellera \" statistiques .xlsx\", le second \" chiffres .xlsx\". Ils peuvent être vides."
+        "Pour ce premier exercice, enregistrez deux classeurs sur le bureau de votre ordinateur : le premier fichier s'appellera \"statistiques.xlsx\", le second \"chiffres.xlsx\". Ils peuvent etre vides.",
+        "Ensuite, creez un dossier \"societe-aleou\" toujours sur le bureau de l'ordinateur. Dans ce dossier, creez 2 dossiers : \"statistiques\" et \"chiffres\". Glissez les fichiers de l'exercice precedent dans le bon dossier."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -395,7 +396,7 @@
         "extraImages": [],
         "enonceImages": [],
         "resultImages": [
-          "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-002/ex-002.jpg"
+          "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-001/ex-001.jpg"
         ]
       }
     },
@@ -485,10 +486,9 @@
       "imageEnonceCaption": "",
       "imageResultatCaption": "",
       "description": "Gérer l'affichage des feuilles",
-      "preamble": "",
+      "preamble": "Énoncé de l'exercice :",
       "instructions": [
-        "V ous téléchargez le fichier de travail ici",
-        "Dans le groupe \"Afficher\" vous retirez le Quadrillage, la Barre de Formules et les En-têtes"
+        "Dans le groupe \"Afficher\" vous retirez le Quadrillage, la Barre de Formules et les En-têtes."
       ],
       "levelLabel": "Debutant",
       "scrape": {

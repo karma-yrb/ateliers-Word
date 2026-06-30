@@ -581,7 +581,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Gérer l'affichage des feuilles.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -591,7 +590,6 @@
       "moduleSlug": "prise-en-main",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Gérer l'affichage des feuilles.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -683,7 +681,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Saisir des données dans Excel, construction d'un tabeau simple.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -693,7 +690,6 @@
       "moduleSlug": "saisir-des-donnees",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Saisir des données dans Excel, construction d'un tabeau simple.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -944,7 +940,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Sélection, suppression etinsertion de celulles dans excel.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -954,14 +949,12 @@
       "moduleSlug": "selection",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Sélection, suppression etinsertion de celulles dans excel.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Sélection, suppression etinsertion de celulles dans excel.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -1116,7 +1109,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Format automatique.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -1126,14 +1118,12 @@
       "moduleSlug": "mise-en-forme",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Format automatique.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Format automatique.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -1559,7 +1549,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Intégrer des illustrations via SMART-ART.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -1569,14 +1558,12 @@
       "moduleSlug": "integrer-une-image",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Intégrer des illustrations via SMART-ART.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Intégrer des illustrations via SMART-ART.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Verifiez votre rendu avec l'image fournie puis corrigez les differences.",
@@ -1679,7 +1666,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Outils de mise en forme d'image.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -1689,14 +1675,12 @@
       "moduleSlug": "integrer-une-image",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Outils de mise en forme d'image.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Outils de mise en forme d'image.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -2195,7 +2179,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Addition.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -2205,14 +2188,12 @@
       "moduleSlug": "faire-une-addition",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Addition.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Addition.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -2659,7 +2640,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Soustraction.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -2669,14 +2649,12 @@
       "moduleSlug": "faire-une-soustraction",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Soustraction.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Soustraction.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -3771,7 +3749,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Pourcentage.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -3781,14 +3758,12 @@
       "moduleSlug": "calculer-des-pourcentages",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Pourcentage.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Pourcentage.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -3921,7 +3896,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Pourcentage.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -3931,14 +3905,12 @@
       "moduleSlug": "calculer-des-pourcentages",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Pourcentage.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Pourcentage.",
         "Saisissez la formule adaptee puis recopiez-la correctement en controlant references et resultat calcule.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -4262,7 +4234,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Graphique Excel.",
         "Inserez ou ajustez le graphique puis harmonisez titres, series, axes et mise en forme.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -4272,14 +4243,12 @@
       "moduleSlug": "graphiques",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Graphique Excel.",
         "Inserez ou ajustez le graphique puis harmonisez titres, series, axes et mise en forme.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Graphique Excel.",
         "Inserez ou ajustez le graphique puis harmonisez titres, series, axes et mise en forme.",
         "Verifiez votre rendu avec l'image fournie puis corrigez les differences.",
@@ -5180,7 +5149,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Exercice pour manipuler le format personnalisé: \"jjjj\"..",
         "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -5190,14 +5158,12 @@
       "moduleSlug": "format-de-cellule",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Exercice pour manipuler le format personnalisé: \"jjjj\"..",
         "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Exercice pour manipuler le format personnalisé: \"jjjj\"..",
         "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -5226,7 +5192,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Format de cellule à insérer.",
         "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -5236,14 +5201,12 @@
       "moduleSlug": "format-de-cellule",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Format de cellule à insérer.",
         "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Format de cellule à insérer.",
         "Ajustez le format des cellules puis verifiez nombres, dates, alignements et affichages attendus.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -5438,7 +5401,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Exercice simple: comment mettre en place une valeur absolue dans une colonne - Série 1.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -5448,14 +5410,12 @@
       "moduleSlug": "reference-absolue",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Exercice simple: comment mettre en place une valeur absolue dans une colonne - Série 1.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Exercice simple: comment mettre en place une valeur absolue dans une colonne - Série 1.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -7264,7 +7224,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Lier des feuilles de calculs.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -7274,14 +7233,12 @@
       "moduleSlug": "lier-des-feuilles",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Lier des feuilles de calculs.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Lier des feuilles de calculs.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -7347,7 +7304,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Lier des feuilles de calculs & appareil photo.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -7357,14 +7313,12 @@
       "moduleSlug": "lier-des-feuilles",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Lier des feuilles de calculs & appareil photo.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Lier des feuilles de calculs & appareil photo.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12153,7 +12107,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Fiche Clients garage.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12163,14 +12116,12 @@
       "moduleSlug": "cas-fiche-clients-garage",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Fiche Clients garage.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Fiche Clients garage.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12199,7 +12150,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Formulaire de saisie.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -12209,14 +12159,12 @@
       "moduleSlug": "cas-formulaire-de-saisie",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Formulaire de saisie.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Formulaire de saisie.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Verifiez votre rendu avec l'image fournie puis corrigez les differences.",
@@ -12322,7 +12270,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Calendrier perpétuel (ou presque).",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -12332,14 +12279,12 @@
       "moduleSlug": "cas-calendrier-perpetuel",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Calendrier perpétuel (ou presque).",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Calendrier perpétuel (ou presque).",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12504,7 +12449,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas diagramme de GANTT Simple.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -12514,14 +12458,12 @@
       "moduleSlug": "cas-gantt-simple",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas diagramme de GANTT Simple.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas diagramme de GANTT Simple.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12615,7 +12557,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas SUD informatique.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12625,14 +12566,12 @@
       "moduleSlug": "cas-sud-informatique",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas SUD informatique.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas SUD informatique.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
@@ -12720,7 +12659,6 @@
       "preamble": "",
       "instructions": [],
       "consignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Course Haut Caroux.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
@@ -12730,14 +12668,12 @@
       "moduleSlug": "cas-course-haut-caroux",
       "criteria": [],
       "originalConsignes": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Course Haut Caroux.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Relisez le classeur et verifiez la coherence des donnees, calculs et formats avant validation.",
         "Enregistrez votre travail puis marquez l'exercice comme termine."
       ],
       "originalInstructions": [
-        "Telechargez le fichier de travail puis ouvrez-le dans Excel.",
         "Construisez la structure principale du classeur a partir de cet objectif: Cas Course Haut Caroux.",
         "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
         "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
