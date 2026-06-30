@@ -886,10 +886,12 @@
       "description": "Format et embelissement",
       "preamble": "",
       "instructions": [
+        "Tableau ci-dessous à réaliser sous Excel, cet exercice vous fera travailler les bordures, les fonds de cellules.",
         "Bordures intérieures pointillées",
         "Bordures extérieures pleines",
         "Fond de cellules en couleur dégradé",
-        "Les cellules \"ballotage\" sont en couleur et hachurée."
+        "Les cellules \"ballotage\" sont en couleur et hachurée.",
+        "Pour réaliser les fonds dégradés et les hachures, il vous faut accéder aux paramètres des polices (CTRL+MAJ+F) ou le lien en bas à droite du groupe \"police\"."
       ],
       "levelLabel": "Debutant",
       "scrape": {

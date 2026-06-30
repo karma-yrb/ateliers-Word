@@ -1068,10 +1068,7 @@ window.EXCEL_ATELIER_DATA = {
       "preamble": "",
       "instructions": [
         "Reproduire cette mise en forme en un minimum de clic.",
-        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes.",
-        "d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme.",
-        "Les raccourcis clavier CTRL+C et CTRL+V peuvent.",
-        "vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
+        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes, d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme. Les raccourcis clavier CTRL+C et CTRL+V peuvent, vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -1089,25 +1086,16 @@ window.EXCEL_ATELIER_DATA = {
       "moduleSlug": "selection",
       "consignes": [
         "Reproduire cette mise en forme en un minimum de clic.",
-        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes.",
-        "d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme.",
-        "Les raccourcis clavier CTRL+C et CTRL+V peuvent.",
-        "vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
+        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes, d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme. Les raccourcis clavier CTRL+C et CTRL+V peuvent, vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
       ],
       "criteria": [],
       "originalConsignes": [
         "Reproduire cette mise en forme en un minimum de clic.",
-        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes.",
-        "d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme.",
-        "Les raccourcis clavier CTRL+C et CTRL+V peuvent.",
-        "vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
+        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes, d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme. Les raccourcis clavier CTRL+C et CTRL+V peuvent, vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
       ],
       "originalInstructions": [
         "Reproduire cette mise en forme en un minimum de clic.",
-        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes.",
-        "d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme.",
-        "Les raccourcis clavier CTRL+C et CTRL+V peuvent.",
-        "vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
+        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes, d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme. Les raccourcis clavier CTRL+C et CTRL+V peuvent, vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
       ],
       "paragraphMode": false
     },
@@ -1307,10 +1295,12 @@ window.EXCEL_ATELIER_DATA = {
       "description": "Format et embelissement",
       "preamble": "",
       "instructions": [
+        "Tableau ci-dessous à réaliser sous Excel, cet exercice vous fera travailler les bordures, les fonds de cellules.",
         "Bordures intérieures pointillées.",
         "Bordures extérieures pleines.",
         "Fond de cellules en couleur dégradé.",
-        "Les cellules \"ballotage\" sont en couleur et hachurée."
+        "Les cellules \"ballotage\" sont en couleur et hachurée.",
+        "Pour réaliser les fonds dégradés et les hachures, il vous faut accéder aux paramètres des polices (CTRL+MAJ+F) ou le lien en bas à droite du groupe \"police\"."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -1327,23 +1317,29 @@ window.EXCEL_ATELIER_DATA = {
       "section": "bases",
       "moduleSlug": "mise-en-forme",
       "consignes": [
+        "Tableau ci-dessous à réaliser sous Excel, cet exercice vous fera travailler les bordures, les fonds de cellules.",
         "Bordures intérieures pointillées.",
         "Bordures extérieures pleines.",
         "Fond de cellules en couleur dégradé.",
-        "Les cellules \"ballotage\" sont en couleur et hachurée."
+        "Les cellules \"ballotage\" sont en couleur et hachurée.",
+        "Pour réaliser les fonds dégradés et les hachures, il vous faut accéder aux paramètres des polices (CTRL+MAJ+F) ou le lien en bas à droite du groupe \"police\"."
       ],
       "criteria": [],
       "originalConsignes": [
+        "Tableau ci-dessous à réaliser sous Excel, cet exercice vous fera travailler les bordures, les fonds de cellules.",
         "Bordures intérieures pointillées.",
         "Bordures extérieures pleines.",
         "Fond de cellules en couleur dégradé.",
-        "Les cellules \"ballotage\" sont en couleur et hachurée."
+        "Les cellules \"ballotage\" sont en couleur et hachurée.",
+        "Pour réaliser les fonds dégradés et les hachures, il vous faut accéder aux paramètres des polices (CTRL+MAJ+F) ou le lien en bas à droite du groupe \"police\"."
       ],
       "originalInstructions": [
+        "Tableau ci-dessous à réaliser sous Excel, cet exercice vous fera travailler les bordures, les fonds de cellules.",
         "Bordures intérieures pointillées.",
         "Bordures extérieures pleines.",
         "Fond de cellules en couleur dégradé.",
-        "Les cellules \"ballotage\" sont en couleur et hachurée."
+        "Les cellules \"ballotage\" sont en couleur et hachurée.",
+        "Pour réaliser les fonds dégradés et les hachures, il vous faut accéder aux paramètres des polices (CTRL+MAJ+F) ou le lien en bas à droite du groupe \"police\"."
       ],
       "paragraphMode": false
     },
