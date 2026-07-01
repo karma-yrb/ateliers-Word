@@ -422,10 +422,10 @@ window.EXCEL_ATELIER_DATA = {
       "docxUrl": null,
       "downloadUrl": null,
       "downloadLabel": null,
-      "imageEnonce": null,
-      "imageResultat": null,
-      "imageEnonceCaption": null,
-      "imageResultatCaption": null,
+      "imageEnonce": "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/feuille-1-arriere-plan.webp",
+      "imageResultat": "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/resultat-01.jpg",
+      "imageEnonceCaption": "Énoncé",
+      "imageResultatCaption": "Résultat attendu",
       "description": "Prise en main Excel",
       "preamble": "La prise en main du logiciel concerne en premier lieu l'enregistrement de votre travail.",
       "instructions": [
@@ -1881,7 +1881,12 @@ window.EXCEL_ATELIER_DATA = {
       "preamble": "",
       "instructions": [
         "Vous téléchargez le fichier et les visuels ci-contre.",
-        "Consignes :."
+        "Feuille 1. Vous ajoutez le filigrane ou l'arrière-plan \"Rio 2016\".",
+        "Feuille 2. Vous insérez un en-tête sur la feuille.",
+        "Feuille 3. Vous appliquez un effet semblable au résultat ci-dessous sur les anneaux olympiques que vous aurez pris soin d'insérer.",
+        "Feuille 4. Vous réalisez un smart-art semblable au résultat.",
+        "JO d'Été : 2004, 2008, 2012, 2016, 2020 Tokyo.",
+        "JO d'hiver : 2006, 2010, 2014, 2016, 2018 Pyongyang."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -1890,27 +1895,49 @@ window.EXCEL_ATELIER_DATA = {
         "prevUrl": null,
         "nextUrl": null,
         "extraImages": [],
-        "enonceImages": [],
-        "resultImages": [
+        "enonceImages": [
           "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/feuille-1-arriere-plan.webp",
           "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/feuille-2-entete-1.webp",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/feuille-2-entete-3.webp"
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/feuille-2-entete-3.webp",
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/feuille-3-insertion-image.webp",
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/smart-art.webp"
+        ],
+        "resultImages": [
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/resultat-01.jpg",
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/resultat-02.jpg",
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/resultat-03.jpg",
+          "https://www.clic-formation.net/images/01-excel/excel-competence-08/ex-002/resultat-04.jpg"
         ]
       },
       "section": "bases",
       "moduleSlug": "integrer-une-image",
       "consignes": [
         "Vous téléchargez le fichier et les visuels ci-contre.",
-        "Consignes :."
+        "Feuille 1. Vous ajoutez le filigrane ou l'arrière-plan \"Rio 2016\".",
+        "Feuille 2. Vous insérez un en-tête sur la feuille.",
+        "Feuille 3. Vous appliquez un effet semblable au résultat ci-dessous sur les anneaux olympiques que vous aurez pris soin d'insérer.",
+        "Feuille 4. Vous réalisez un smart-art semblable au résultat.",
+        "JO d'Été : 2004, 2008, 2012, 2016, 2020 Tokyo.",
+        "JO d'hiver : 2006, 2010, 2014, 2016, 2018 Pyongyang."
       ],
       "criteria": [],
       "originalConsignes": [
         "Vous téléchargez le fichier et les visuels ci-contre.",
-        "Consignes :."
+        "Feuille 1. Vous ajoutez le filigrane ou l'arrière-plan \"Rio 2016\".",
+        "Feuille 2. Vous insérez un en-tête sur la feuille.",
+        "Feuille 3. Vous appliquez un effet semblable au résultat ci-dessous sur les anneaux olympiques que vous aurez pris soin d'insérer.",
+        "Feuille 4. Vous réalisez un smart-art semblable au résultat.",
+        "JO d'Été : 2004, 2008, 2012, 2016, 2020 Tokyo.",
+        "JO d'hiver : 2006, 2010, 2014, 2016, 2018 Pyongyang."
       ],
       "originalInstructions": [
         "Vous téléchargez le fichier et les visuels ci-contre.",
-        "Consignes :."
+        "Feuille 1. Vous ajoutez le filigrane ou l'arrière-plan \"Rio 2016\".",
+        "Feuille 2. Vous insérez un en-tête sur la feuille.",
+        "Feuille 3. Vous appliquez un effet semblable au résultat ci-dessous sur les anneaux olympiques que vous aurez pris soin d'insérer.",
+        "Feuille 4. Vous réalisez un smart-art semblable au résultat.",
+        "JO d'Été : 2004, 2008, 2012, 2016, 2020 Tokyo.",
+        "JO d'hiver : 2006, 2010, 2014, 2016, 2018 Pyongyang."
       ],
       "paragraphMode": false,
       "extraDownloadUrls": [],
