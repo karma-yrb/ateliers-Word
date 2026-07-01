@@ -251,7 +251,7 @@ function createModel() {
       return { preamble: "", steps: ["Etape 1"] };
     },
     getVisualsForExercise() {
-      return { enonceImages: [], resultImages: [], extraImages: [] };
+      return { enonceImages: [], resultImages: [], extraImages: [], tabs: [] };
     },
     getNeighbors() {
       return { prevId: "", nextId: "" };
@@ -846,7 +846,7 @@ test("controller renders the shared exercise view model", async () => {
   });
 
   harness.model.getExerciseStepsView = () => ({ preamble: "Avant de commencer", steps: ["Etape 1", "Etape 2"] });
-  harness.model.getVisualsForExercise = () => ({ enonceImages: ["a.png"], resultImages: ["b.png"], extraImages: [] });
+  harness.model.getVisualsForExercise = () => ({ enonceImages: ["a.png"], resultImages: ["b.png"], extraImages: [], tabs: [] });
   harness.model.getNeighbors = () => ({ prevId: "ex-000", nextId: "ex-002" });
   harness.model.getIsDone = (id) => id === "ex-001";
   harness.storage.supportsWorkFilePicker = () => true;
@@ -866,7 +866,7 @@ test("controller renders the shared exercise view model", async () => {
     },
     done: true,
     steps: ["Etape 1", "Etape 2"],
-    visuals: { enonceImages: ["a.png"], resultImages: ["b.png"], extraImages: [] },
+    visuals: { enonceImages: ["a.png"], resultImages: ["b.png"], extraImages: [], tabs: [] },
     prevId: "ex-000",
     nextId: "ex-002",
     workFile: { pickerSupported: true },

@@ -40,6 +40,28 @@ function normalizeImageList(items) {
   return uniqueImageObjects(items);
 }
 
+function normalizeExerciseTabs(items) {
+  if (!Array.isArray(items)) return [];
+  return items
+    .map((item, index) => {
+      const title = cleanText(item && item.title || `Exercice ${index + 1}`);
+      const instructions = Array.isArray(item && item.instructions)
+        ? item.instructions.map((step) => cleanStepText(step)).filter(Boolean)
+        : [];
+      const resultImages = normalizeImageList(item && item.resultImages);
+      const enonceImages = normalizeImageList(item && item.enonceImages);
+      if (!title || (!instructions.length && !resultImages.length && !enonceImages.length)) return null;
+      return {
+        id: String(item && item.id || `tab-${index + 1}`).trim() || `tab-${index + 1}`,
+        title,
+        instructions,
+        resultImages,
+        enonceImages,
+      };
+    })
+    .filter(Boolean);
+}
+
 function cleanText(value) {
   return String(value || "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
@@ -125,6 +147,7 @@ class AtelierModel {
         imageResultatCaption: cleanText(ex.imageResultatCaption || ""),
         scrapeEnonceImages: normalizeImageList(ex.scrape && ex.scrape.enonceImages),
         scrapeResultImages: normalizeImageList(ex.scrape && ex.scrape.resultImages),
+        exerciseTabs: normalizeExerciseTabs(ex.exerciseTabs),
         criteria: Array.isArray(ex.criteria) ? ex.criteria.map((s) => cleanStepText(s)).filter(Boolean) : [],
         extraImages: uniqueStrings(
           Array.isArray(ex.extraImages)
@@ -439,7 +462,7 @@ class AtelierModel {
   }
 
   getVisualsForExercise(exercise) {
-    if (!exercise) return { enonceImages: [], resultImages: [], extraImages: [] };
+    if (!exercise) return { enonceImages: [], resultImages: [], extraImages: [], tabs: [] };
 
     const scrapeEnonceImages = uniqueImageObjects(exercise.scrapeEnonceImages);
     const scrapeResultImages = uniqueImageObjects(exercise.scrapeResultImages);
@@ -482,7 +505,14 @@ class AtelierModel {
 
     const used = new Set([...dedupedEnonceImages, ...resultImages].map((image) => image.src));
     const extraImages = uniqueStrings(exercise.extraImages).filter((url) => !used.has(url));
-    return { enonceImages: dedupedEnonceImages, resultImages, extraImages };
+    const tabs = Array.isArray(exercise.exerciseTabs)
+      ? exercise.exerciseTabs.map((tab) => ({
+        ...tab,
+        enonceImages: uniqueImageObjects(tab.enonceImages || []),
+        resultImages: uniqueImageObjects(tab.resultImages || []),
+      }))
+      : [];
+    return { enonceImages: dedupedEnonceImages, resultImages, extraImages, tabs };
   }
 
   markExerciseDone(exerciseId, done) {

@@ -49,6 +49,22 @@ function createDataset() {
         title: "Créer un Smart Art",
         instructions: ["Etape 1", "Etape 2", "Etape 3"],
       },
+      {
+        id: "ex-004",
+        globalIndex: 4,
+        moduleId: "m2",
+        moduleNameClean: "Smart Art",
+        num: 2,
+        title: "Tabs",
+        exerciseTabs: [
+          {
+            id: "tab-1",
+            title: "Exercice 1",
+            instructions: ["Consigne A", "Consigne B"],
+            resultImages: ["https://img/tab-1.jpg"],
+          },
+        ],
+      },
     ],
   };
 }
@@ -97,6 +113,21 @@ test("single image is treated as expected result when result image is missing", 
   const visuals = model.getVisualsForExercise(exercise);
   assert.deepEqual(Array.from(visuals.enonceImages), []);
   assert.equal(JSON.stringify(Array.from(visuals.resultImages)), JSON.stringify([{ src: "https://img/ex1.jpg", caption: "" }]));
+});
+
+test("exercise tabs are normalized into visuals payload", () => {
+  const model = createModel();
+  const exercise = model.getExerciseById("ex-004");
+  const visuals = model.getVisualsForExercise(exercise);
+
+  assert.equal(visuals.tabs.length, 1);
+  assert.deepEqual(JSON.parse(JSON.stringify(visuals.tabs[0])), {
+    id: "tab-1",
+    title: "Exercice 1",
+    instructions: ["Consigne A", "Consigne B"],
+    resultImages: [{ src: "https://img/tab-1.jpg", caption: "" }],
+    enonceImages: [],
+  });
 });
 
 test("importProgressObject sanitizes invalid exercise ids", () => {

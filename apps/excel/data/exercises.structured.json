@@ -1639,6 +1639,72 @@
       "instructions": [
         "Vous réalisez les modifications 5 tableaux comme aux échecs (en un minimum de coup)."
       ],
+      "exerciseTabs": [
+        {
+          "id": "exercice-1",
+          "title": "Exercice 1",
+          "instructions": [
+            "Pensez à insérer une colonne et une ligne à gauche et au-dessus du tableau.",
+            "CTRL+Clic vous permettra de mettre les deux couleurs en deux fois.",
+            "Les en-têtes de ligne et de colonne sont en gras.",
+            "Les bordures sont fines et noires."
+          ],
+          "resultImages": [
+            "https://www.clic-formation.net/images/01-excel/excel-competence-04/ex-008/ex-1.gif"
+          ]
+        },
+        {
+          "id": "exercice-2",
+          "title": "Exercice 2",
+          "instructions": [
+            "Depuis la feuille de départ, construisez ce tableau le plus rapidement possible.",
+            "Bordures extérieures épaisses et noires.",
+            "Bordures intérieures normales et noires.",
+            "La police blanche, les couleurs, les largeurs et les hauteurs se règlent en un minimum d'actions."
+          ],
+          "resultImages": [
+            "https://www.clic-formation.net/images/01-excel/excel-competence-04/ex-008/ex-2.gif"
+          ]
+        },
+        {
+          "id": "exercice-3",
+          "title": "Exercice 3",
+          "instructions": [
+            "Le tour du tableau est en double bordure, avec le décrochement en bas à gauche.",
+            "Les 5 dernières colonnes ont la même largeur.",
+            "Le retrait du texte est plus important dans la première colonne.",
+            "Le texte des autres colonnes est centré.",
+            "Fusionnez et centrez la ligne A sur la largeur du tableau."
+          ],
+          "resultImages": [
+            "https://www.clic-formation.net/images/01-excel/excel-competence-04/ex-008/ex-3.gif"
+          ]
+        },
+        {
+          "id": "exercice-4",
+          "title": "Exercice 4",
+          "instructions": [
+            "La cellule d'en-tête est fusionnée et centrée.",
+            "Le contour de cellule est épais et noir.",
+            "Le fond utilise un dégradé diagonal à deux couleurs.",
+            "La police est en taille 48."
+          ],
+          "resultImages": [
+            "https://www.clic-formation.net/images/01-excel/excel-competence-04/ex-008/ex-4.gif"
+          ]
+        },
+        {
+          "id": "exercice-5",
+          "title": "Exercice 5",
+          "instructions": [
+            "Partie haute : police blanche, bordure oblique blanche et fond vert.",
+            "Partie basse : bordure pointillée noire en ligne uniquement."
+          ],
+          "resultImages": [
+            "https://www.clic-formation.net/images/01-excel/excel-competence-04/ex-008/ex-5.gif"
+          ]
+        }
+      ],
       "levelLabel": "Debutant",
       "scrape": {
         "ok": true,

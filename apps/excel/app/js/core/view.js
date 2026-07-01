@@ -81,6 +81,7 @@ class AtelierView {
     this.exerciseCriteriaWrap = document.getElementById("exercise-criteria-wrap");
     this.exerciseSteps = document.getElementById("exercise-steps");
     this.exerciseStepsPreamble = document.getElementById("exercise-steps-preamble");
+    this.exerciseStepsTabs = document.getElementById("exercise-steps-tabs");
     this.exerciseCriteria = document.getElementById("exercise-criteria");
     this.exerciseWorkFileBtn = document.getElementById("exercise-workfile-btn")
       || document.getElementById("exercise-docx-btn");
@@ -104,6 +105,8 @@ class AtelierView {
     this.exerciseThemeProgress = document.getElementById("exercise-theme-progress");
     this.exerciseThemeProgressBar = document.getElementById("exercise-theme-progress-bar");
     this.exerciseSaveNudge = document.getElementById("exercise-save-nudge");
+    this.activeExerciseTabIndex = 0;
+    this.currentExerciseVm = null;
 
     this.progressCompleted = document.getElementById("progress-stat-completed");
     this.progressRate = document.getElementById("progress-stat-rate");
@@ -260,6 +263,7 @@ class AtelierView {
   }
 
   renderExercise(vm) {
+    this.currentExerciseVm = vm;
     this.exerciseTitle.textContent = `Exercice ${vm.exercise.num} - ${vm.exercise.title}`;
     this.exerciseThemeLine.textContent = vm.exercise.moduleName;
 
@@ -298,98 +302,17 @@ class AtelierView {
       this.exerciseStepsPreamble.style.display = preamble ? "" : "none";
     }
 
-    const paragraphOnly = this.#isParagraphOnlyExercise(vm.exercise, vm.steps || []);
-    const formatStep = (step) => this.#formatStepForExercise(vm.exercise, step);
-    this.exerciseSteps.classList.remove("steps-copy-mode", "steps-paragraph-mode", "steps-has-copy");
-    if (paragraphOnly) {
-      const lines = (vm.steps || [])
-        .map((line) => String(line || "").trim())
-        .filter(Boolean);
-      const text = lines.length
-        ? lines.map((line) => formatStep(line)).join("<br>")
-        : "Reproduisez le document en suivant l'énoncé.";
-      this.exerciseSteps.classList.add("steps-paragraph-mode");
-      this.exerciseSteps.innerHTML = `<p class="steps-paragraph-text">${text}</p>`;
-    } else {
-      const normalizedSteps = (vm.steps || []).map((step) => String(step || "").trim()).filter(Boolean);
-      const markerPattern = /^texte\s+à\s+copier\/coller\s*:?\s*$/i;
-      const copyIntroPattern = /(texte\s+à\s+copier\/coller|copier-coller\s+(?:le|la|ce)?\s*(?:texte|liste)|copier-coller\s+ce\s+texte)/i;
-      const numberedStepPattern = /^\d+\./;
-      let hasCopyBlock = false;
-      const items = [];
-
-      for (let i = 0; i < normalizedSteps.length; i += 1) {
-        const line = normalizedSteps[i];
-        const lineParts = line.split("\n").map((part) => part.trim()).filter(Boolean);
-
-        if (copyIntroPattern.test(lineParts[0] || "") && lineParts.length > 1) {
-          hasCopyBlock = true;
-          items.push(`
-            <li class="copy-step">
-              <p class="steps-instruction">${this.#formatStepPlain(lineParts[0])}</p>
-              <pre class="steps-copy-block">${escapeHtml(lineParts.slice(1).join("\n"))}</pre>
-            </li>
-          `);
-          continue;
-        }
-
-        if (markerPattern.test(line)) {
-          const copyLines = [];
-          let j = i + 1;
-          while (j < normalizedSteps.length) {
-            const next = normalizedSteps[j];
-            if (numberedStepPattern.test(next)) break;
-            copyLines.push(next);
-            j += 1;
-          }
-
-          if (copyLines.length) {
-            hasCopyBlock = true;
-            items.push(`
-              <li class="copy-step">
-                <p class="steps-instruction">${this.#formatStepPlain(line)}</p>
-                <pre class="steps-copy-block">${escapeHtml(copyLines.join("\n"))}</pre>
-              </li>
-            `);
-            i = j - 1;
-            continue;
-          }
-        }
-
-        if (copyIntroPattern.test(line)) {
-          const copyLines = [];
-          let j = i + 1;
-          while (j < normalizedSteps.length) {
-            const next = normalizedSteps[j];
-            if (numberedStepPattern.test(next)) break;
-            copyLines.push(next);
-            j += 1;
-          }
-
-          if (copyLines.length >= 2) {
-            hasCopyBlock = true;
-            items.push(`
-              <li class="copy-step">
-                <p class="steps-instruction">${this.#formatStepPlain(line)}</p>
-                <pre class="steps-copy-block">${escapeHtml(copyLines.join("\n"))}</pre>
-              </li>
-            `);
-            i = j - 1;
-            continue;
-          }
-        }
-
-        items.push(`<li>${formatStep(line)}</li>`);
-      }
-
-      if (hasCopyBlock) this.exerciseSteps.classList.add("steps-has-copy");
-      this.exerciseSteps.innerHTML = items.length
-        ? items.join("")
-        : "<li>Reproduisez le document en suivant l'énoncé.</li>";
-    }
+    const activeTab = Array.isArray(vm.visuals.tabs) && vm.visuals.tabs.length
+      ? vm.visuals.tabs[Math.max(0, Math.min(this.activeExerciseTabIndex, vm.visuals.tabs.length - 1))]
+      : null;
+    const effectiveSteps = activeTab && Array.isArray(activeTab.instructions) && activeTab.instructions.length
+      ? activeTab.instructions
+      : (vm.steps || []);
+    this.activeExerciseTabIndex = activeTab && vm.visuals.tabs ? vm.visuals.tabs.indexOf(activeTab) : 0;
+    this.#renderExerciseSteps(vm.exercise, effectiveSteps);
 
     if (this.exerciseInstructionsWrap) {
-      this.exerciseInstructionsWrap.style.display = (vm.steps || []).length ? "" : "none";
+      this.exerciseInstructionsWrap.style.display = effectiveSteps.length ? "" : "none";
     }
 
     if (this.exerciseCriteria) {
@@ -437,12 +360,15 @@ class AtelierView {
       "Image énoncé",
       "Pas d'image d'énoncé sur la source.",
     );
+    const hasTabs = Array.isArray(vm.visuals.tabs) && vm.visuals.tabs.length > 0;
+    const activeResultImages = hasTabs && activeTab ? (activeTab.resultImages || []) : vm.visuals.resultImages;
     this.#renderImageGroup(
       this.exerciseResultImages,
-      vm.visuals.resultImages,
+      activeResultImages,
       "Image résultat attendu",
       "Pas d'image de résultat sur la source.",
     );
+    this.#renderExerciseTabs(vm.visuals.tabs || []);
     this.#syncImagesGridLayout();
     this.#renderExtraImages(vm.visuals.extraImages || []);
 
@@ -623,6 +549,170 @@ class AtelierView {
       link.textContent = item.label || "Telecharger un fichier";
       this.exerciseFilesActions.insertBefore(link, this.exercisePickWorkFileBtn || null);
     }
+  }
+
+  #renderExerciseTabs(tabs) {
+    if (!this.exerciseStepsTabs) return;
+    const items = Array.isArray(tabs) ? tabs.filter(Boolean) : [];
+    if (!items.length) {
+      this.exerciseStepsTabs.innerHTML = "";
+      this.exerciseStepsTabs.style.display = "none";
+      this.activeExerciseTabIndex = 0;
+      return;
+    }
+    this.activeExerciseTabIndex = Math.max(0, Math.min(this.activeExerciseTabIndex, items.length - 1));
+
+    const tabButtons = items.map((tab, index) => `
+      <button
+        type="button"
+        class="exercise-tab-btn${index === this.activeExerciseTabIndex ? " active" : ""}"
+        id="exercise-tab-${escapeHtml(tab.id)}"
+        role="tab"
+        aria-selected="${index === this.activeExerciseTabIndex ? "true" : "false"}"
+        tabindex="${index === this.activeExerciseTabIndex ? "0" : "-1"}"
+      >${escapeHtml(tab.title)}</button>
+    `).join("");
+    this.exerciseStepsTabs.innerHTML = `
+      <div class="exercise-tab-list" role="tablist" aria-label="Variantes de l'exercice">${tabButtons}</div>
+    `;
+    this.exerciseStepsTabs.style.display = "";
+
+    const buttons = Array.from(this.exerciseStepsTabs.querySelectorAll(".exercise-tab-btn"));
+    const activateTab = (index, focus = false) => {
+      this.activeExerciseTabIndex = index;
+      buttons.forEach((button, btnIndex) => {
+        const active = btnIndex === index;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+        button.setAttribute("tabindex", active ? "0" : "-1");
+        if (active && focus) button.focus();
+      });
+      this.#renderExerciseSteps(this.currentExerciseVm ? this.currentExerciseVm.exercise : null, items[index].instructions || []);
+      if (this.exerciseInstructionsWrap) {
+        this.exerciseInstructionsWrap.style.display = (items[index].instructions || []).length ? "" : "none";
+      }
+      this.#renderImageGroup(
+        this.exerciseResultImages,
+        items[index].resultImages || [],
+        "Image résultat attendu",
+        "Pas d'image de résultat sur la source.",
+      );
+      this.#syncImagesGridLayout();
+    };
+
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", () => activateTab(index));
+      button.addEventListener("keydown", (event) => {
+        if (event.key === "Home") {
+          event.preventDefault();
+          activateTab(0, true);
+          return;
+        }
+        if (event.key === "End") {
+          event.preventDefault();
+          activateTab(buttons.length - 1, true);
+          return;
+        }
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        event.preventDefault();
+        const delta = event.key === "ArrowRight" ? 1 : -1;
+        const nextIndex = (index + delta + buttons.length) % buttons.length;
+        activateTab(nextIndex, true);
+      });
+    });
+  }
+
+  #renderExerciseSteps(exercise, steps) {
+    const paragraphOnly = this.#isParagraphOnlyExercise(exercise, steps || []);
+    const formatStep = (step) => this.#formatStepForExercise(exercise, step);
+    this.exerciseSteps.classList.remove("steps-copy-mode", "steps-paragraph-mode", "steps-has-copy");
+    if (paragraphOnly) {
+      const lines = (steps || [])
+        .map((line) => String(line || "").trim())
+        .filter(Boolean);
+      const text = lines.length
+        ? lines.map((line) => formatStep(line)).join("<br>")
+        : "Reproduisez le document en suivant l'énoncé.";
+      this.exerciseSteps.classList.add("steps-paragraph-mode");
+      this.exerciseSteps.innerHTML = `<p class="steps-paragraph-text">${text}</p>`;
+      return;
+    }
+
+    const normalizedSteps = (steps || []).map((step) => String(step || "").trim()).filter(Boolean);
+    const markerPattern = /^texte\s+à\s+copier\/coller\s*:?\s*$/i;
+    const copyIntroPattern = /(texte\s+à\s+copier\/coller|copier-coller\s+(?:le|la|ce)?\s*(?:texte|liste)|copier-coller\s+ce\s+texte)/i;
+    const numberedStepPattern = /^\d+\./;
+    let hasCopyBlock = false;
+    const items = [];
+
+    for (let i = 0; i < normalizedSteps.length; i += 1) {
+      const line = normalizedSteps[i];
+      const lineParts = line.split("\n").map((part) => part.trim()).filter(Boolean);
+
+      if (copyIntroPattern.test(lineParts[0] || "") && lineParts.length > 1) {
+        hasCopyBlock = true;
+        items.push(`
+          <li class="copy-step">
+            <p class="steps-instruction">${this.#formatStepPlain(lineParts[0])}</p>
+            <pre class="steps-copy-block">${escapeHtml(lineParts.slice(1).join("\n"))}</pre>
+          </li>
+        `);
+        continue;
+      }
+
+      if (markerPattern.test(line)) {
+        const copyLines = [];
+        let j = i + 1;
+        while (j < normalizedSteps.length) {
+          const next = normalizedSteps[j];
+          if (numberedStepPattern.test(next)) break;
+          copyLines.push(next);
+          j += 1;
+        }
+
+        if (copyLines.length) {
+          hasCopyBlock = true;
+          items.push(`
+            <li class="copy-step">
+              <p class="steps-instruction">${this.#formatStepPlain(line)}</p>
+              <pre class="steps-copy-block">${escapeHtml(copyLines.join("\n"))}</pre>
+            </li>
+          `);
+          i = j - 1;
+          continue;
+        }
+      }
+
+      if (copyIntroPattern.test(line)) {
+        const copyLines = [];
+        let j = i + 1;
+        while (j < normalizedSteps.length) {
+          const next = normalizedSteps[j];
+          if (numberedStepPattern.test(next)) break;
+          copyLines.push(next);
+          j += 1;
+        }
+
+        if (copyLines.length >= 2) {
+          hasCopyBlock = true;
+          items.push(`
+            <li class="copy-step">
+              <p class="steps-instruction">${this.#formatStepPlain(line)}</p>
+              <pre class="steps-copy-block">${escapeHtml(copyLines.join("\n"))}</pre>
+            </li>
+          `);
+          i = j - 1;
+          continue;
+        }
+      }
+
+      items.push(`<li>${formatStep(line)}</li>`);
+    }
+
+    if (hasCopyBlock) this.exerciseSteps.classList.add("steps-has-copy");
+    this.exerciseSteps.innerHTML = items.length
+      ? items.join("")
+      : "<li>Reproduisez le document en suivant l'énoncé.</li>";
   }
 
   #syncImagesGridLayout() {

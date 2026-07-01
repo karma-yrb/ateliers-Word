@@ -613,6 +613,79 @@
 
 .image-thumb:hover .image-thumb-hint { opacity: 1; }
 
+.result-card .image-stack {
+  display: flex;
+  justify-content: center;
+}
+
+.result-card .image-thumb {
+  display: flex;
+  justify-content: center;
+}
+
+.result-card .image-thumb img {
+  max-width: min(100%, 760px);
+  max-height: 480px;
+}
+
+.exercise-tabs {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.exercise-tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exercise-tab-btn {
+  border: 1px solid var(--ex-orange-border);
+  background: #fff7ef;
+  color: #8c4f14;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.exercise-tab-btn.active,
+.exercise-tab-btn:hover,
+.exercise-tab-btn:focus-visible {
+  background: linear-gradient(135deg, #f2a452 0%, var(--ex-orange) 100%);
+  color: #fff;
+  outline: none;
+}
+
+.exercise-tab-panel {
+  border: 1px solid #e6d7c4;
+  border-radius: 12px;
+  background: #fffdf9;
+  padding: 14px;
+}
+
+.exercise-tab-label {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9a6328;
+}
+
+.exercise-tab-instructions ul {
+  margin: 0 0 12px 18px;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.exercise-tab-visuals .image-thumb img {
+  max-width: min(100%, 1000px);
+  max-height: none;
+}
+
 /* Extra images */
 .extra-image {
   position: relative;
