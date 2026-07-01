@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.14](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.13...word-v1.5.14) (2026-07-01)
+
+
+### Bug Fixes
+
+* **excel:** align exercise instruction text ([630c8f2](https://github.com/karma-yrb/ateliers-Bureautique/commit/630c8f2d07fdffce1a7e46674da3ac20e9364e04))
+* **excel:** remove download prompts from exercise steps ([ea6ae3c](https://github.com/karma-yrb/ateliers-Bureautique/commit/ea6ae3c26c23bf5d75d600920514b1cbd7ff5b02))
+* **excel:** restore original instructions for ex-016 ([b56c8f1](https://github.com/karma-yrb/ateliers-Bureautique/commit/b56c8f177bc22554ea6d1e1a6ca957309178206b))
+
 ### [1.5.13](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.12...word-v1.5.13) (2026-06-29)
 
 ### [1.5.12](https://github.com/karma-yrb/ateliers-Bureautique/compare/word-v1.5.11...word-v1.5.12) (2026-06-29)

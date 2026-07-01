@@ -1,7 +1,108 @@
 window.RELEASES_DATA = {
-  "version": "1.5.13",
-  "updatedAt": "2026-06-29T15:04:43.318Z",
+  "version": "1.5.14",
+  "updatedAt": "2026-07-01T12:05:52.245Z",
   "releases": [
+    {
+      "version": "1.5.14",
+      "tag": "word-v1.5.14",
+      "date": "2026-07-01",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version corrective orientée stabilité.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "48ae40e"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel",
+          "description": "remove download prompts from exercise steps",
+          "breaking": false,
+          "hash": "ea6ae3c"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.16",
+          "breaking": false,
+          "hash": "2d6dabf"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "448e4c0"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel",
+          "description": "restore original instructions for ex-016",
+          "breaking": false,
+          "hash": "b56c8f1"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel",
+          "description": "align exercise instruction text",
+          "breaking": false,
+          "hash": "630c8f2"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.15",
+          "breaking": false,
+          "hash": "dbdbfc8"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "67e6193"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.14",
+          "breaking": false,
+          "hash": "4732e9e"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 3,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 6,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 9
+      }
+    },
     {
       "version": "1.5.13",
       "tag": "word-v1.5.13",
