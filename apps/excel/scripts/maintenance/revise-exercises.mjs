@@ -7,6 +7,8 @@ const ROOT = path.resolve(SCRIPT_DIR, "..", "..");
 
 const ENRICHED_PATH = path.join(ROOT, "data", "exercises.structured.json");
 const BASE_PATH = path.join(ROOT, "data", "exercises.json");
+const APP_ENRICHED_PATH = path.join(ROOT, "app", "data", "exercises.structured.json");
+const APP_BASE_PATH = path.join(ROOT, "app", "data", "exercises.json");
 const AUDIT_PATH = path.join(ROOT, "logs", "audit-report.json");
 const REPORT_PATH = path.join(ROOT, "logs", "revision-report.json");
 
@@ -110,6 +112,21 @@ function clampText(value, maxLen = 90) {
   return normalizeText(safe || sliced);
 }
 
+function buildOpenWorkbookStep() {
+  return 'Ouvrez Microsoft Excel : cliquez sur le bouton Demarrer, recherchez "Excel", puis ouvrez l\'application. Ensuite, cliquez sur "Classeur vierge" pour creer un nouveau classeur, puis enregistrez-le avant de commencer.';
+}
+
+function startsWithOpenWorkbookStep(step) {
+  const text = normalizeTitleKey(step);
+  return (
+    text.includes("ouvrez microsoft excel") ||
+    text.includes("classeur vierge") ||
+    text.includes("nouveau classeur") ||
+    text.includes("vous partez d'un nouveau classeur") ||
+    text.includes("creez un nouveau classeur excel")
+  );
+}
+
 function getContextualAction(exercise) {
   const moduleName = normalizeTitleKey(exercise.moduleNameClean || exercise.moduleName);
   if (moduleName.includes("graphique")) {
@@ -144,7 +161,7 @@ function buildStandardInstructions(exercise) {
 
   const openStep = exercise.docxUrl
     ? ""
-    : "Creez un nouveau classeur Excel et enregistrez-le avant de commencer.";
+    : buildOpenWorkbookStep();
 
   const compareStep = exercise.imageResultat
     ? "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts."
@@ -313,6 +330,10 @@ function applyWaveRevisions(enriched, auditReport) {
     }
     exercise.instructions = split;
 
+    if (!exercise.docxUrl && !startsWithOpenWorkbookStep(exercise.instructions[0] || "")) {
+      exercise.instructions = dedupe([buildOpenWorkbookStep(), ...exercise.instructions]);
+    }
+
     if (rewriteIds.has(exercise.id) || exercise.instructions.length < 2) {
       exercise.instructions = dedupe(buildStandardInstructions(exercise));
       rewrittenShort += 1;
@@ -405,6 +426,8 @@ async function main() {
   await Promise.all([
     fs.writeFile(ENRICHED_PATH, `${JSON.stringify(enriched, null, 2)}\n`, "utf8"),
     fs.writeFile(BASE_PATH, `${JSON.stringify(baseDataset, null, 2)}\n`, "utf8"),
+    fs.writeFile(APP_ENRICHED_PATH, `${JSON.stringify(enriched, null, 2)}\n`, "utf8"),
+    fs.writeFile(APP_BASE_PATH, `${JSON.stringify(baseDataset, null, 2)}\n`, "utf8"),
   ]);
 
   const report = {
