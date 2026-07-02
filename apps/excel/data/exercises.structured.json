@@ -1404,10 +1404,12 @@
       "description": "Format automatique",
       "preamble": "",
       "instructions": [
-        "Construisez la structure principale du classeur a partir de cet objectif: Format automatique.",
-        "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
-        "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
-        "Enregistrez votre travail puis marquez l'exercice comme termine."
+        "Telechargez puis ouvrez le fichier de travail.",
+        "Dupliquez la feuille de travail au moins 3 fois pour creer trois variantes.",
+        "Sur chaque copie, appliquez une mise en forme automatique differente (style de tableau, couleurs, bordures, police).",
+        "Verifiez que les donnees restent lisibles et coherentes apres chaque mise en forme.",
+        "Comparez vos resultats avec les images de reference et corrigez les ecarts.",
+        "Enregistrez votre classeur."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -1426,10 +1428,12 @@
       "section": "bases",
       "moduleSlug": "mise-en-forme",
       "consignes": [
-        "Construisez la structure principale du classeur a partir de cet objectif: Format automatique.",
-        "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
-        "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
-        "Enregistrez votre travail puis marquez l'exercice comme termine."
+        "Telechargez puis ouvrez le fichier de travail.",
+        "Dupliquez la feuille de travail au moins 3 fois pour creer trois variantes.",
+        "Sur chaque copie, appliquez une mise en forme automatique differente (style de tableau, couleurs, bordures, police).",
+        "Verifiez que les donnees restent lisibles et coherentes apres chaque mise en forme.",
+        "Comparez vos resultats avec les images de reference et corrigez les ecarts.",
+        "Enregistrez votre classeur."
       ],
       "criteria": [],
       "originalConsignes": [
