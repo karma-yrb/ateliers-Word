@@ -2516,11 +2516,12 @@
       "description": "Poignée de recopie",
       "preamble": "",
       "instructions": [
-        "Ouvrez Microsoft Excel : cliquez sur le bouton Demarrer, recherchez \"Excel\", puis ouvrez l'application. Ensuite, cliquez sur \"Classeur vierge\" pour creer un nouveau classeur, puis enregistrez-le avant de commencer.",
-        "Construisez la structure principale du classeur a partir de cet objectif: Poignée de recopie.",
-        "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
-        "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
-        "Enregistrez votre travail puis marquez l'exercice comme termine."
+        "Ouvrez Excel et creez un classeur vierge.",
+        "Reproduisez la trame du tableau a l'aide de la poignee de recopie (series, numerotation et formats).",
+        "Inserez l'image \"coccinelle\" via Insertion > Images > Cet appareil, puis placez-la dans la zone indiquee par le modele.",
+        "Inserez ensuite le \"logo Louis Braille\" de la meme maniere, puis ajustez sa taille pour garder une mise en page lisible.",
+        "Alignez les deux images avec les cellules (menu Format de l'image > Aligner) et verifiez qu'elles ne masquent pas les donnees.",
+        "Comparez au resultat attendu puis corrigez les ecarts avant d'enregistrer."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -2537,11 +2538,12 @@
       "section": "bases",
       "moduleSlug": "poignee-de-recopie",
       "consignes": [
-        "Ouvrez Microsoft Excel : cliquez sur le bouton Demarrer, recherchez \"Excel\", puis ouvrez l'application. Ensuite, cliquez sur \"Classeur vierge\" pour creer un nouveau classeur, puis enregistrez-le avant de commencer.",
-        "Construisez la structure principale du classeur a partir de cet objectif: Poignée de recopie.",
-        "Appliquez les outils Excel utiles (saisie, formules, mise en forme, donnees ou insertion) pour obtenir le rendu attendu.",
-        "Comparez votre feuille avec l'image de resultat attendu puis corrigez les ecarts.",
-        "Enregistrez votre travail puis marquez l'exercice comme termine."
+        "Ouvrez Excel et creez un classeur vierge.",
+        "Reproduisez la trame du tableau a l'aide de la poignee de recopie (series, numerotation et formats).",
+        "Inserez l'image \"coccinelle\" via Insertion > Images > Cet appareil, puis placez-la dans la zone indiquee par le modele.",
+        "Inserez ensuite le \"logo Louis Braille\" de la meme maniere, puis ajustez sa taille pour garder une mise en page lisible.",
+        "Alignez les deux images avec les cellules (menu Format de l'image > Aligner) et verifiez qu'elles ne masquent pas les donnees.",
+        "Comparez au resultat attendu puis corrigez les ecarts avant d'enregistrer."
       ],
       "criteria": [],
       "originalConsignes": [
