@@ -1,7 +1,68 @@
 window.RELEASES_DATA = {
-  "version": "0.1.18",
-  "updatedAt": "2026-07-02T12:13:44.659Z",
+  "version": "0.1.19",
+  "updatedAt": "2026-07-02T14:06:45.137Z",
   "releases": [
+    {
+      "version": "0.1.19",
+      "tag": "excel-v0.1.19",
+      "date": "2026-07-02",
+      "releaseType": "patch",
+      "impact": {
+        "level": "medium",
+        "rationale": "Nouvelles fonctionnalites ou changements techniques structurants."
+      },
+      "summary": "Version de maintenance.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "1.5.16",
+          "breaking": false,
+          "hash": "7eb8f3d"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "allow legacy shared menu fix commit",
+          "breaking": false,
+          "hash": "2a690aa"
+        },
+        {
+          "type": "refactor",
+          "typeLabel": "Refactoring",
+          "scope": "core",
+          "description": "share runtime, contracts and release tooling",
+          "breaking": false,
+          "hash": "d310a6b"
+        },
+        {
+          "type": "other",
+          "typeLabel": "Autre",
+          "scope": "",
+          "description": "Fix Word/Excel menu and section consistency",
+          "breaking": false,
+          "hash": "b9a0585"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 0,
+        "perf": 0,
+        "refactor": 1,
+        "docs": 0,
+        "test": 0,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 1,
+        "breaking": 0,
+        "total": 4
+      }
+    },
     {
       "version": "0.1.18",
       "tag": "excel-v0.1.18",
