@@ -354,7 +354,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Personnalisez la barre d'acces rapide pour obtenir un rendu proche du modele.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Cliquez sur la petite flèche vers le bas à côté de la barre d'accès rapide pour accéder aux options de personnalisation.",
         "Sélectionnez les commandes que vous souhaitez ajouter à la barre d'accès rapide, telles que l'icône d'impression rapide.",
         "Vous pouvez également choisir d'autres commandes utiles en cochant les options disponibles."
@@ -400,7 +400,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Personnalisez les onglets du ruban pour reproduire le resultat attendu.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Pour réaliser cette opération le menu est fichier > Options > Personnaliser le ruban.",
         "Vous manipulez ensuite en Cliqué-Glissé."
       ],
@@ -449,7 +449,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Creez une arborescence de dossiers et enregistrez un document Word dans trois formats.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Créez un dossier \"Europe\" sur le bureau.",
         "Puis un dossier \"France\".",
         "Dans France, créez un document Word en 3 formats : .doc, .docx et .pdf.",
@@ -682,7 +682,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Saisissez les mois de l'annee et reutilisez le pinceau de reproduction de mise en forme.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Saisissez les mois de l'année en colonne.",
         "Alternez les couleurs ET les mises en forme comme sur l'exemple. Une fois les trois premiers mois en place, vous utilisez le PINCEAU de reproduction de mise en forme."
       ],
@@ -727,7 +727,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Reproduisez la phrase modele et appliquez le surlignage demande.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word : cliquez sur le bouton Demarrer, recherchez \"Word\", puis ouvrez l'application. Ensuite, cliquez sur \"Document vierge\" pour creer un nouveau document.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "« Le raccourci clavier pour enregistrer rapidement est ctrl+s »",
         "Et surlignez en fonction des consignes"
       ],
@@ -751,7 +751,7 @@ window.WORD_ATELIER_DATA = {
       ],
       "originalConsignes": [],
       "originalInstructions": [
-        "Ouvrez Microsoft Word : cliquez sur le bouton Demarrer, recherchez \"Word\", puis ouvrez l'application. Ensuite, cliquez sur \"Document vierge\" pour creer un nouveau document.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Reproduire la ligne ci-dessous en utilisant la fonction copier-coller pour cette phrase",
         "« Le raccourci clavier pour enregistrer rapidement est ctrl+s »",
         "Et surlignez en fonction des consignes",
@@ -921,7 +921,7 @@ window.WORD_ATELIER_DATA = {
         "ARTES île-de-France 94 bis avenue de Suffren 75005 Paris / V 01 53 85 55 70"
       ],
       "instructions": [
-        "Ouvrez Microsoft Word : cliquez sur le bouton Demarrer, recherchez \"Word\", puis ouvrez l'application. Ensuite, cliquez sur \"Document vierge\" pour creer un nouveau document.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Texte à copier/coller :",
         "BULLETIN D'INSCRIPTION",
         "Fax-réponse : 01.53.85.55.78 Eric Chevalier, Président d'ARTESI Ile-de-France vous invite au prochain pl@teau, avec Monsieur André Santini, député, maire d'Issy-les-Moulineaux sur le thème :",
@@ -963,7 +963,7 @@ window.WORD_ATELIER_DATA = {
         "ARTES île-de-France 94 bis avenue de Suffren 75005 Paris / V 01 53 85 55 70"
       ],
       "originalInstructions": [
-        "Ouvrez Microsoft Word : cliquez sur le bouton Demarrer, recherchez \"Word\", puis ouvrez l'application. Ensuite, cliquez sur \"Document vierge\" pour creer un nouveau document.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Saisir ce texte à l'identique sur votre traitement de texte, exécuter la mise en forme comme sur le modèle. Vous pouvez aussi faire un copier-coller, mais la saisie vous permettra de vérifier si vous connaissez la façon de sortir tous les caractères.",
         "Texte à copier/coller :",
         "BULLETIN D'INSCRIPTION",
@@ -1773,7 +1773,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Collez les elements fournis, puis triez-les par ordre alphabetique dans Word.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Jupiter.",
         "Atmosphère.",
         "Satellites.",
@@ -2409,7 +2409,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Reproduisez le document en utilisant les formes disponibles dans Word.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Exercice de style à l'état pur.",
         "Tous les types de formes visibles dans l'exercice sont disponibles dans Word et libre Office.",
         "Si vous souhaitez adapter au fur et à mesure les formes, pensez à \"grouper \" en fonction de l'avancée de votre travail."
@@ -2493,7 +2493,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Reproduisez la composition en formes en vous aidant du modele fourni.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "La zone du haut utilise les effets 3D."
       ],
       "scrape": {
@@ -2537,7 +2537,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Creez la composition avec SmartArt et les photos fournies.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Téléchargez les photos utiles à l'exercice.",
         "Vous insérez le modèle via smart-art et insérer les photos dans les zones prévues.",
         "Aligner les copies avec les flèches de direction plutôt qu'avec la souris."
@@ -2869,7 +2869,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Placez des zones de texte sur la carte en respectant les couleurs et les arrondis.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Vous insérez les zones de texte pour couvrir les noms de la carte.",
         "Vous respectez les couleurs et arrondis.",
         "Ne pas hésiter à utiliser le copier-coller pour aller plus vite."
@@ -3307,7 +3307,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Assemblez textes et images, puis groupez chaque bloc avant de le positionner.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Mettre le texte dans des zones de textes via un copier-coller.",
         "Grouper chaque zone avec sa photo et positionner l'ensemble."
       ],
@@ -4369,7 +4369,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Creez deux calendriers imprimables sur une page A4 en paysage.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Insérez 7 lignes et 14 colonnes.",
         "Réalisez le second grâce à un copier-coller du premier."
       ],
@@ -5132,7 +5132,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Collez le texte fourni, puis reglez les marges selon le modele.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Après avoir fait un copier-coller du texte ci-dessous dans votre traitement de texte, vous réglez les marges."
       ],
       "scrape": {
@@ -6562,7 +6562,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Creez puis enregistrez un modele Word personnalise pour un courrier d'assurance.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "[Nom et Prénom].",
         "[Ville, le JJ/MM/AAAA].",
         "[Adresse].",
@@ -6639,7 +6639,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Creez puis enregistrez un modele Word personnalise avec zones de saisie.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Après avoir copier-coller ce texte en direction de votre logiciel.",
         "vous mettez en forme votre modèle que vous enregistrez dans un dossier au sein du dossier \"Modèles office personnalisée\".",
         "Vous prendrez soin de \"matérialiser\" les zones de saisies personnalisées.",
@@ -6719,7 +6719,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Collez le texte, puis appliquez les styles rapides demandes aux questions et reponses.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Copiez-collez le texte vers Word.",
         "CETTE ÉCOLE EST-ELLE ACCUEILLANTE ?",
         "Oui, très accueillante ; les gens et les locaux.",
@@ -6785,7 +6785,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Collez le texte, puis appliquez les styles demandes aux questions et reponses.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Copiez-collez le texte vers Word.",
         "CETTE ÉCOLE EST-ELLE ACCUEILLANTE ?",
         "Oui, très accueillante ; les gens et les locaux.",
@@ -7136,7 +7136,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Preparez un publipostage a partir des donnees et de la lettre type.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Créer un dossier sur votre bureau.",
         "Glissez le carnet d'adresse (fichier XLS à télécharger).",
         "Faites un copier-coller du texte dans Word et insérer le bloc adresse après une mise en forme sommaire.",
@@ -7191,7 +7191,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Realisez un publipostage avec champs conditionnels pour valider votre maitrise.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Créer un dossier sur votre bureau.",
         "Glissez le carnet d'adresse.",
         "Faites un copier-coller du texte dans Word et insérer le bloc adresse après une mise en forme sommaire."
@@ -7789,7 +7789,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Collez un tableau Excel dans Word et verifiez que la liaison fonctionne.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Copier-coller le tableau Excel en direction de Word.",
         "Résultat attendu avec 1 double clic dans le tableau : ."
       ],
@@ -9753,7 +9753,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Combinez saut de section, colonnes, collages Excel et reglages de marges.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "Le saut de section.",
         "La mise en colonne.",
         "Le copier-coller de tableau et graphique via Excel.",
@@ -9847,7 +9847,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Composez la page avec un tableau complexe, des colonnes et des zones de texte.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "La mise en place d'un tableau 5 lignes et 6 colonnes avec bordures invisibles sur la première ligne.",
         "Saut de section et mis en colonne pour le texte central.",
         "Insertion de forme (flèche)."
@@ -9948,7 +9948,7 @@ window.WORD_ATELIER_DATA = {
       "description": "Composez le flyer avec un tableau, des colonnes et des formes.",
       "consignes": [],
       "instructions": [
-        "Ouvrez Microsoft Word, puis creez un nouveau document vierge.",
+        "Cherchez l'icone Word (un « W » blanc sur fond bleu), ou tapez « Word » dans la barre de recherche de Windows, puis cliquez sur le resultat pour ouvrir le logiciel. Ensuite, cliquez sur « Document vierge » pour creer un nouveau document.",
         "La mise en place d'un tableau 5 lignes et 6 colonnes avec bordures invisibles sur la première ligne.",
         "Saut de section et mis en colonne pour le texte central.",
         "Insertion de forme (flèche)."
