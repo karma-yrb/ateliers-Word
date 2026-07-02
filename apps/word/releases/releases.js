@@ -1,7 +1,76 @@
 window.RELEASES_DATA = {
-  "version": "1.5.14",
-  "updatedAt": "2026-07-01T12:05:52.245Z",
+  "version": "1.5.15",
+  "updatedAt": "2026-07-02T12:13:32.162Z",
   "releases": [
+    {
+      "version": "1.5.15",
+      "tag": "word-v1.5.15",
+      "date": "2026-07-02",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblées, documentation ou maintenance."
+      },
+      "summary": "Version corrective orientée stabilité.",
+      "elements": [
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "word-data",
+          "description": "ajouter l'ouverture de Word aux exos sans fichier",
+          "breaking": false,
+          "hash": "57ecfd5"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "model",
+          "description": "handle multi-image exercise rendering",
+          "breaking": false,
+          "hash": "f1f13c2"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "session",
+          "description": "reload progress and return home after user switch",
+          "breaking": false,
+          "hash": "53a81b9"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare release",
+          "breaking": false,
+          "hash": "86a5e88"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.17",
+          "breaking": false,
+          "hash": "c29c68c"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 3,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 2,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 0,
+        "breaking": 0,
+        "total": 5
+      }
+    },
     {
       "version": "1.5.14",
       "tag": "word-v1.5.14",
