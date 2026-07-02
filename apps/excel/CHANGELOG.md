@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.18](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.17...excel-v0.1.18) (2026-07-02)
+
+
+### Bug Fixes
+
+* **model:** handle multi-image exercise rendering ([f1f13c2](https://github.com/karma-yrb/ateliers-Bureautique/commit/f1f13c22d132923097e13b4f1cfa1ff64e0273f9))
+* **session:** reload progress and return home after user switch ([53a81b9](https://github.com/karma-yrb/ateliers-Bureautique/commit/53a81b95577fc3d2aec1afe8fb266e755e6c215a))
+* **word-data:** ajouter l'ouverture de Word aux exos sans fichier ([57ecfd5](https://github.com/karma-yrb/ateliers-Bureautique/commit/57ecfd52807ea4b62ce618bbdd5551450274ee94))
+
 ### [0.1.17](https://github.com/karma-yrb/ateliers-Bureautique/compare/excel-v0.1.16...excel-v0.1.17) (2026-07-01)
 
 
