@@ -123,7 +123,9 @@ function createAtelierUserSetupRuntime(config = {}) {
           for (const folder of ordered) {
             const option = documentRef.createElement("option");
             option.value = folder.id;
-            option.textContent = folder.name || "Dossier de travail";
+            option.textContent = folder.firstName
+              ? `${folder.firstName} (${folder.name})`
+              : (folder.name || "Dossier de travail");
             savedFoldersSelect.appendChild(option);
           }
 
@@ -375,6 +377,22 @@ function createAtelierUserSetupRuntime(config = {}) {
         setFirstNameEditMode(false);
 
         (async () => {
+          // Précharger les prénoms pour affichage dans la liste de sélection
+          for (const folder of savedFolders) {
+            if (!folder.firstName && folder.handle && storage.loadUserProfile) {
+              try {
+                const folderInitials = deriveInitials(folder.handle, "");
+                const profile = await storage.loadUserProfile(folder.handle, folderInitials, false);
+                if (profile && profile.firstName) {
+                  folder.firstName = storage.normalizeFirstName
+                    ? storage.normalizeFirstName(profile.firstName)
+                    : profile.firstName;
+                }
+              } catch {
+                // impossible de lire ce dossier
+              }
+            }
+          }
           renderSavedFolders();
           if (savedFolders.length > 0) {
             setPickButtonMode("add-folder");

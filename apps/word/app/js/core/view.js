@@ -264,6 +264,12 @@ class AtelierView {
 
   renderExercise(vm) {
     this.currentExerciseVm = vm;
+
+    // Réinitialiser la section "Préparer l'exercice" immédiatement
+    if (this.exerciseWorkFileStatus) this.exerciseWorkFileStatus.textContent = "";
+    if (this.exerciseOpenWorkFileBtn) this.exerciseOpenWorkFileBtn.style.display = "none";
+    if (this.exercisePickWorkFileBtn) this.exercisePickWorkFileBtn.style.display = "none";
+
     this.exerciseTitle.textContent = `Exercice ${vm.exercise.num} - ${vm.exercise.title}`;
     this.exerciseThemeLine.textContent = vm.exercise.moduleName;
 

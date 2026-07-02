@@ -52,6 +52,7 @@ function createAtelierController(config = {}) {
       view: this.view,
       model: this.model,
       storage: this.storage,
+      officeAppName: settings.officeAppName,
       getCurrentAffinityId: () => this.currentAffinityId,
       setCurrentThemeId: (themeId) => {
         this.currentThemeId = themeId;

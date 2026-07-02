@@ -856,6 +856,9 @@ export async function registerControllerSessionContractTests({
     harness.model.getVisualsForExercise = () => ({ enonceImages: ["a.png"], resultImages: ["b.png"], extraImages: [], tabs: [] });
     harness.model.getNeighbors = () => ({ prevId: "ex-000", nextId: "ex-002" });
     harness.model.getIsDone = (id) => id === "ex-001";
+    harness.model.getExerciseById = (id) => id === "ex-001"
+      ? { id: "ex-001", moduleId: "theme-1", moduleName: "Theme 1", num: 1, title: "Exercice 1", docxUrl: "ex-001.xlsx" }
+      : null;
     harness.storage.supportsWorkFilePicker = () => true;
 
     harness.controller.init();
@@ -870,6 +873,7 @@ export async function registerControllerSessionContractTests({
         num: 1,
         title: "Exercice 1",
         preamble: "Avant de commencer",
+        docxUrl: "ex-001.xlsx",
       },
       done: true,
       steps: ["Etape 1", "Etape 2"],
