@@ -1097,11 +1097,12 @@
       "description": "Sélectionner et dupliquer la cellule dans excel",
       "preamble": "",
       "instructions": [
-        "Reproduire cette mise en forme en un minimum de clic.",
-        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes.",
-        "d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme.",
-        "Les raccourcis clavier CTRL+C et CTRL+V peuvent.",
-        "vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
+        "Telechargez puis ouvrez le fichier de travail de l'exercice.",
+        "Homogeneisez la largeur des colonnes et la hauteur des lignes pour obtenir une grille reguliere.",
+        "Mettez une cellule modele en fond noir avec le format attendu.",
+        "Dupliquez cette mise en forme sur les autres cellules necessaires avec le pinceau de reproduction de mise en forme.",
+        "Si besoin, utilisez aussi CTRL+C puis CTRL+V pour reproduire rapidement le format.",
+        "Comparez votre feuille avec l'image de reference et corrigez les ecarts."
       ],
       "levelLabel": "Debutant",
       "scrape": {
@@ -1118,11 +1119,12 @@
       "section": "bases",
       "moduleSlug": "selection",
       "consignes": [
-        "Reproduire cette mise en forme en un minimum de clic.",
-        "L'exercice consiste à Homogénéiser la hauteur et la largeur des lignes.",
-        "d'appliquer un fond noir sur une cellule et de répliquer cette mise en forme.",
-        "Les raccourcis clavier CTRL+C et CTRL+V peuvent.",
-        "vous êtes d'un grand secours ou encore la fonction de \"reproduction de mise en forme\" (le pinceau)."
+        "Telechargez puis ouvrez le fichier de travail de l'exercice.",
+        "Homogeneisez la largeur des colonnes et la hauteur des lignes pour obtenir une grille reguliere.",
+        "Mettez une cellule modele en fond noir avec le format attendu.",
+        "Dupliquez cette mise en forme sur les autres cellules necessaires avec le pinceau de reproduction de mise en forme.",
+        "Si besoin, utilisez aussi CTRL+C puis CTRL+V pour reproduire rapidement le format.",
+        "Comparez votre feuille avec l'image de reference et corrigez les ecarts."
       ],
       "criteria": [],
       "originalConsignes": [
