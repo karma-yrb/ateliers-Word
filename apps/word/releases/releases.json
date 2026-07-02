@@ -1,7 +1,148 @@
 {
-  "version": "1.5.16",
-  "updatedAt": "2026-07-02T14:06:38.043Z",
+  "version": "1.5.17",
+  "updatedAt": "2026-07-02T15:03:58.164Z",
   "releases": [
+    {
+      "version": "1.5.17",
+      "tag": "word-v1.5.17",
+      "date": "2026-07-02",
+      "releaseType": "patch",
+      "impact": {
+        "level": "low",
+        "rationale": "Corrections ciblees, documentation ou maintenance."
+      },
+      "summary": "Version corrective orientee stabilite.",
+      "elements": [
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "",
+          "description": "prepare monorepo release",
+          "breaking": false,
+          "hash": "d1db898"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-037",
+          "description": "remove enonce image and normalize download link roles",
+          "breaking": false,
+          "hash": "8a9880e"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-033",
+          "description": "remove repeated decompression wording",
+          "breaking": false,
+          "hash": "30023ed"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-032",
+          "description": "clarify coccinelle and Louis Braille image insertion",
+          "breaking": false,
+          "hash": "e6e5e4d"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-031",
+          "description": "rewrite unclear mixed text into actionable steps",
+          "breaking": false,
+          "hash": "25b03d0"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-026",
+          "description": "reorder workflow and end with icon insertion",
+          "breaking": false,
+          "hash": "d185a1b"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-022",
+          "description": "add explicit decompression step and clearer workflow",
+          "breaking": false,
+          "hash": "a1cac39"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-016",
+          "description": "rewrite instructions to be clear and digestible",
+          "breaking": false,
+          "hash": "1b82778"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-011",
+          "description": "harmonize steps into a single coherent list",
+          "breaking": false,
+          "hash": "60bcc2f"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "excel-ex-001",
+          "description": "add explicit captions for each result image",
+          "breaking": false,
+          "hash": "3411f6e"
+        },
+        {
+          "type": "fix",
+          "typeLabel": "Correction",
+          "scope": "ux",
+          "description": "affichage nom, étape lancement et reset section Préparer l'exercice",
+          "breaking": false,
+          "hash": "cb59d55"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.7",
+          "breaking": false,
+          "hash": "5ec8825"
+        },
+        {
+          "type": "word",
+          "typeLabel": "Autre",
+          "scope": "",
+          "description": "clarify startup steps for no-file exercises",
+          "breaking": false,
+          "hash": "66d126f"
+        },
+        {
+          "type": "chore",
+          "typeLabel": "Maintenance",
+          "scope": "release",
+          "description": "0.1.19",
+          "breaking": false,
+          "hash": "dadae2c"
+        }
+      ],
+      "counts": {
+        "feat": 0,
+        "fix": 10,
+        "perf": 0,
+        "refactor": 0,
+        "docs": 0,
+        "test": 0,
+        "chore": 3,
+        "build": 0,
+        "ci": 0,
+        "style": 0,
+        "revert": 0,
+        "other": 1,
+        "breaking": 0,
+        "total": 14
+      }
+    },
     {
       "version": "1.5.16",
       "tag": "word-v1.5.16",
