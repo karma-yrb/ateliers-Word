@@ -115,6 +115,33 @@ test("single image is treated as expected result when result image is missing", 
   assert.equal(JSON.stringify(Array.from(visuals.resultImages)), JSON.stringify([{ src: "https://img/ex1.jpg", caption: "" }]));
 });
 
+test("multiple fallback result images are preserved", () => {
+  const model = createModel({
+    modules: [{ id: "m1", cleanName: "Prise en main", section: "bases", sectionOrder: 1, orderInSection: 1 }],
+    exercises: [
+      {
+        id: "ex-001",
+        globalIndex: 1,
+        moduleId: "m1",
+        moduleNameClean: "Prise en main",
+        num: 1,
+        title: "Plusieurs images",
+        instructions: ["Etape 1"],
+        imageResultat: ["data/ex-001a.png", "data/ex-001b.png", "data/ex-001c.png"],
+      },
+    ],
+  });
+
+  const exercise = model.getExerciseById("ex-001");
+  const visuals = model.getVisualsForExercise(exercise);
+
+  assert.deepEqual(JSON.parse(JSON.stringify(visuals.resultImages)), [
+    { src: "data/ex-001a.png", caption: "" },
+    { src: "data/ex-001b.png", caption: "" },
+    { src: "data/ex-001c.png", caption: "" },
+  ]);
+});
+
 test("exercise tabs are normalized into visuals payload", () => {
   const model = createModel();
   const exercise = model.getExerciseById("ex-004");

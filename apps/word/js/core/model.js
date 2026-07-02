@@ -40,6 +40,22 @@ function normalizeImageList(items) {
   return uniqueImageObjects(items);
 }
 
+function coerceImageEntries(value, fallbackCaption = "") {
+  if (Array.isArray(value)) {
+    return uniqueImageObjects(
+      value.map((item) => (
+        typeof item === "string"
+          ? { src: item, caption: fallbackCaption }
+          : { src: item && item.src, caption: item && item.caption ? item.caption : fallbackCaption }
+      )),
+    );
+  }
+
+  const src = String(value || "").trim();
+  if (!src) return [];
+  return [{ src, caption: cleanText(fallbackCaption || "") }];
+}
+
 function normalizeExerciseTabs(items) {
   if (!Array.isArray(items)) return [];
   return items
@@ -466,21 +482,25 @@ class AtelierModel {
 
     const scrapeEnonceImages = uniqueImageObjects(exercise.scrapeEnonceImages);
     const scrapeResultImages = uniqueImageObjects(exercise.scrapeResultImages);
+    const fallbackEnonceSingle = coerceImageEntries(exercise.imageEnonce, exercise.imageEnonceCaption || "");
+    const fallbackResultSingle = coerceImageEntries(exercise.imageResultat, exercise.imageResultatCaption || "");
     let fallbackEnonceImages = [];
     let fallbackResultImages = [];
 
-    if (exercise.imageEnonce && exercise.imageResultat) {
-      if (exercise.imageEnonce === exercise.imageResultat) {
-        fallbackResultImages = [exercise.imageResultat];
+    if (fallbackEnonceSingle.length && fallbackResultSingle.length) {
+      const sameSet = fallbackEnonceSingle.length === fallbackResultSingle.length
+        && fallbackEnonceSingle.every((image, index) => image.src === fallbackResultSingle[index].src);
+      if (sameSet) {
+        fallbackResultImages = fallbackResultSingle;
       } else {
-        fallbackEnonceImages = [exercise.imageEnonce];
-        fallbackResultImages = [exercise.imageResultat];
+        fallbackEnonceImages = fallbackEnonceSingle;
+        fallbackResultImages = fallbackResultSingle;
       }
-    } else if (exercise.imageResultat) {
-      fallbackResultImages = [exercise.imageResultat];
-    } else if (exercise.imageEnonce) {
+    } else if (fallbackResultSingle.length) {
+      fallbackResultImages = fallbackResultSingle;
+    } else if (fallbackEnonceSingle.length) {
       // Règle métier demandée: image unique => résultat attendu.
-      fallbackResultImages = [exercise.imageEnonce];
+      fallbackResultImages = fallbackEnonceSingle;
     }
 
     const hasScrapeVisuals = scrapeEnonceImages.length > 0 || scrapeResultImages.length > 0;
