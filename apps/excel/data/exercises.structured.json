@@ -444,8 +444,14 @@
         "extraImages": [],
         "enonceImages": [],
         "resultImages": [
-          "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-001/ex-001.jpg",
-          "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-002/ex-002.jpg"
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-001/ex-001.jpg",
+            "caption": "Etape 1 : Classeur enregistre et structure de base creee."
+          },
+          {
+            "src": "https://www.clic-formation.net/images/01-excel/excel-competence-01/ex-002/ex-002.jpg",
+            "caption": "Etape 2 : Mise en forme finalisee selon le resultat attendu."
+          }
         ]
       },
       "section": "bases",
