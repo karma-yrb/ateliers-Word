@@ -263,7 +263,7 @@ class AtelierModel {
       return {
         id: "automatisation",
         label: "Automatisation et production",
-        subtitle: "Gagner du temps sur les tâches répétitives et les documents pro.",
+        subtitle: "Gagner du temps sur les tâches répétitives et les supports pro.",
         order: 4,
       };
     }
@@ -273,8 +273,8 @@ class AtelierModel {
     ) {
       return {
         id: "structure",
-        label: "Structure du document",
-        subtitle: "Construire des documents organisés, lisibles et solides.",
+        label: "Structure et organisation",
+        subtitle: "Construire des supports organisés, lisibles et solides.",
         order: 3,
       };
     }
@@ -285,15 +285,15 @@ class AtelierModel {
       return {
         id: "visuel",
         label: "Mise en forme visuelle",
-        subtitle: "Travailler l'apparence et l'impact visuel des documents.",
+        subtitle: "Travailler l'apparence et l'impact visuel des supports.",
         order: 2,
       };
     }
 
     return {
       id: "fondations",
-      label: "Fondations Word",
-      subtitle: "Prendre en main les bases de saisie, paragraphes et organisation simple.",
+      label: "Fondations bureautiques",
+      subtitle: "Prendre en main les bases de saisie, de mise en forme et d'organisation simple.",
       order: 1,
     };
   }

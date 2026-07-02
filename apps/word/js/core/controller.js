@@ -729,7 +729,7 @@ function createAtelierController(config = {}) {
       fileName.textContent = expectedFileName;
       const isDoneTrigger = trigger === "done";
       const nextReminderSteps = `
-          <li><strong>Dans Word</strong><br>
+          <li><strong>Dans ${settings.officeAppName}</strong><br>
             Si vous n'avez pas d\u00e9j\u00e0 enregistrer votre fichier dans votre dossier
             <ul class="save-reminder-substeps">
               <li>Cliquez sur "Fichier" puis "Enregistrer sous"</li>
@@ -741,10 +741,10 @@ function createAtelierController(config = {}) {
           <li>Dans tout les cas terminez par cliquez sur <span class="word-close-icon" aria-hidden="true" title="Fermer">\u00d7</span> (fermer).</li>
         `;
       const doneReminderSteps = `
-          <li>Dans Word, cliquez <span class="word-close-icon" aria-hidden="true" title="Fermer">\u00d7</span> (fermer) ou sur <strong>Fichier</strong> puis <strong>Enregistrer sous</strong>.</li>
+          <li>Dans ${settings.officeAppName}, cliquez <span class="word-close-icon" aria-hidden="true" title="Fermer">\u00d7</span> (fermer) ou sur <strong>Fichier</strong> puis <strong>Enregistrer sous</strong>.</li>
           <li>Choisissez votre dossier utilisateur : <code id="save-reminder-user-folder"></code>.</li>
           <li>Nommez le fichier <code id="save-reminder-file-name"></code>, puis validez avec <strong>Enregistrer</strong>.</li>
-          <li>Dans Word, cliquez <span class="word-close-icon" aria-hidden="true" title="Fermer">\u00d7</span> (fermer) si besoin.</li>
+          <li>Dans ${settings.officeAppName}, cliquez <span class="word-close-icon" aria-hidden="true" title="Fermer">\u00d7</span> (fermer) si besoin.</li>
         `;
       this.#setSaveReminderContent({
         title: "Vous avez termin\u00e9 ?",
